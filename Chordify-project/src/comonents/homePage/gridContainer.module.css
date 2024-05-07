@@ -1,0 +1,16 @@
+.grid {
+  display: grid;
+  /* grid-template-columns: 20% 60% 20%; */
+  grid-template-columns: 0.9fr 3fr 1fr;
+  height: 100vh;
+}
+.chord {
+  color: blue; /* Set the color of the chords */
+  font-size: larger; /* Make the font size larger */
+}
+
+.lyrics-container {
+  font-family: "Courier New", Courier, monospace;
+  white-space: pre;
+  font-size: 16px;
+}

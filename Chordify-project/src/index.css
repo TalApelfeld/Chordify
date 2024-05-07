@@ -1,0 +1,181 @@
+@import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap");
+
+/* - SPACING SYSTEM (px)
+2 / 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 80 / 96 / 128
+
+
+
+- FONT SIZE SYSTEM (px)
+10 / 12 / 14 / 16 / 18 / 20 / 24 / 30 / 36 / 44 / 52 / 62 / 74 / 86 / 98 */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: "M PLUS Rounded 1c", sans-serif;
+  }
+
+  /* li :hover,
+  li :active {
+    background-color: #030508;
+    border-radius: 115px;
+    display: block;
+  } */
+}
+
+@layer components {
+  /* //section: Login */
+  .login-page-container {
+    height: 100vh;
+    background-image: linear-gradient(rgb(0, 0, 0, 0.7), rgb(0, 0, 0, 0.1)),
+      url(./assets/caught-in-joy-ptVBlniJi50-unsplash.jpg);
+    background-size: cover;
+  }
+
+  .login-form {
+    margin: 0 auto;
+    width: 40%;
+    height: 70%;
+    background-color: theme(colors.background-black);
+    transform: translateY(25%);
+    border-radius: 20px;
+    opacity: 80%;
+    color: white;
+    text-align: center;
+  }
+
+  .input-top {
+    margin: 0 auto;
+  }
+  .input-bottom {
+    margin: 0 auto;
+  }
+
+  /* //section: Sidebar */
+  .logo {
+    height: 10%;
+    padding: 18px 28px;
+  }
+
+  .buttons-container {
+    @apply font-semibold;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    height: 90%;
+  }
+
+  .buttons-top-container {
+    display: flex;
+    flex-direction: column;
+    height: 60%;
+    /* align-items: center; */
+  }
+
+  .buttons-bottom-container {
+    @apply font-semibold;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+  }
+
+  .top-button-item-container {
+    display: flex;
+    gap: 18px;
+    margin-bottom: 24px;
+    padding: 16px 32px;
+    width: 90%;
+    align-items: center;
+    margin-left: 12.225px;
+    transition: all 0.3s;
+  }
+
+  .bottom-button-item-container {
+    display: flex;
+    gap: 18px;
+
+    padding: 16px 32px;
+    width: 90%;
+    align-items: center;
+    margin-left: 12.225px;
+    transition: all 0.3s;
+  }
+
+  .top-button-item-container:hover,
+  .top-button-item-container:active,
+  .bottom-button-item-container:hover,
+  .bottom-button-item-container:active {
+    background-color: #030508;
+    border-radius: 110px;
+  }
+
+  /* //section: Middle Contetnt */
+  .your-progress-container {
+    height: 18%;
+    /* padding: 12px; */
+  }
+
+  .middle-images {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .img-container {
+    width: 45%;
+    height: 45%;
+  }
+  .img-container img {
+    width: 100%;
+    border-radius: 50%;
+  }
+
+  .divider {
+    height: 2px; /* Thickness of the divider */
+    width: 98%;
+    background-color: #374151; /* Color of the divider */
+    opacity: 40%;
+  }
+
+  .vertical-divider {
+    padding-top: 12px;
+    height: 85%; /* Full height of the parent container */
+    width: 2px; /* Thickness of the divider */
+    background-color: #374151; /* Color of the divider */
+    margin: 100px 0; /* Horizontal spacing */
+    opacity: 40%;
+  }
+
+  .skill-assesment-container {
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    width: 90%;
+    height: 15%;
+
+    margin-left: 38.975px;
+    align-items: center;
+    justify-items: center;
+  }
+  .test-knoledge {
+    grid-row: 2/3;
+    grid-column: 2/3;
+  }
+
+  .test-button {
+    /* transform: translate(0, 50%); */
+    transition: all 0.3s;
+  }
+
+  .test-button:hover,
+  .test-button:active {
+    background-color: #3e4450;
+  }
+}
+
+@layer utilities {
+}
