@@ -24,6 +24,12 @@ export default {
         "background-black": "#030508",
         "text-homepage": "#ffffff",
         "background-grey": "#292f3d",
+        "background-test-modal": "#B4B4B8",
+        // #B4B4B8
+        // #F1EFEF"
+        // #E8E2E2
+        // #C8C2BC
+        // #DDDDDD
       },
       spacing: {
         "middleContent-big-space": "0.875rem",

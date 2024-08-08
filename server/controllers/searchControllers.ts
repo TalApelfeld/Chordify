@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import User from "../models/Users";
 
 export default async function searchTest(
   req: Request,
@@ -7,8 +6,7 @@ export default async function searchTest(
   next: NextFunction
 ) {
   try {
-    const data = await User.create({ name: "tal test" });
-    res.json(data);
+    res.json({ message: "hello from backend" });
   } catch (error) {
     res.json(error);
   }

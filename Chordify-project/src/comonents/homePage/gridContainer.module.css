@@ -1,7 +1,7 @@
 .grid {
   display: grid;
   /* grid-template-columns: 20% 60% 20%; */
-  grid-template-columns: 0.9fr 3fr 1fr;
+  grid-template-columns: 0.7fr 3fr 1fr;
   height: 100vh;
 }
 .chord {

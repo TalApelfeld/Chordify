@@ -1,64 +1,94 @@
 import { Request, Response, NextFunction } from "express";
 import OpenAI from "openai";
-import User from "../models/Users";
 
-// const openai = new OpenAI();
-
-// export default async function testNode(req: Request, res: Response) {
-//   const options = {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: `Bearer sk-proj-Xvesv7bXEUdeqVMU7z4QT3BlbkFJ1fRBD3G62PQxS3qJU236`,
-//     },
-//     body: JSON.stringify({
-//       model: "gpt-3.5-turbo",
-//       messages: [
-//         {
-//           role: "user",
-//           content: `im building an web app that makes you a leraning plan to know how to play guitar based on some questions:
-//           im building an web app that makes you a leraning plan to know how to play guitar based on some questions.
-
-//           suppose the answers to this are:
-//            Beginner
-//            1-3 hours
-//           Playing for fun
-//           No
-//           Other
-//           Written
-//           Self-assessment.
-
-//           i want to make a learning plan as ditailed as possibale , divided into 25 weeks , and for each week, a list of things need to be learned in each day, make me a learning plan for the first week in the next format:
-//           <h1>week : # 1 </h1>
-//           <h2>day : #</h2>
-//           <ul>
-//           <li></li>
-//           <li></li>
-//           <li></li>
-//           <li></li>
-//           <li></li>
-//           </ul>`,
-//         },
-//       ],
-//     }),
-//   };
-//   try {
-//     const response = await fetch(
-//       "https://api.openai.com/v1/chat/completions",
-//       options
-//     );
-
-//     response
-//       .json()
-//       .then((data) =>
-//         res.json({ message: `${data.choices[0].message.content}` })
-//       );
-
-//     // res.send(data);
-//   } catch (error) {
-//     console.error(error);
+// declare global {
+//   namespace Express {
+//     interface Request {
+//       answers: string[]; // Adjust the type as needed
+//     }
 //   }
 // }
+
+const openai = new OpenAI();
+
+export default async function testNode(req: Request, res: Response) {
+  const frontData = req.body.answers;
+
+  const options = {
+    method: "POST",
+
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer sk-proj-Xvesv7bXEUdeqVMU7z4QT3BlbkFJ1fRBD3G62PQxS3qJU236`,
+    },
+
+    body: JSON.stringify({
+      model: "gpt-3.5-turbo",
+
+      messages: [
+        {
+          role: "user",
+          content: `im building an web app that generates a leraning plan based on few questions and it will be specific for guitar:
+                    1) What is your current skill level with the guitar?
+                    Options: Absolute Beginner, Beginner, Intermediate, Advanced
+
+                     2) How much time can you dedicate to practicing each week?
+                     Options: Less than 1 hour, 1-3 hours, 3-5 hours, More than 5 hours
+
+                    3) What are your main goals for learning guitar?
+                    Options: Playing for fun, Joining a band, Professional development, Songwriting
+
+                    4) Do you have any musical background or play other instruments?
+                    Yes/No follow-up: If yes, which instruments and for how long?
+
+                    5) What genres of music are you most interested in playing?
+                    Options: Rock, Blues, Jazz, Classical, Pop, Folk, Other
+
+                    6) Do you prefer learning through video tutorials, written materials, or both?
+                    Options: Video, Written, Both
+
+                    7) How do you prefer to receive feedback on your progress?
+                    Options: Self-assessment, Online community reviews, Regular check-ins with a mentor
+
+                    
+
+                    i want to make a learning plan as detailed as possibale , divided into weeks , and for each week, a list of things need to be learned in each day, make me a learning plan as apecific as you can for the first week that will include practical things in the next format:
+                    <h1>week : # 1 </h1>
+                    <h2>day : #</h2>
+                    <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                     </ul> 
+
+                     based on those answers:
+                     ${frontData[0]},
+                     ${frontData[1]},
+                     ${frontData[2]},
+                     ${frontData[3]},
+                     ${frontData[4]},
+                     ${frontData[5]},
+                     ${frontData[6]},
+                     `,
+        },
+      ],
+    }),
+  };
+  try {
+    const response = await fetch(
+      "https://api.openai.com/v1/chat/completions",
+      options
+    );
+    const data = await response.json();
+    res.json({ message: `${data.choices[0].message.content}` });
+
+    // res.send(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 // interface ValidatorErrorProperties {
 //   message: string;

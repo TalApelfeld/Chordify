@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap");
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* - SPACING SYSTEM (px)
 2 / 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 80 / 96 / 128
 
@@ -8,12 +12,40 @@
 - FONT SIZE SYSTEM (px)
 10 / 12 / 14 / 16 / 18 / 20 / 24 / 30 / 36 / 44 / 52 / 62 / 74 / 86 / 98 */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* spacing: {
+  '2': '0.125rem',   // 2px
+  '4': '0.25rem',    // 4px
+  '8': '0.5rem',     // 8px
+  '12': '0.75rem',   // 12px
+  '16': '1rem',      // 16px
+  '24': '1.5rem',    // 24px
+  '32': '2rem',      // 32px
+  '48': '3rem',      // 48px
+  '64': '4rem',      // 64px
+  '80': '5rem',      // 80px
+  '96': '6rem',      // 96px
+  '128': '8rem',     // 128px
+},
+fontSize: {
+  '10': '0.625rem',  // 10px
+  '12': '0.75rem',   // 12px
+  '14': '0.875rem',  // 14px
+  '16': '1rem',      // 16px
+  '18': '1.125rem',  // 18px
+  '20': '1.25rem',   // 20px
+  '24': '1.5rem',    // 24px
+  '30': '1.875rem',  // 30px
+  '36': '2.25rem',   // 36px
+  '44': '2.75rem',   // 44px
+  '52': '3.25rem',   // 52px
+  '62': '3.875rem',  // 62px
+  '74': '4.625rem',  // 74px
+  '86': '5.375rem',  // 86px
+  '98': '6.125rem',  // 98px
+}, */
 
 @layer base {
-  html {
+  * {
     font-family: "M PLUS Rounded 1c", sans-serif;
   }
 
@@ -25,6 +57,14 @@
   } */
 }
 
+/* //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 @layer components {
   /* //section: Login */
   .login-page-container {
@@ -56,7 +96,12 @@
   /* //section: Sidebar */
   .logo {
     height: 10%;
-    padding: 18px 28px;
+    padding: 1.625rem 1.5rem 1.625rem 1.5rem;
+  }
+
+  .logo img {
+    width: 100%;
+    height: 100%;
   }
 
   .buttons-container {
@@ -71,7 +116,7 @@
   .buttons-top-container {
     display: flex;
     flex-direction: column;
-    height: 60%;
+    height: 20%;
     /* align-items: center; */
   }
 
@@ -84,32 +129,25 @@
 
   .top-button-item-container {
     display: flex;
-    gap: 18px;
-    margin-bottom: 24px;
-    padding: 16px 32px;
+    gap: 1.125rem;
+    margin-bottom: 1.125rem;
+    padding: 1rem 2rem;
     width: 90%;
     align-items: center;
-    margin-left: 12.225px;
+    /* margin-left: 12.225px; */
+    margin-left: 0.75rem;
     transition: all 0.3s;
   }
 
   .bottom-button-item-container {
     display: flex;
-    gap: 18px;
+    gap: 1.125rem;
 
-    padding: 16px 32px;
+    padding: 1rem 2rem;
     width: 90%;
     align-items: center;
-    margin-left: 12.225px;
-    transition: all 0.3s;
-  }
-
-  .top-button-item-container:hover,
-  .top-button-item-container:active,
-  .bottom-button-item-container:hover,
-  .bottom-button-item-container:active {
-    background-color: #030508;
-    border-radius: 110px;
+    /* margin-left: 12.225px; */
+    margin-left: 0.75rem;
   }
 
   /* //section: Middle Contetnt */
@@ -122,7 +160,7 @@
     display: flex;
     justify-content: start;
     align-items: center;
-    gap: 10px;
+    gap: 0.625rem;
   }
 
   .img-container {
@@ -135,18 +173,18 @@
   }
 
   .divider {
-    height: 2px; /* Thickness of the divider */
+    height: 0.125rem; /* Thickness of the divider */
     width: 98%;
     background-color: #374151; /* Color of the divider */
     opacity: 40%;
   }
 
   .vertical-divider {
-    padding-top: 12px;
+    padding-top: 0.75rem;
     height: 85%; /* Full height of the parent container */
-    width: 2px; /* Thickness of the divider */
+    width: 0.125rem; /* Thickness of the divider */
     background-color: #374151; /* Color of the divider */
-    margin: 100px 0; /* Horizontal spacing */
+    margin: 6.25rem 0; /* Horizontal spacing */
     opacity: 40%;
   }
 
@@ -157,7 +195,7 @@
     width: 90%;
     height: 15%;
 
-    margin-left: 38.975px;
+    margin-left: 2.4359375rem;
     align-items: center;
     justify-items: center;
   }

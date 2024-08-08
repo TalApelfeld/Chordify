@@ -1,25 +1,25 @@
 
 im building an web app that makes you a leraning plan to know how to play guitar based on some questions:
 
-What is your current skill level with the guitar?
+1) What is your current skill level with the guitar?
 Options: Absolute Beginner, Beginner, Intermediate, Advanced
 
-How much time can you dedicate to practicing each week?
+2) How much time can you dedicate to practicing each week?
 Options: Less than 1 hour, 1-3 hours, 3-5 hours, More than 5 hours
 
-What are your main goals for learning guitar?
+3) What are your main goals for learning guitar?
 Options: Playing for fun, Joining a band, Professional development, Songwriting
 
-Do you have any musical background or play other instruments?
+4) Do you have any musical background or play other instruments?
 Yes/No follow-up: If yes, which instruments and for how long?
 
-What genres of music are you most interested in playing?
+5) What genres of music are you most interested in playing?
 Options: Rock, Blues, Jazz, Classical, Pop, Folk, Other
 
-Do you prefer learning through video tutorials, written materials, or both?
+6) Do you prefer learning through video tutorials, written materials, or both?
 Options: Video, Written, Both
 
-How do you prefer to receive feedback on your progress?
+7) How do you prefer to receive feedback on your progress?
 Options: Self-assessment, Online community reviews, Regular check-ins with a mentor
 
 
