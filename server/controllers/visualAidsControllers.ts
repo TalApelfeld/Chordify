@@ -94,8 +94,10 @@ export async function getChords(
 ) {
   try {
     const docs = await Chords.find();
+
     console.log(docs);
-    res.json(docs);
+
+    res.json({ data: docs });
   } catch (error) {
     res.json(error);
     next(error);

@@ -1,4 +1,5 @@
 import express from "express";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import { Request, Response, NextFunction } from "express";
 import AppError from "./utils/appError";
@@ -8,19 +9,22 @@ import homeRoutes from "./routes/homeRoutes";
 import visualAidsRoutes from "./routes/visualAidsRoutes";
 import searchRoutes from "./routes/searchRoutes";
 import testRoutes from "./routes/testRoutes";
+import songsRouter from "./routes/songsRoutes";
+import { protect } from "./controllers/authController";
 
 const app = express();
 
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Adjust this to match your frontend's URL
+    credentials: true,
+  })
+);
+app.use(cookieParser());
 app.use(express.json());
-app.use(cors());
 
-app.use((req: Request, res: Response, next: NextFunction) => {
-  if (req.headers) console.log(req.headers);
-
-  next();
-});
-
-app.use("/test", testRoutes);
+app.use("/kittens", testRoutes);
+app.use("/songs", songsRouter);
 app.use("/users", userRoutes);
 app.use("/home", homeRoutes);
 app.use("/visualaids", visualAidsRoutes);

@@ -104,9 +104,6 @@ export default function MiddleContent({ timeGreeting }: middleContentProps) {
             Start learning
           </button>
         </div>
-        <a className="px-28 py-3 bg-background-grey rounded-xl" href="login">
-          to login page
-        </a>
       </div>
     </>
   );

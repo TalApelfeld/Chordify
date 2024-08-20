@@ -17,7 +17,10 @@ exports.findDoc = findDoc;
 exports.updateDoc = updateDoc;
 exports.deleteDoc = deleteDoc;
 exports.getFlightStats = getFlightStats;
+exports.getKitten = getKitten;
+exports.createKitten = createKitten;
 const Flights_1 = __importDefault(require("../models/Flights"));
+const testModel_1 = __importDefault(require("../models/testModel"));
 function createDoc(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -128,5 +131,42 @@ function getFlightStats(req, res, next) {
             res.status(200).json(stats);
         }
         catch (error) { }
+    });
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function getKitten(req, res, next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const kittens = yield testModel_1.default.find();
+            res.json({
+                message: " look kittens !",
+                results: kittens.length,
+                data: { kittens },
+            });
+        }
+        catch (error) {
+            res.status(404).json({ message: "faild", data: { error } });
+        }
+    });
+}
+function createKitten(req, res, next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const kittens = yield new testModel_1.default({
+                name: req.body.name,
+                age: req.body.age,
+            });
+            kittens.addAge();
+            kittens.save();
+            res.status(200).json({ message: "Kitten created", data: { kittens } });
+        }
+        catch (error) {
+            res.status(404).json({ message: "faild", data: { error } });
+        }
     });
 }

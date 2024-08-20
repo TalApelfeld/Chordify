@@ -103,7 +103,7 @@ function getChords(req, res, next) {
         try {
             const docs = yield Chords_1.default.find();
             console.log(docs);
-            res.json(docs);
+            res.json({ data: docs });
         }
         catch (error) {
             res.json(error);

@@ -1,11 +1,14 @@
+import dotenv from "dotenv";
 import app from "./app";
 import mongoose from "mongoose";
 
-const dataBase =
-  "mongodb+srv://talapelfeld:tal2285903@chordifydb.98cezsi.mongodb.net/chordify?retryWrites=true&w=majority&appName=chordifyDB";
-const port = 3000;
+dotenv.config({ path: "../config.env" });
 
-mongoose.connect(dataBase).then(() => {
+const dataBaseString = process.env.DB_STRING as string;
+
+const port = process.env.PORT;
+
+mongoose.connect(dataBaseString).then(() => {
   console.log("DB connected successfully");
 
   app.listen(port, () => {

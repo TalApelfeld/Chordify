@@ -66,7 +66,21 @@ fontSize: {
 /* /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 /* /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 @layer components {
-  /* //section: Login */
+  /* //section: 404 Page*/
+  .NotFound-page-container {
+    height: 100vh;
+    background-image: linear-gradient(rgb(0, 0, 0, 0.7), rgb(0, 0, 0, 0.1)),
+      url(https://images.unsplash.com/photo-1650692201357-3b1b15469952?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+    background-size: cover;
+  }
+
+  .h1-NouFound {
+    position: absolute;
+    top: 25rem;
+    left: 50rem;
+  }
+
+  /* //section: Login Page*/
   .login-page-container {
     height: 100vh;
     background-image: linear-gradient(rgb(0, 0, 0, 0.7), rgb(0, 0, 0, 0.1)),
@@ -91,6 +105,27 @@ fontSize: {
   }
   .input-bottom {
     margin: 0 auto;
+  }
+
+  /* //section: Signup Page*/
+
+  .signup-page-container {
+    height: 100vh;
+    background-image: linear-gradient(rgb(0, 0, 0, 0.7), rgb(0, 0, 0, 0.1)),
+      url(https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+    background-size: cover;
+  }
+
+  .signup-form {
+    margin: 0 auto;
+    width: 40%;
+    height: 85%;
+    background-color: theme(colors.background-black);
+    transform: translateY(10%);
+    border-radius: 20px;
+    opacity: 80%;
+    color: white;
+    text-align: center;
   }
 
   /* //section: Sidebar */
@@ -214,6 +249,8 @@ fontSize: {
     background-color: #3e4450;
   }
 }
+
+/* //section: Middle Contetnt Song library */
 
 @layer utilities {
 }

@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const cors_1 = __importDefault(require("cors"));
 const appError_1 = __importDefault(require("./utils/appError"));
 const errorController_1 = require("./controllers/errorController");
@@ -12,15 +13,16 @@ const homeRoutes_1 = __importDefault(require("./routes/homeRoutes"));
 const visualAidsRoutes_1 = __importDefault(require("./routes/visualAidsRoutes"));
 const searchRoutes_1 = __importDefault(require("./routes/searchRoutes"));
 const testRoutes_1 = __importDefault(require("./routes/testRoutes"));
+const songsRoutes_1 = __importDefault(require("./routes/songsRoutes"));
 const app = (0, express_1.default)();
+app.use((0, cors_1.default)({
+    origin: "http://localhost:5173", // Adjust this to match your frontend's URL
+    credentials: true,
+}));
+app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
-app.use((0, cors_1.default)());
-app.use((req, res, next) => {
-    if (req.headers)
-        console.log(req.headers);
-    next();
-});
-app.use("/test", testRoutes_1.default);
+app.use("/kittens", testRoutes_1.default);
+app.use("/songs", songsRoutes_1.default);
 app.use("/users", userRoutes_1.default);
 app.use("/home", homeRoutes_1.default);
 app.use("/visualaids", visualAidsRoutes_1.default);

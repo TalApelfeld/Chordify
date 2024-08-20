@@ -8,13 +8,13 @@ interface Chord {
 }
 
 export default function MiddleContentVisualAids() {
-  const [chords, setChords] = useState<Chord[]>([]);
+  const [chords, setChords] = useState<Chord[] | null>(null);
 
   useEffect(() => {
     async function getChords() {
       const res = await fetch("http://127.0.0.1:3000/visualaids");
       const data = await res.json();
-      setChords(data);
+      setChords(data.data);
       console.log(data);
     }
     getChords();
@@ -22,7 +22,7 @@ export default function MiddleContentVisualAids() {
   return (
     <div className="bg-background-black text-white">
       <div className="grid gap-8  grid-cols-3">
-        {chords.map((chord) => (
+        {chords?.map((chord) => (
           <SingleCard image={chord.url} CardTitle={chord.name}>
             <ul>
               {chord.bulletPoints.map((bullet) => (

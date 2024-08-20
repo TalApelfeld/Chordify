@@ -12,67 +12,83 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signUp = signUp;
+exports.signup = signup;
 exports.login = login;
 exports.protect = protect;
-const jsonwebtoken_1 = require("jsonwebtoken");
-const Users_1 = __importDefault(require("../models/Users"));
+exports.checkAuth = checkAuth;
+exports.restrict = restrict;
+exports.forgotPassword = forgotPassword;
+exports.resetPassword = resetPassword;
+exports.updatePassword = updatePassword;
+const userModel_1 = __importDefault(require("../models/userModel"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const crypto_1 = __importDefault(require("crypto"));
 const appError_1 = __importDefault(require("../utils/appError"));
-const signToken = function (id) {
-    // according to documation "sign()" return the json web token as string
-    return (0, jsonwebtoken_1.sign)({ id: id }, "secret", { expiresIn: "90d" });
-};
-function signUp(req, res, next) {
+function signup(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const newUser = yield Users_1.default.create({
-                // in this way we store only the relevent data we need and some other user cant register himself as an admin.
-                name: req.body.name,
+            //* insted of this way:
+            // const newUser = await User.create(req.body);
+            //* we use this way, making sure only the data we need gets to the doc and that way nobody can say they are admin
+            const newUser = yield userModel_1.default.create({
+                // name: req.body.name,
                 email: req.body.email,
                 password: req.body.password,
                 passwordConfirm: req.body.passwordConfirm,
-                passwordChangedAt: req.body.passwordChangedAt,
+                // passwordChangedAt: req.body.passwordChangedAt,
+                // role: req.body.role,
             });
-            const token = signToken(newUser._id);
-            res.status(201).json({
-                status: "success",
-                token: token,
-                data: {
-                    user: newUser,
-                },
+            const secret = process.env.JWT_SECRET;
+            const token = jsonwebtoken_1.default.sign({ id: newUser._id }, secret, {
+                expiresIn: process.env.JWT_EXPIRES_IN,
             });
+            const cookieExpires = Number(process.env.JWT_COOKIE_EXPIRES_IN);
+            res.cookie("jwt", token, {
+                expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
+                httpOnly: true, // Recommended to prevent client-side access
+                secure: false, // Set to true in production when using HTTPS
+                sameSite: "lax", // Can use 'strict' for more stringent handling});
+            });
+            res.status(201).json({ status: "success", token, data: { user: newUser } });
         }
         catch (error) {
-            next(error);
+            res.status(404).json({ status: "fail", message: error });
         }
     });
 }
 function login(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
+        const { email, password } = req.body;
+        // 1) Check if email and password exist
+        if (!email || !password) {
+            return next("Please provide email and password!");
+        }
+        // 2) Check if user exists && password is correct
         try {
-            // const email = req.body.eamil;
-            // const password = req.body.password;
-            //* the same
-            const { email, password } = req.body;
-            // 1) check if email and password exist
-            if (!email || !password) {
-                // we put 'return' to make sure the funcction finishes after it calling 'next()'
-                return next(new appError_1.default("Please provide email and password", "400"));
+            const user = yield userModel_1.default.findOne({ email }).select("+password");
+            if (!user) {
+                // with this message the attacker dont know if email or password is incorrect
+                return next("Incorrect email or password");
             }
-            // 2) check if user exsits && password is correct
-            //* same as below
-            // const user = User.findOne({ email });
-            // used 'select' because we set it in the schema as false
-            const user = yield Users_1.default.findOne({ email: email }).select("+password");
-            if (!user || !(yield user.correctPassword(password, user.password))) {
-                return next(new appError_1.default("Incorrect email or password", "401"));
+            // Note: Now 'user' is a proper document instance where you can access methods like 'correctPassword'
+            const correct = yield user.correctPassword(password, user.password);
+            if (!correct) {
+                return next("Incorrect email or password");
             }
-            // 3) if everthing ok, send token to client
-            const token = signToken(user._id);
-            res.status(200).json({
-                status: "success",
-                token,
+            // 3) If everything ok, send token to client
+            const secret = process.env.JWT_SECRET;
+            const docID = user._id;
+            const token = jsonwebtoken_1.default.sign({ id: docID }, secret, {
+                expiresIn: process.env.JWT_EXPIRES_IN,
             });
+            const cookieExpires = Number(process.env.JWT_COOKIE_EXPIRES_IN);
+            res.cookie("jwt", token, {
+                expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
+                httpOnly: true, // Recommended to prevent client-side access
+                secure: false, // Set to true in production when using HTTPS
+                sameSite: "lax", // Can use 'strict' for more stringent handling});
+            });
+            res.status(200).json({ status: "success", token });
         }
         catch (error) {
             next(error);
@@ -81,34 +97,136 @@ function login(req, res, next) {
 }
 function protect(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
-        // 1) getting token and checking if it exist
-        let token;
-        //* there is a standard of sending the token in the header, the key is 'Authorization' and the value starts with 'Bearer' --> 'Bearer adsf3423'
-        if (req.headers.authorization &&
-            req.headers.authorization.startsWith("Bearer")) {
-            token = req.headers.authorization.split(" ")[1];
-        }
-        if (!token) {
-            // use return becuse there is no "else" and we want to cut the proccess so we return the next() from the "protect" controller function and
-            // the next takes it to the error handler
-            return next(new appError_1.default("You are not logged in, please log in to get access", "401"));
-        }
         try {
-            // 2) varifaction of the token to see if it is a valid JWT
-            const decoded = (yield (0, jsonwebtoken_1.verify)(token, "secret"));
-            console.log(decoded);
-            // 3) check if user still exists
-            const freshUser = yield Users_1.default.findById(decoded.id);
-            if (!freshUser) {
-                return next(new appError_1.default("The user belonging to this token does no longer exist", "404"));
-            }
-            // 4) check if user changed password after the token was issued
-            if (decoded.iat !== undefined &&
-                (yield freshUser.changedPasswordAfter(decoded.iat))) {
-                return next(new appError_1.default("User recently changed password! Please log in again", "401"));
-            }
+            if (!req.cookies["jwt"])
+                return next(new appError_1.default("You need to create account first ya maniak", "404"));
+            // 1) Check if we get the token
+            const token = req.cookies["jwt"];
+            console.log(token);
+            // if (
+            //   req.headers.authorization &&
+            //   req.headers.authorization.startsWith("Bearer")
+            // ) {
+            //   token = req.headers.authorization.split(" ")[1];
+            // }
+            if (!token)
+                return next("you are not logged in (provide token in header or cookie ya maniak)");
+            // 2) Verification of  the token
+            const secret = process.env.JWT_SECRET;
+            const decoded = (yield jsonwebtoken_1.default.verify(token, secret));
+            // console.log(decoded);
+            // 3) Check if user still exists
+            console.log(decoded.id);
+            const freshUser = yield userModel_1.default.findById(decoded.id);
+            if (!freshUser)
+                return next("the user belongigng to the token is no longer exists");
+            // 4) Check if user changed password after the token was issued
+            if (freshUser.changedPasswordAfter(decoded.iat))
+                return next("User recently changed password, pls log in again");
+            // GRANT ACCESS TO PROTECTED ROUTE
+            req.user = freshUser;
+            console.log(req.user);
             next();
         }
-        catch (error) { }
+        catch (error) {
+            next(error);
+        }
+    });
+}
+function checkAuth(req, res, next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        var _a;
+        try {
+            const user = yield userModel_1.default.findById((_a = req.user) === null || _a === void 0 ? void 0 : _a._id);
+            res.status(200).json({ data: user });
+        }
+        catch (error) {
+            next(new appError_1.default("you are not authenticated", "404"));
+        }
+    });
+}
+function restrict(roles) {
+    return (req, res, next) => {
+        if (req.user) {
+            if (!roles.includes(req.user.role))
+                return next("you do not have premissoin to preform this action ");
+        }
+        next();
+    };
+}
+function forgotPassword(req, res, next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // 1) Get user based on posted email
+        const user = yield userModel_1.default.findOne({ email: req.body.email });
+        if (!user)
+            return next("Tere is no user with this email address ");
+        // 2) Generate the random reset token
+        const resetToken = user.createPasswordResetToken();
+        const updatedUser = yield user.save({ validateBeforeSave: false });
+        res.json({ updatedUser });
+        // 3) Sent it to user's email
+        //* need to send email
+    });
+}
+function resetPassword(req, res, next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            // 1) Get user based on the token
+            const hasedToken = crypto_1.default
+                .createHash("sha256")
+                .update(req.params.token)
+                .digest("hex");
+            const user = yield userModel_1.default.findOne({
+                passwordResetToken: hasedToken,
+                passwordResetExpires: { $gt: Date.now() },
+            });
+            // 2) If token has not expired and there is user, set the new password
+            if (!user)
+                return next("token is invalid or has expired");
+            user.password = req.body.password;
+            user.passwordConfirm = req.body.passwordConfirm;
+            user.passwordResetToken = undefined;
+            user.passwordResetExpires = undefined;
+            yield user.save();
+            // 3) Updated 'changedPasswordAt'  property for the user
+            //* updated in the model usin pre middleware
+            // 4) log the user in, send JWT
+            const secret = process.env.JWT_SECRET;
+            const token = jsonwebtoken_1.default.sign({ id: user._id }, secret, {
+                expiresIn: process.env.JWT_EXPIRES_IN,
+            });
+            res.status(200).json({ status: "success", token });
+        }
+        catch (error) {
+            return next(error);
+        }
+    });
+}
+function updatePassword(req, res, next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            // 1) Get user from collection
+            if (!req.user)
+                return next("no user");
+            const user = yield userModel_1.default.findById(req.user.id).select("+password");
+            if (!user)
+                return next("you are not sigend in");
+            // 2) Check if posted current password is correct
+            if (!(yield user.correctPassword(req.body.passwordCurrent, user.password)))
+                return next("your current password is wrong");
+            // 3) if so, update the password
+            user.password = req.body.password;
+            user.passwordConfirm = req.body.passwordConfirm;
+            yield user.save();
+            // 4) Log user in, send JWT
+            const secret = process.env.JWT_SECRET;
+            const token = jsonwebtoken_1.default.sign({ id: user._id }, secret, {
+                expiresIn: process.env.JWT_EXPIRES_IN,
+            });
+            res.status(200).json({ status: "success", token });
+        }
+        catch (error) {
+            return next(error);
+        }
     });
 }

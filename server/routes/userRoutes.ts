@@ -1,9 +1,44 @@
 import express from "express";
-import { signUp, login } from "../controllers/authController";
+import {
+  checkAuth,
+  forgotPassword,
+  login,
+  protect,
+  resetPassword,
+  restrict,
+  signup,
+  updatePassword,
+} from "../controllers/authController";
+import {
+  deleteMe,
+  getAllUsers,
+  getOneUser,
+  updateMe,
+} from "../controllers/userControllers";
 
-const router = express.Router();
+const userRouter = express.Router();
 
-router.post("/signup", signUp);
-router.post("/login", login);
+// for the frontend to send back a user based on if there is a cookie
+userRouter.get("/checkauth", protect, checkAuth);
 
-export default router;
+// signup/login functionality
+userRouter.post("/signup", signup);
+userRouter.post("/login", login);
+
+// root path
+userRouter
+  .route("/")
+  .get(protect, restrict(["admin", "lead-guide", "user"]), getAllUsers)
+  .post()
+  .delete();
+
+// handle users themselfs
+userRouter.post("/forgotpassword", forgotPassword);
+userRouter.patch("/resetpassword/:token", resetPassword);
+userRouter.patch("/updatemypassword", protect, updatePassword);
+userRouter.patch("/updateme", protect, updateMe);
+userRouter.patch("/deleteme", protect, deleteMe);
+
+// get one user back
+userRouter.get("/:id", getOneUser);
+export default userRouter;

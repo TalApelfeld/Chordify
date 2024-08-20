@@ -5,17 +5,21 @@ import {
   updateDoc,
   deleteDoc,
   getFlightStats,
+  getKitten,
+  createKitten,
 } from "../controllers/testControllers";
 import { protect } from "../controllers/authController";
 
 const router = express.Router();
 
-router.post("/", createDoc);
+// router.post("/", createDoc);
 
-// "protect" willl be first
-router.get("/", protect, findDoc);
-router.get("/flight-stats", getFlightStats);
-router.patch("/:id", updateDoc);
-router.delete("/:id", deleteDoc);
+// // "protect" willl be first
+// router.get("/", protect, findDoc);
+// router.get("/flight-stats", getFlightStats);
+// router.patch("/:id", updateDoc);
+// router.delete("/:id", deleteDoc);
 
+router.get("/", getKitten);
+router.post("/", createKitten);
 export default router;
