@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 const app_1 = __importDefault(require("./app"));
 const mongoose_1 = __importDefault(require("mongoose"));
-dotenv_1.default.config({ path: "../config.env" });
+dotenv_1.default.config({ path: "../.env" });
 const dataBaseString = process.env.DB_STRING;
 const port = process.env.PORT;
 mongoose_1.default.connect(dataBaseString).then(() => {
