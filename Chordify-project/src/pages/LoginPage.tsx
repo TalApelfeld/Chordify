@@ -2,10 +2,10 @@ import styles from "./LoginPage.module.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-interface responseProps {
-  status: string;
-  token: string;
-}
+// interface responseProps {
+//   status: string;
+//   token: string;
+// }
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -32,7 +32,7 @@ export default function Login() {
         }
       );
 
-      const data: responseProps = await response.json();
+      const data = await response.json();
       console.log(data);
 
       if (data.status === "success") {
