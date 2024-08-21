@@ -20,7 +20,7 @@ export default function SignUpPage() {
     try {
       const response = await fetch(
         // "http://localhost:3000/users/signup",
-        "https://chordify.onrender.com/users/signup",
+        "https://chordify.onrender.com:3000/users/signup",
         {
           method: "POST",
           headers: {
