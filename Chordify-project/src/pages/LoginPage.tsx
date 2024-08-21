@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 //   status: string;
 //   token: string;
 // }
+const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -19,19 +20,15 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch(
-        // "http://localhost:3000/users/login",
-        "https://chordify-api.onrender.com/users/login",
-        {
-          // Adjust the API endpoint as needed
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include", // Include cookies with the request
-          body: JSON.stringify({ email, password }),
-        }
-      );
+      const response = await fetch(`${serverUrl}/users/login`, {
+        // Adjust the API endpoint as needed
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // Include cookies with the request
+        body: JSON.stringify({ email, password }),
+      });
       if (!response.ok) {
         throw new Error("Network response was not OK");
       }

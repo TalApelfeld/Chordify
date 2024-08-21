@@ -2,6 +2,8 @@ import { useState } from "react";
 import styles from "./LoginPage.module.css";
 import { useNavigate } from "react-router-dom";
 
+const serverUrl = import.meta.env.VITE_SERVER_URL;
+
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,18 +20,14 @@ export default function SignUpPage() {
     setLoading(true);
 
     try {
-      const response = await fetch(
-        // "http://localhost:3000/users/signup",
-        "https://chordify-api.onrender.com/users/signup",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({ email, password, passwordConfirm }),
-        }
-      );
+      const response = await fetch(`${serverUrl}/users/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ email, password, passwordConfirm }),
+      });
 
       const data = await response.json();
 
