@@ -114,18 +114,21 @@ function reducer(state: State, action: Action) {
 }
 
 export default function Home() {
-  const [{ questions, isLoading, curQuestion, curAnswer, answers }, dispatch] =
-    useReducer(reducer, initialState);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [{ questions, curQuestion, answers }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
 
   const [modal, setModal] = useState(false);
 
   const [timeGreeting, setTimeGreeting] = useState("");
 
-  const [lastChatAnswer, setLastChatAnswer] = useState({
-    role: "assistant",
-    content:
-      "Sure, I can help with that. Could you please provide your location?",
-  });
+  // const [lastChatAnswer, setLastChatAnswer] = useState({
+  //   role: "assistant",
+  //   content:
+  //     "Sure, I can help with that. Could you please provide your location?",
+  // });
 
   // h1:week , h2 :day , li:assigment
   const [learningPlanHome, setLearningPlanHome] = useState(() => {

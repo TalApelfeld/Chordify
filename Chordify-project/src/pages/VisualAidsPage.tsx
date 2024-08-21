@@ -2,7 +2,7 @@ import styles from "../comonents/homePage/gridContainer.module.css";
 
 import SideBarLeft from "../comonents/homePage/SideBarLeft";
 import RightContent from "../comonents/homePage/RightContent";
-import { useEffect, useReducer, useState } from "react";
+import { useReducer, useState } from "react";
 
 import PersonalTestModal from "../comonents/homePage/PersonalTestModal";
 import LearningPlanModal from "../comonents/homePage/LearningPlanModal";
@@ -111,16 +111,18 @@ function reducer(state: State, action: Action) {
 }
 
 export default function VisualAidsPage() {
-  const [{ questions, isLoading, curQuestion, curAnswer, answers }, dispatch] =
-    useReducer(reducer, initialState);
+  const [{ questions, curQuestion, answers }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
 
   const [modal, setModal] = useState(false);
 
-  const [lastChatAnswer, setLastChatAnswer] = useState({
-    role: "assistant",
-    content:
-      "Sure, I can help with that. Could you please provide your location?",
-  });
+  // const [lastChatAnswer, setLastChatAnswer] = useState({
+  //   role: "assistant",
+  //   content:
+  //     "Sure, I can help with that. Could you please provide your location?",
+  // });
 
   // h1:week , h2 :day , li:assigment
   const [learningPlanHome, setLearningPlanHome] = useState(() => {
