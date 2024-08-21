@@ -84,7 +84,7 @@ fontSize: {
   .login-page-container {
     height: 100vh;
     background-image: linear-gradient(rgb(0, 0, 0, 0.7), rgb(0, 0, 0, 0.1)),
-      url(./assets/caught-in-joy-ptVBlniJi50-unsplash.jpg);
+      url(/assets/caught-in-joy-ptVBlniJi50-unsplash.jpg);
     background-size: cover;
   }
 

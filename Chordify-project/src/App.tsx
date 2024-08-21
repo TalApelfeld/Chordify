@@ -6,29 +6,14 @@ import NotFound from "./pages/NotFoundPage";
 import SongLibraryPage from "./pages/SongLibraryPage";
 import SignUpPage from "./pages/SignUpPage";
 import ProtectedRoute from "./pages/ProtectedRoute";
-import LoginProtectedRoute from "./pages/LoginProtectedRoute";
 
 function App() {
   return (
     <>
       <Routes>
-        <Route
-          path="/signup"
-          element={
-            <LoginProtectedRoute>
-              <SignUpPage />
-            </LoginProtectedRoute>
-          }
-        />
+        <Route path="/signup" element={<SignUpPage />} />
 
-        <Route
-          path="/login"
-          element={
-            <LoginProtectedRoute>
-              <Login />
-            </LoginProtectedRoute>
-          }
-        />
+        <Route path="/login" element={<Login />} />
 
         <Route
           path="/home"

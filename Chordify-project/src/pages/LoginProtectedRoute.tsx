@@ -30,7 +30,10 @@ export default function LoginProtectedRoute({ children }: ProtectedRouteProps) {
           credentials: "include",
         });
 
-        if (!res.ok) throw new Error("Authentication failed");
+        if (!res.ok) {
+          navigate("/login");
+          throw new Error("Authentication failed");
+        }
 
         const data: UserProps = await res.json();
         console.log("User fetched:", data);
