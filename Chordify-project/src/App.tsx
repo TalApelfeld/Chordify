@@ -1,4 +1,4 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Login from "./pages/LoginPage";
 import Home from "./pages/HomePage";
 import SearchPage from "./pages/VisualAidsPage";
@@ -8,14 +8,9 @@ import SignUpPage from "./pages/SignUpPage";
 import ProtectedRoute from "./pages/ProtectedRoute";
 
 function App() {
-  const navigate = useNavigate();
-
   return (
     <>
       <Routes>
-        {/* Redirect root to /login */}
-        <Route path="/" element={<>{navigate("/login")}</>} />
-
         <Route path="/signup" element={<SignUpPage />} />
 
         <Route path="/login" element={<Login />} />
