@@ -39,7 +39,7 @@ export async function signup(req: Request, res: Response, next: NextFunction) {
     res.cookie("jwt", token, {
       expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
       httpOnly: true, // Recommended to prevent client-side access
-      secure: false, // Set to true in production when using HTTPS
+      secure: true, // Set to true in production when using HTTPS
       sameSite: "lax", // Can use 'strict' for more stringent handling});
     });
 
@@ -86,7 +86,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
     res.cookie("jwt", token, {
       expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
       httpOnly: true, // Recommended to prevent client-side access
-      secure: false, // Set to true in production when using HTTPS
+      secure: true, // Set to true in production when using HTTPS
       sameSite: "lax", // Can use 'strict' for more stringent handling});
     });
 

@@ -16,7 +16,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Adjust this to match your frontend's URL
+    origin: "https://chordify.onrender.com", // Adjust this to match your frontend's URL
     credentials: true,
   })
 );
