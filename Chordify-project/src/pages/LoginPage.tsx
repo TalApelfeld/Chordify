@@ -19,15 +19,18 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3000/users/login", {
-        // Adjust the API endpoint as needed
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // Include cookies with the request
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(
+        "https://chordify.onrender.com/users/login",
+        {
+          // Adjust the API endpoint as needed
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include", // Include cookies with the request
+          body: JSON.stringify({ email, password }),
+        }
+      );
 
       const data: responseProps = await response.json();
       console.log(data);
