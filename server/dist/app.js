@@ -16,7 +16,7 @@ const testRoutes_1 = __importDefault(require("./routes/testRoutes"));
 const songsRoutes_1 = __importDefault(require("./routes/songsRoutes"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
-    origin: "http://localhost:5173", // Adjust this to match your frontend's URL
+    origin: "https://chordify.onrender.com", // Adjust this to match your frontend's URL
     credentials: true,
 }));
 app.use((0, cookie_parser_1.default)());

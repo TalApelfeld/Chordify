@@ -46,7 +46,7 @@ function signup(req, res, next) {
             res.cookie("jwt", token, {
                 expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
                 httpOnly: true, // Recommended to prevent client-side access
-                secure: false, // Set to true in production when using HTTPS
+                secure: true, // Set to true in production when using HTTPS
                 sameSite: "lax", // Can use 'strict' for more stringent handling});
             });
             res.status(201).json({ status: "success", token, data: { user: newUser } });
@@ -85,7 +85,7 @@ function login(req, res, next) {
             res.cookie("jwt", token, {
                 expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
                 httpOnly: true, // Recommended to prevent client-side access
-                secure: false, // Set to true in production when using HTTPS
+                secure: true, // Set to true in production when using HTTPS
                 sameSite: "lax", // Can use 'strict' for more stringent handling});
             });
             res.status(200).json({ status: "success", token });
