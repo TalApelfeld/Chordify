@@ -18,14 +18,18 @@ export default function SignUpPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3000/users/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ email, password, passwordConfirm }),
-      });
+      const response = await fetch(
+        // "http://localhost:3000/users/signup",
+        "https://chordify.onrender.com/users/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ email, password, passwordConfirm }),
+        }
+      );
 
       const data = await response.json();
 
