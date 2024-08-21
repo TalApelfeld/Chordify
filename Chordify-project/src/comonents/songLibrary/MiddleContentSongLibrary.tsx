@@ -8,6 +8,8 @@ interface SongObjProps {
   strummingPattern: string[];
 }
 
+const serverUrl = import.meta.env.VITE_SERVER_URL;
+
 export default function MiddleContentSongLibrary() {
   const [searchInputValue, setSearchInputValue] = useState<string | undefined>(
     undefined
@@ -29,7 +31,7 @@ export default function MiddleContentSongLibrary() {
     try {
       setSearchInputValue("");
 
-      const response = await fetch("http://localhost:3000/songs", {
+      const response = await fetch(`${serverUrl}/songs`, {
         // Adjust the API endpoint as needed
         method: "POST",
         headers: {
@@ -50,7 +52,7 @@ export default function MiddleContentSongLibrary() {
 
   async function getSearchedSongs() {
     try {
-      const response = await fetch("http://localhost:3000/songs/searched", {
+      const response = await fetch(`${serverUrl}/songs/searched`, {
         // Adjust the API endpoint as needed
         method: "GET",
         credentials: "include", // Include cookies with the request
@@ -65,7 +67,7 @@ export default function MiddleContentSongLibrary() {
   }
   async function getBegginerSongs() {
     try {
-      const response = await fetch("http://localhost:3000/songs/begginer", {
+      const response = await fetch(`${serverUrl}/songs/begginer`, {
         // Adjust the API endpoint as needed
         method: "GET",
         credentials: "include", // Include cookies with the request

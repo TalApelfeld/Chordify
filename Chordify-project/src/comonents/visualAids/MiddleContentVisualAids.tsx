@@ -7,12 +7,14 @@ interface Chord {
   bulletPoints: string[];
 }
 
+const serverUrl = import.meta.env.VITE_SERVER_URL;
+
 export default function MiddleContentVisualAids() {
   const [chords, setChords] = useState<Chord[] | null>(null);
 
   useEffect(() => {
     async function getChords() {
-      const res = await fetch("http://127.0.0.1:3000/visualaids");
+      const res = await fetch(`${serverUrl}/visualaids`);
       const data = await res.json();
       setChords(data.data);
       console.log(data);

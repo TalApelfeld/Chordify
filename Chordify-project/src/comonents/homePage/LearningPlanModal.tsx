@@ -13,6 +13,8 @@ interface ParsedGptAnswerProps {
   li: string[];
 }
 
+const serverUrl = import.meta.env.VITE_SERVER_URL;
+
 export default function LearningPlanModal({
   handleModalClose,
   answers,
@@ -57,7 +59,7 @@ export default function LearningPlanModal({
   useEffect(() => {
     async function getLearningPlan(answers: string[]) {
       try {
-        const res = await fetch("http://127.0.0.1:3000/home/learningplan", {
+        const res = await fetch(`${serverUrl}/home/learningplan`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
