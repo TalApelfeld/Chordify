@@ -10,13 +10,12 @@ import visualAidsRoutes from "./routes/visualAidsRoutes";
 import searchRoutes from "./routes/searchRoutes";
 import testRoutes from "./routes/testRoutes";
 import songsRouter from "./routes/songsRoutes";
-import { protect } from "./controllers/authController";
 
 const app = express();
 
 app.use(
   cors({
-    origin: "https://chordify.onrender.com", // Adjust this to match your frontend's URL
+    origin: ["https://chordify.onrender.com", "http://localhost:5173"], // Adjust this to match your frontend's URL
     credentials: true,
   })
 );
