@@ -18,7 +18,7 @@ exports.getBegginerSongs = getBegginerSongs;
 const openai_1 = __importDefault(require("openai"));
 const songsModel_1 = __importDefault(require("../models/songsModel"));
 const userModel_1 = __importDefault(require("../models/userModel"));
-const openai = new openai_1.default();
+const openai = new openai_1.default({ apiKey: process.env.OPENAI_API_KEY });
 //* function parsing the response from GPT
 function extractDataFromText(htmlText) {
     return __awaiter(this, void 0, void 0, function* () {

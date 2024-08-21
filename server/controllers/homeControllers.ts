@@ -19,7 +19,7 @@ export default async function testNode(req: Request, res: Response) {
 
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer sk-proj-Xvesv7bXEUdeqVMU7z4QT3BlbkFJ1fRBD3G62PQxS3qJU236`,
+      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
     },
 
     body: JSON.stringify({

@@ -3,7 +3,7 @@ import OpenAI from "openai";
 import Song from "../models/songsModel";
 import User from "../models/userModel";
 
-const openai = new OpenAI();
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 interface SongData {
   title: string | null;

@@ -29,7 +29,7 @@ function testNode(req, res) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer sk-proj-Xvesv7bXEUdeqVMU7z4QT3BlbkFJ1fRBD3G62PQxS3qJU236`,
+                Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
             },
             body: JSON.stringify({
                 model: "gpt-3.5-turbo",
