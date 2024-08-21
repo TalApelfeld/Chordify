@@ -40,7 +40,7 @@ export async function signup(req: Request, res: Response, next: NextFunction) {
       expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
       httpOnly: true, // Recommended to prevent client-side access
       secure: true, // Set to true in production when using HTTPS
-      sameSite: "lax", // Can use 'strict' for more stringent handling});
+      sameSite: "none", // Can use 'strict' for more stringent handling});
     });
 
     res.status(201).json({ status: "success", token, data: { user: newUser } });
@@ -87,7 +87,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
       expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
       httpOnly: true, // Recommended to prevent client-side access
       secure: true, // Set to true in production when using HTTPS
-      sameSite: "lax", // Can use 'strict' for more stringent handling});
+      sameSite: "none",
     });
 
     res.status(200).json({ status: "success", token });
