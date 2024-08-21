@@ -79,6 +79,8 @@ interface ProtectedRouteProps {
   children: ReactNode;
 }
 
+const serverUrl = import.meta.env.VITE_SERVER_URL;
+
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const [user, setUser] = useState<UserProps | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -87,7 +89,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   useEffect(() => {
     async function checkAuth() {
       try {
-        const res = await fetch("http://localhost:3000/users/checkauth", {
+        const res = await fetch(`${serverUrl}/users/checkauth`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
