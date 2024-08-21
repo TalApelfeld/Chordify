@@ -32,6 +32,9 @@ export default function Login() {
           body: JSON.stringify({ email, password }),
         }
       );
+      if (!response.ok) {
+        throw new Error("Network response was not OK");
+      }
 
       const data = await response.json();
       console.log(data);
