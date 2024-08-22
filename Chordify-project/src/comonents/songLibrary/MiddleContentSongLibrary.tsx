@@ -24,7 +24,7 @@ export default function MiddleContentSongLibrary() {
     SongObjProps[] | null
   >(null);
 
-  const [songCategory, setSongCategory] = useState<string>("searched");
+  const [songCategory, setSongCategory] = useState<string>("begginer");
 
   async function fetchNewSong(value: string) {
     if (!value) return;
