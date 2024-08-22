@@ -39,9 +39,9 @@ export async function signup(req: Request, res: Response, next: NextFunction) {
     res.cookie("jwt", token, {
       expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
       httpOnly: true, // Recommended to prevent client-side access
-      secure: true, // Set to true in production when using HTTPS
-      sameSite: "none", // Can use 'strict' for more stringent handling});
-      path: "/",
+      secure: true, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
+      sameSite: "none", //* Set to 'none' on prod !!!!!
+      path: "/", //* enable those on prod !!!!
       domain: "chordify-api.onrender.com",
     });
 
@@ -88,9 +88,9 @@ export async function login(req: Request, res: Response, next: NextFunction) {
     res.cookie("jwt", token, {
       expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
       httpOnly: true, // Recommended to prevent client-side access
-      secure: true, // Set to true in production when using HTTPS
-      sameSite: "none",
-      path: "/",
+      secure: true, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
+      sameSite: "none", //* Set to 'none' on prod !!!!!
+      path: "/", //* enable those on prod !!!!
       domain: "chordify-api.onrender.com",
     });
 

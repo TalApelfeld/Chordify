@@ -48,6 +48,8 @@ function signup(req, res, next) {
                 httpOnly: true, // Recommended to prevent client-side access
                 secure: true, // Set to true in production when using HTTPS
                 sameSite: "none", // Can use 'strict' for more stringent handling});
+                path: "/",
+                domain: "chordify-api.onrender.com",
             });
             res.status(201).json({ status: "success", token, data: { user: newUser } });
         }
@@ -87,6 +89,8 @@ function login(req, res, next) {
                 httpOnly: true, // Recommended to prevent client-side access
                 secure: true, // Set to true in production when using HTTPS
                 sameSite: "none",
+                path: "/",
+                domain: "chordify-api.onrender.com",
             });
             res.status(200).json({ status: "success", token });
         }
