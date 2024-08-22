@@ -151,9 +151,9 @@ export default function Home() {
       if (hour < 12) {
         setTimeGreeting("Good morning, Tal");
       } else if (hour >= 12 && hour <= 17) {
-        setTimeGreeting("Good afternoon, Tal");
+        setTimeGreeting("Good afternoon");
       } else {
-        setTimeGreeting("Good evening, Tal");
+        setTimeGreeting("Good evening");
       }
     };
     getTime();

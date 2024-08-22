@@ -22,8 +22,8 @@ export default function MiddleContentVisualAids() {
     getChords();
   }, []);
   return (
-    <div className="bg-background-black text-white">
-      <div className="grid gap-8  grid-cols-3">
+    <div className="bg-background-black ">
+      <div className="grid 2xl:gap-8 xl:gap-2 grid-cols-3">
         {chords?.map((chord) => (
           <SingleCard image={chord.url} CardTitle={chord.name}>
             <ul>

@@ -1,11 +1,9 @@
 export default function NotFound() {
   return (
     <div className="NotFound-page-container">
-      <div className="h-screen">
-        <h1 className="text-3xl text-center h1-NouFound text-green-200">
-          this is page 404 Not found
-        </h1>
-      </div>
+      <h1 className="text-3xl text-center h1-NouFound text-green-200">
+        this is page 404 Not found
+      </h1>
     </div>
   );
 }

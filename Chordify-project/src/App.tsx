@@ -2,13 +2,13 @@ import { useEffect } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import Login from "./pages/LoginPage";
 import Home from "./pages/HomePage";
-import SearchPage from "./pages/VisualAidsPage";
 import NotFound from "./pages/NotFoundPage";
 import SongLibraryPage from "./pages/SongLibraryPage";
 import SignUpPage from "./pages/SignUpPage";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import LoginProtectedRoute from "./pages/LoginProtectedRoute";
 import useAuth from "./hooks/useAuth"; // Assuming you have a useAuth hook
+import VisualAidsPage from "./pages/VisualAidsPage";
 
 function App() {
   const { user } = useAuth(); // Assuming useAuth returns { user, isLoading }
@@ -17,6 +17,7 @@ function App() {
   useEffect(() => {
     if (user) {
       navigate("/home");
+      console.log(user);
     } else {
       navigate("/login");
     }
@@ -61,7 +62,7 @@ function App() {
           path="/visualaids"
           element={
             <ProtectedRoute>
-              <SearchPage />
+              <VisualAidsPage />
             </ProtectedRoute>
           }
         />
