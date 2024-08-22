@@ -21,3 +21,21 @@
    ```bash
    npm start
    ```
+
+   ## Usage
+Explain how your project can be used.
+
+```javascript
+const example = require('example');
+example.doSomething();
+
+### 5. **Highlight Key Features**
+- List the main features of your project to showcase its functionality.
+
+```markdown
+## Features
+- Feature 1: Description
+- Feature 2: Description
+
+## Contact
+Your Name - [@YourTwitterHandle](https://twitter.com/yourusername) - email@example.com
