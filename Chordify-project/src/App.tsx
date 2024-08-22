@@ -1,4 +1,5 @@
-import { Route, Routes } from "react-router-dom";
+import { useEffect } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Login from "./pages/LoginPage";
 import Home from "./pages/HomePage";
 import SearchPage from "./pages/VisualAidsPage";
@@ -7,8 +8,20 @@ import SongLibraryPage from "./pages/SongLibraryPage";
 import SignUpPage from "./pages/SignUpPage";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import LoginProtectedRoute from "./pages/LoginProtectedRoute";
+import useAuth from "./hooks/useAuth"; // Assuming you have a useAuth hook
 
 function App() {
+  const { user } = useAuth(); // Assuming useAuth returns { user, isLoading }
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/home");
+    } else {
+      navigate("/login");
+    }
+  }, []);
+
   return (
     <>
       <Routes>
@@ -28,7 +41,6 @@ function App() {
             </LoginProtectedRoute>
           }
         />
-
         <Route
           path="/home"
           element={
