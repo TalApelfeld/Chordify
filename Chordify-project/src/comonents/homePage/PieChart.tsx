@@ -28,7 +28,7 @@ export default function PieChart({
   const options = {
     plugins: {
       datalabels: {
-        formatter: (value, context) => {
+        formatter: (context: { dataIndex: number }) => {
           if (context.dataIndex === 0) {
             // Show the count of checked checkboxes
             return `${checkedCount} / ${totalCheckboxes}`;
