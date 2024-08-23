@@ -40,7 +40,7 @@ export default function MiddleContent({
           </div>
         </div>
 
-        <div className="divider mb-middleContent-big-space mt-6"></div>
+        <div className="divider mb-middleContent-big-space 2xl:mt-6 xl:mt-8"></div>
 
         <div className="skill-assesment-container border-solid border-2 rounded-3xl border-gray-600 mb-middleContent-big-space border-opacity-40 ">
           <svg
