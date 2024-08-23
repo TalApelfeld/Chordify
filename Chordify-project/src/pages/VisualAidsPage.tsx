@@ -163,6 +163,37 @@ export default function VisualAidsPage() {
     setLearningPlanHome(plan);
   }
 
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  const chunkArray = (arr: string[], chunkSize: number) => {
+    const result = [];
+    for (let i = 0; i < arr.length; i += chunkSize) {
+      result.push(arr.slice(i, i + chunkSize));
+    }
+    return result;
+  };
+
+  const assignmentsPerDay = chunkArray(learningPlanHome.li, 5);
+
+  const [checkedState, setCheckedState] = useState(
+    assignmentsPerDay.map((dayAssignments) => dayAssignments.map(() => false))
+  );
+
+  const handleCheckboxChange = (dayIndex: number, taskIndex: number) => {
+    const updatedCheckedState = [...checkedState];
+    updatedCheckedState[dayIndex][taskIndex] =
+      !updatedCheckedState[dayIndex][taskIndex];
+    setCheckedState(updatedCheckedState);
+  };
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   return (
     <div className={styles.grid}>
       <SideBarLeft handleModalOpen={handleModalOpen} />
@@ -188,6 +219,9 @@ export default function VisualAidsPage() {
         <WeeklyPlan
           handleModalClose={handleModalClose}
           learningPlanHome={learningPlanHome}
+          handleCheckboxChange={handleCheckboxChange}
+          assignmentsPerDay={assignmentsPerDay}
+          checkedState={checkedState}
         />
       ) : null}
 
