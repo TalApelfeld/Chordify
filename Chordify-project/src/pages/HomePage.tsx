@@ -124,12 +124,6 @@ export default function Home() {
 
   const [timeGreeting, setTimeGreeting] = useState("");
 
-  // const [lastChatAnswer, setLastChatAnswer] = useState({
-  //   role: "assistant",
-  //   content:
-  //     "Sure, I can help with that. Could you please provide your location?",
-  // });
-
   // h1:week , h2 :day , li:assigment
   const [learningPlanHome, setLearningPlanHome] = useState(() => {
     const learningPlanObject = localStorage.getItem("plan");
@@ -186,11 +180,63 @@ export default function Home() {
     setLearningPlanHome(plan);
   }
 
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  const chunkArray = (arr: string[], chunkSize: number) => {
+    const result = [];
+    for (let i = 0; i < arr.length; i += chunkSize) {
+      result.push(arr.slice(i, i + chunkSize));
+    }
+    return result;
+  };
+
+  const assignmentsPerDay = chunkArray(learningPlanHome.li, 5);
+
+  const [checkedState, setCheckedState] = useState(
+    assignmentsPerDay.map((dayAssignments) => dayAssignments.map(() => false))
+  );
+
+  const handleCheckboxChange = (dayIndex: number, taskIndex: number) => {
+    const updatedCheckedState = [...checkedState];
+    updatedCheckedState[dayIndex][taskIndex] =
+      !updatedCheckedState[dayIndex][taskIndex];
+    setCheckedState(updatedCheckedState);
+  };
+
+  const calculateCheckedCount = () => {
+    let checkedCheckboxes = 0;
+
+    checkedState.forEach((day) => {
+      day.forEach((isChecked) => {
+        if (isChecked) {
+          checkedCheckboxes += 1;
+        }
+      });
+    });
+
+    return checkedCheckboxes;
+  };
+
+  const checkedCount = calculateCheckedCount();
+  const totalCheckboxes = learningPlanHome.li.length;
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   return (
     <div className={styles.grid}>
       <SideBarLeft handleModalOpen={handleModalOpen} />
 
-      <MiddleContent timeGreeting={timeGreeting} />
+      <MiddleContent
+        timeGreeting={timeGreeting}
+        checkedCount={checkedCount}
+        totalCheckboxes={totalCheckboxes}
+      />
       <RightContent />
       {/* {learningPlanHome.h1 ? (
         modal ? (
@@ -231,6 +277,9 @@ export default function Home() {
         <WeeklyPlan
           handleModalClose={handleModalClose}
           learningPlanHome={learningPlanHome}
+          handleCheckboxChange={handleCheckboxChange}
+          assignmentsPerDay={assignmentsPerDay}
+          checkedState={checkedState}
         />
       ) : null}
 

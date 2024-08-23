@@ -1,8 +1,16 @@
+import PieChart from "./PieChart";
+
 interface middleContentProps {
   timeGreeting: string;
+  checkedCount: number;
+  totalCheckboxes: number;
 }
 
-export default function MiddleContent({ timeGreeting }: middleContentProps) {
+export default function MiddleContent({
+  timeGreeting,
+  checkedCount,
+  totalCheckboxes,
+}: middleContentProps) {
   return (
     <>
       <div className="  bg-background-black text-text-homepage   ;">
@@ -22,31 +30,17 @@ export default function MiddleContent({ timeGreeting }: middleContentProps) {
             <ul>
               <div className="middle-images">
                 <li>
-                  <div className="img-container">
-                    <img src="https://picsum.photos/200" alt="1" />
-                  </div>
-                </li>
-                <li>
-                  <div className="img-container">
-                    <img src="https://picsum.photos/id/237/200" alt="2" />
-                  </div>
-                </li>
-                <li>
-                  <div className="img-container">
-                    <img src="https://picsum.photos/200/?grayscale" alt="3" />
-                  </div>
-                </li>
-                <li>
-                  <div className="img-container">
-                    <img src="https://picsum.photos/200/" alt="4" />
-                  </div>
+                  <PieChart
+                    checkedCount={checkedCount}
+                    totalCheckboxes={totalCheckboxes}
+                  />
                 </li>
               </div>
             </ul>
           </div>
         </div>
 
-        <div className="divider mb-middleContent-big-space"></div>
+        <div className="divider mb-middleContent-big-space mt-6"></div>
 
         <div className="skill-assesment-container border-solid border-2 rounded-3xl border-gray-600 mb-middleContent-big-space border-opacity-40 ">
           <svg
