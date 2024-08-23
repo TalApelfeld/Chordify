@@ -38,7 +38,7 @@ export default function PieChart({
         },
         color: "#fff",
         font: {
-          weight: "bold" as const, // Explicitly typing the weight
+          weight: 700,
           size: 16,
         },
       },
