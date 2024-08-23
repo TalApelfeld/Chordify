@@ -240,12 +240,12 @@ export default function WeeklyPlan({
             {learningPlanHome.h1}
           </h1>
 
-          {learningPlanHome.h2.map((day, dayIndex) => (
+          {/* {learningPlanHome.h2.map((day, dayIndex) => (
             <div className="space-y-8" key={dayIndex}>
               <div className="bg-white shadow rounded-lg p-6 mb-4">
                 <h2 className="text-2xl font-bold text-purple-600">{day}</h2>
                 <ul className="list-disc list-inside text-gray-700">
-                  {assignmentsPerDay[dayIndex]?.map((assignment, taskIndex) => (
+                  {assignmentsPerDay?[dayIndex]?.map((assignment, taskIndex) => (
                     <li className="flex items-center" key={taskIndex}>
                       <input
                         id={`day${dayIndex}-task${taskIndex}`}
@@ -264,6 +264,36 @@ export default function WeeklyPlan({
                       </label>
                     </li>
                   ))}
+                </ul>
+              </div>
+            </div>
+          ))} */}
+          {learningPlanHome.h2.map((day, dayIndex) => (
+            <div className="space-y-8" key={dayIndex}>
+              <div className="bg-white shadow rounded-lg p-6 mb-4">
+                <h2 className="text-2xl font-bold text-purple-600">{day}</h2>
+                <ul className="list-disc list-inside text-gray-700">
+                  {assignmentsPerDay?.[dayIndex]?.map(
+                    (assignment, taskIndex) => (
+                      <li className="flex items-center" key={taskIndex}>
+                        <input
+                          id={`day${dayIndex}-task${taskIndex}`}
+                          className="h-5 w-5 mr-2"
+                          type="checkbox"
+                          checked={checkedState[dayIndex][taskIndex]}
+                          onChange={() =>
+                            handleCheckboxChange(dayIndex, taskIndex)
+                          }
+                        />
+                        <label
+                          htmlFor={`day${dayIndex}-task${taskIndex}`}
+                          className="flex-1"
+                        >
+                          {assignment}
+                        </label>
+                      </li>
+                    )
+                  )}
                 </ul>
               </div>
             </div>
