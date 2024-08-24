@@ -1,5 +1,4 @@
 import ButtonSidebar from "./ButtonSidebar";
-import MyIcon from "../../assets/chordify-high-resolution-logo-white-transparent.svg";
 import ResponsiveSvg from "./ResponsiveSvg ";
 // import { ReactComponent as MyIconSvg } from "../../assets/chordify-high-resolution-logo-white-transparent.svg";
 // import { ReactComponent as MySvg } from "../../assets/chordify-high-resolution-logo-white-transparent.svg";
@@ -21,7 +20,11 @@ export default function SideBarLeft({ handleModalOpen }: SideBarLeftProps) {
         {/* //* Buttons top contianer */}
         <div className="buttons-top-container ">
           <ul>
-            <ButtonSidebar name="Home" path={"/home"}>
+            <ButtonSidebar
+              classStyle={"top-button-item-container"}
+              name="Home"
+              path={"/home"}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -39,8 +42,8 @@ export default function SideBarLeft({ handleModalOpen }: SideBarLeftProps) {
             </ButtonSidebar>
 
             <ButtonSidebar
+              classStyle={"top-button-item-container"}
               name="Lessons"
-              classStyle="top-button-item-container"
               path={"/"}
             >
               <svg
@@ -60,8 +63,8 @@ export default function SideBarLeft({ handleModalOpen }: SideBarLeftProps) {
             </ButtonSidebar>
 
             <ButtonSidebar
+              classStyle={"top-button-item-container"}
               name="Song Library"
-              classStyle="top-button-item-container"
               path={"/songlibrary"}
             >
               <svg
@@ -81,8 +84,8 @@ export default function SideBarLeft({ handleModalOpen }: SideBarLeftProps) {
             </ButtonSidebar>
 
             <ButtonSidebar
+              classStyle={"top-button-item-container"}
               name="Visual Aids"
-              classStyle="top-button-item-container"
               path={"/visualaids"}
             >
               <svg

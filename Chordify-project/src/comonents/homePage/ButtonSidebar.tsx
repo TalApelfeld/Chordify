@@ -10,14 +10,14 @@ interface ButtonSidebarProps {
 export default function ButtonSidebar({
   children,
   name,
-
+  classStyle,
   path,
 }: ButtonSidebarProps) {
   return (
     <Link to={path}>
       <li>
         <button
-          className={`top-button-item-container hover:bg-background-black hover:rounded-full`}
+          className={`${classStyle} hover:bg-background-black hover:rounded-full`}
         >
           {children}
           {name}
