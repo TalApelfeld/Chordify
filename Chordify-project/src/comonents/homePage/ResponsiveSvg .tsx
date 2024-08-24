@@ -16,7 +16,7 @@ export default function ResponsiveSvg() {
       <svg
         xmlns="http://www.w3.org/2000/svg"
         version="1.1"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
         xmlns:svgjs="http://svgjs.dev/svgjs"
         width="85%"
         height="100%"
@@ -31,7 +31,7 @@ export default function ResponsiveSvg() {
             height="368"
             width="2000"
             xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
           >
             <g
               id="tight-bounds"
@@ -56,9 +56,9 @@ export default function ResponsiveSvg() {
                         y="0"
                         fill="#ffffff"
                         opacity="1"
-                        stroke-width="0"
+                        strokeWidth="0"
                         stroke="transparent"
-                        fill-opacity="1"
+                        fillOpacity="1"
                         className="rect-yte-0"
                         data-fill-palette-color="primary"
                         rx="1%"
@@ -118,13 +118,13 @@ export default function ResponsiveSvg() {
                         <g>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                            xmlnsXlink="http://www.w3.org/1999/xlink"
                             version="1.1"
                             x="0"
                             y="0"
                             viewBox="5.451249057125144 7.364454116385063 85.09618439482816 85.09075212409158"
-                            enable-background="new 0 0 96 99.818"
-                            xml:space="preserve"
+                            enableBackground="new 0 0 96 99.818"
+                            xmlSpace="preserve"
                             height="101.43124315871778"
                             width="101.437718621212"
                             className="icon-icon-0"

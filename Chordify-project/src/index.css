@@ -256,5 +256,17 @@ fontSize: {
 
 /* //section: Middle Contetnt Song library */
 
+/* //section: Middle Contetnt Visual Aids */
+.scrollable-hidden-scrollbar {
+  max-height: 99vh; /* Adjust based on your layout's needs */
+  overflow-y: auto; /* Enable vertical scrolling */
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+
+.scrollable-hidden-scrollbar::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
+}
+
 @layer utilities {
 }

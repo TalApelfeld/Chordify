@@ -59,6 +59,8 @@ export async function fetchSong(
   res: Response,
   next: NextFunction
 ) {
+  console.log("enterd songs route");
+
   try {
     //* Asking GPT and getting promt from chatgpt
     const completion = await openai.chat.completions.create({
@@ -71,7 +73,7 @@ export async function fetchSong(
 
         {
           role: "user",
-          content: `give me the strumming pattern and the chords for the song '${req.body.value}' 
+          content: `give me the strumming pattern and the chords for the song '${req.body.value}'
            in the order they need to be to played the song and make it in this format:
            <h1>[here should be the song title]</h1>
 
@@ -79,14 +81,14 @@ export async function fetchSong(
            <ul>
            <li>[here is the cord]</li>
            <li>[another cord]</li>
-           </ul> 
+           </ul>
 
            <h2>[Chord Progression:]</h2>
            <ul>
            <li></li>
            <li></li>
-           </ul> 
-           
+           </ul>
+
            <h2>[Strumming Pattern:]</h2>
            <P> example: D-DU-UDU (stand for down/up) </p>
 
@@ -94,6 +96,7 @@ export async function fetchSong(
         },
       ],
     });
+    console.log(completion);
 
     //* using the parsing function
     const songString = completion.choices[0].message.content;

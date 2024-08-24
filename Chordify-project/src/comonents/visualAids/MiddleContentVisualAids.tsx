@@ -23,7 +23,7 @@ export default function MiddleContentVisualAids() {
   }, []);
   return (
     <div className="bg-background-black ">
-      <div className="grid 2xl:gap-8 xl:gap-2 grid-cols-3">
+      <div className="grid 2xl:gap-8 xl:gap-2 grid-cols-3 scrollable-hidden-scrollbar">
         {chords?.map((chord) => (
           <SingleCard image={chord.url} CardTitle={chord.name}>
             <ul>

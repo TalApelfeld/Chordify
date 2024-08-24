@@ -12,7 +12,7 @@ const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 export default function MiddleContentSongLibrary() {
   const [searchInputValue, setSearchInputValue] = useState<string | undefined>(
-    undefined
+    ""
   );
   // const [songObj, setSongObj] = useState<SongObjProps | null>(null);
 
@@ -29,8 +29,6 @@ export default function MiddleContentSongLibrary() {
   async function fetchNewSong(value: string) {
     if (!value) return;
     try {
-      setSearchInputValue("");
-
       const response = await fetch(`${serverUrl}/songs`, {
         // Adjust the API endpoint as needed
         method: "POST",
@@ -44,6 +42,7 @@ export default function MiddleContentSongLibrary() {
       const data = await response.json();
       setSearchedSongObjArray((prev) => [...(prev || []), data.songObj]);
 
+      setSearchInputValue("");
       console.log(data);
     } catch (error) {
       console.log(error);
@@ -74,7 +73,10 @@ export default function MiddleContentSongLibrary() {
       });
 
       const data = await response.json();
-      setBegginerSongObjArray(data.data);
+
+      if (data && data.data) {
+        setBegginerSongObjArray(data.data);
+      }
       console.log(data);
     } catch (error) {
       console.log(error);
@@ -137,37 +139,41 @@ export default function MiddleContentSongLibrary() {
         </div>
       </div>
 
-      {songCategory === "begginer" && (
-        <div className="flex flex-wrap gap-3 w-full">
-          {Array.isArray(begginerSongObjArray) &&
-            begginerSongObjArray.map((song, index) => (
-              <div className="flex-1 flex-shrink-0 basis-1/4" key={index}>
-                <CardSong
-                  title={song.title}
-                  chordsUsed={song.chordsUsed}
-                  chordProgression={song.chordProgression}
-                  strummingPattern={song.strummingPattern}
-                />
-              </div>
-            ))}
-        </div>
-      )}
+      <div className="scrollable-hidden-scrollbar">
+        {songCategory === "begginer" && (
+          <div className="flex flex-wrap gap-3 w-full">
+            {Array.isArray(begginerSongObjArray) &&
+              begginerSongObjArray.map((song, index) => (
+                <div className="flex-1 flex-shrink-0 basis-1/4" key={index}>
+                  <CardSong
+                    title={song.title}
+                    chordsUsed={song.chordsUsed}
+                    chordProgression={song.chordProgression}
+                    strummingPattern={song.strummingPattern}
+                  />
+                </div>
+              ))}
+          </div>
+        )}
+      </div>
 
-      {songCategory === "searched" && (
-        <div className="flex flex-wrap gap-3 w-full">
-          {Array.isArray(searchedSongObjArray) &&
-            searchedSongObjArray?.map((song, index) => (
-              <div className="flex-1 flex-shrink-0 basis-1/4" key={index}>
-                <CardSong
-                  title={song.title}
-                  chordsUsed={song.chordsUsed}
-                  chordProgression={song.chordProgression}
-                  strummingPattern={song.strummingPattern}
-                />
-              </div>
-            ))}
-        </div>
-      )}
+      <div className="scrollable-hidden-scrollbar">
+        {songCategory === "searched" && (
+          <div className="flex flex-wrap gap-3 w-full">
+            {Array.isArray(searchedSongObjArray) &&
+              searchedSongObjArray?.map((song, index) => (
+                <div className="flex-1 flex-shrink-0 basis-1/4" key={index}>
+                  <CardSong
+                    title={song.title}
+                    chordsUsed={song.chordsUsed}
+                    chordProgression={song.chordProgression}
+                    strummingPattern={song.strummingPattern}
+                  />
+                </div>
+              ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
