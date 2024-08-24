@@ -1,3 +1,15 @@
+declare module "react" {
+  interface SVGProps<T> extends React.DOMAttributes<T> {
+    "xmlns:xlink"?: string;
+    "xmlns:svgjs"?: string;
+    "data-background-color"?: string;
+    "enable-background"?: string;
+    "xml:space"?: string;
+    "data-fill-palette-color"?: string;
+    "data-palette-color"?: string;
+  }
+}
+
 export default function ResponsiveSvg() {
   return (
     <>
@@ -47,7 +59,7 @@ export default function ResponsiveSvg() {
                         stroke-width="0"
                         stroke="transparent"
                         fill-opacity="1"
-                        class="rect-yte-0"
+                        className="rect-yte-0"
                         data-fill-palette-color="primary"
                         rx="1%"
                         id="yte-0"
@@ -85,7 +97,7 @@ export default function ResponsiveSvg() {
                                       opacity="1"
                                       transform="matrix(1,0,0,1,0,0)"
                                       fill="#ffffff"
-                                      class="wordmark-text-0"
+                                      className="wordmark-text-0"
                                       data-fill-palette-color="primary"
                                       id="text-0"
                                     ></path>
@@ -115,7 +127,7 @@ export default function ResponsiveSvg() {
                             xml:space="preserve"
                             height="101.43124315871778"
                             width="101.437718621212"
-                            class="icon-icon-0"
+                            className="icon-icon-0"
                             data-fill-palette-color="accent"
                             id="icon-0"
                           >
