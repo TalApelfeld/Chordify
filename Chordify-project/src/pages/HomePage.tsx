@@ -143,7 +143,7 @@ export default function Home() {
       const hour: number = now.getHours();
 
       if (hour < 12) {
-        setTimeGreeting("Good morning, Tal");
+        setTimeGreeting("Good morning");
       } else if (hour >= 12 && hour <= 17) {
         setTimeGreeting("Good afternoon");
       } else {

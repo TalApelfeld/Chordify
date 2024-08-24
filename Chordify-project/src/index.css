@@ -49,6 +49,11 @@ fontSize: {
     font-family: "M PLUS Rounded 1c", sans-serif;
   }
 
+  html {
+    overflow: hidden; /* Prevent scrolling on the page */
+    height: 100vh; /* Full height */
+  }
+
   /* li :hover,
   li :active {
     background-color: #030508;
@@ -132,13 +137,7 @@ fontSize: {
   /* //section: Sidebar */
 
   .logo {
-    height: 10%;
-    padding: 1.625rem 1.5rem 1.625rem 1.5rem;
-  }
-
-  .logo img {
-    width: 100%;
-    height: 100%;
+    height: 13%;
   }
 
   .buttons-container {
@@ -147,13 +146,13 @@ fontSize: {
     flex-direction: column;
     justify-content: space-between;
 
-    height: 90%;
+    height: 87%;
   }
 
   .buttons-top-container {
     display: flex;
     flex-direction: column;
-    height: 20%;
+    height: 75%;
     /* align-items: center; */
   }
 
@@ -161,6 +160,7 @@ fontSize: {
     @apply font-semibold;
     display: flex;
     flex-direction: column;
+    height: 25%;
     /* align-items: center; */
   }
 
@@ -190,6 +190,7 @@ fontSize: {
   /* //section: Middle Contetnt */
   .your-progress-container {
     height: 18%;
+    width: 100%;
     /* padding: 12px; */
   }
 
@@ -214,6 +215,7 @@ fontSize: {
     width: 98%;
     background-color: #374151; /* Color of the divider */
     opacity: 40%;
+    display: block;
   }
 
   .vertical-divider {

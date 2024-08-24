@@ -45,7 +45,7 @@ export default function PieChart({
     },
   };
   return (
-    <div className="w-36">
+    <div className="w-36 ml-11">
       <Pie data={data} options={options} />
     </div>
   );

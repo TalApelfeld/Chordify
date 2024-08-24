@@ -1,4 +1,8 @@
 import ButtonSidebar from "./ButtonSidebar";
+import MyIcon from "../../assets/chordify-high-resolution-logo-white-transparent.svg";
+import ResponsiveSvg from "./ResponsiveSvg ";
+// import { ReactComponent as MyIconSvg } from "../../assets/chordify-high-resolution-logo-white-transparent.svg";
+// import { ReactComponent as MySvg } from "../../assets/chordify-high-resolution-logo-white-transparent.svg";
 
 interface SideBarLeftProps {
   handleModalOpen: () => void;
@@ -10,21 +14,14 @@ export default function SideBarLeft({ handleModalOpen }: SideBarLeftProps) {
     <div className=" bg-background-grey text-text-homepage ">
       {/* //* logo container */}
       <div className="logo">
-        <img
-          src="../../assets/chordify-high-resolution-logo-white-transparent.svg"
-          alt="svg"
-        />
+        <ResponsiveSvg />
       </div>
       {/* //* Buttons container */}
       <div className=" buttons-container  ;">
         {/* //* Buttons top contianer */}
         <div className="buttons-top-container ">
           <ul>
-            <ButtonSidebar
-              name="Home"
-              classStyle="top-button-item-container "
-              path={"/home"}
-            >
+            <ButtonSidebar name="Home" path={"/home"}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

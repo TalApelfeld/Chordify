@@ -18,29 +18,22 @@ export default function MiddleContent({
           {timeGreeting}
         </h1>
 
-        <p className="text-2xl mb-3.5 ml-10">Personolized plan</p>
+        <p className="text-2xl mb-3.5 ml-11">Personolized plan</p>
 
         {/*  //* Your progress */}
-        <div className="your-progress-container  ml-10 1xl:mb-4">
-          <h2 className="font-bold mb-middleContent-small-space ">
+        <div className="your-progress-container mb-8 1xl:mb-16">
+          <h2 className="font-bold mb-middleContent-small-space ml-12">
             your progress
           </h2>
           {/* //* Images container */}
-          <div>
-            <ul>
-              <div className="middle-images">
-                <li>
-                  <PieChart
-                    checkedCount={checkedCount}
-                    totalCheckboxes={totalCheckboxes}
-                  />
-                </li>
-              </div>
-            </ul>
-          </div>
+
+          <PieChart
+            checkedCount={checkedCount}
+            totalCheckboxes={totalCheckboxes}
+          />
         </div>
 
-        <div className="divider mb-middleContent-big-space 2xl:mt-6 xl:mt-8"></div>
+        <div className="divider mb-middleContent-big-space "></div>
 
         <div className="skill-assesment-container border-solid border-2 rounded-3xl border-gray-600 mb-middleContent-big-space border-opacity-40 ">
           <svg
