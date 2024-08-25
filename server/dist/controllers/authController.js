@@ -43,22 +43,26 @@ function signup(req, res, next) {
             const token = jsonwebtoken_1.default.sign({ id: newUser._id }, secret, {
                 expiresIn: process.env.JWT_EXPIRES_IN,
             });
-            //* for PRODUCTION
-            res.cookie("jwt", token, {
-                expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
-                httpOnly: true, // Recommended to prevent client-side access
-                secure: true, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
-                sameSite: "none", //* Set to 'none' on prod !!!!!
-                path: "/", //* enable those on prod !!!!
-                domain: "chordify-api.onrender.com",
-            });
             //* for DEV
-            // res.cookie("jwt", token, {
-            //   expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
-            //   httpOnly: true, // Recommended to prevent client-side access
-            //   secure: false, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
-            //   sameSite: "lax", //* Set to 'none' on prod !!!!!
-            // });
+            if (process.env.NODE_ENV === "development") {
+                res.cookie("jwt", token, {
+                    expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
+                    httpOnly: true, // Recommended to prevent client-side access
+                    secure: false, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
+                    sameSite: "lax", //* Set to 'none' on prod !!!!!
+                });
+            }
+            //* for PRODUCTION
+            if (process.env.NODE_ENV === "production") {
+                res.cookie("jwt", token, {
+                    expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
+                    httpOnly: true, // Recommended to prevent client-side access
+                    secure: true, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
+                    sameSite: "none", //* Set to 'none' on prod !!!!!
+                    path: "/", //* enable those on prod !!!!
+                    domain: "chordify-api.onrender.com",
+                });
+            }
             res.status(201).json({ status: "success", token, data: { user: newUser } });
         }
         catch (error) {
@@ -92,22 +96,26 @@ function login(req, res, next) {
                 expiresIn: process.env.JWT_EXPIRES_IN,
             });
             const cookieExpires = Number(process.env.JWT_COOKIE_EXPIRES_IN);
-            //* for PRODUCTION
-            res.cookie("jwt", token, {
-                expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
-                httpOnly: true, // Recommended to prevent client-side access
-                secure: true, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
-                sameSite: "none", //* Set to 'none' on prod !!!!!
-                path: "/", //* enable those on prod !!!!
-                domain: "chordify-api.onrender.com",
-            });
             //* for DEV
-            // res.cookie("jwt", token, {
-            //   expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
-            //   httpOnly: true, // Recommended to prevent client-side access
-            //   secure: false, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
-            //   sameSite: "lax", //* Set to 'none' on prod !!!!!
-            // });
+            if (process.env.NODE_ENV === "development") {
+                res.cookie("jwt", token, {
+                    expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
+                    httpOnly: true, // Recommended to prevent client-side access
+                    secure: false, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
+                    sameSite: "lax", //* Set to 'none' on prod !!!!!
+                });
+            }
+            //* for PRODUCTION
+            if (process.env.NODE_ENV === "production") {
+                res.cookie("jwt", token, {
+                    expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
+                    httpOnly: true, // Recommended to prevent client-side access
+                    secure: true, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
+                    sameSite: "none", //* Set to 'none' on prod !!!!!
+                    path: "/", //* enable those on prod !!!!
+                    domain: "chordify-api.onrender.com",
+                });
+            }
             res.status(200).json({ status: "success", token });
         }
         catch (error) {
