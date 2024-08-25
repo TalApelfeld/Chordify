@@ -139,8 +139,8 @@ export default function MiddleContentSongLibrary() {
         </div>
       </div>
 
-      <div className="scrollable-hidden-scrollbar">
-        {songCategory === "begginer" && (
+      {songCategory === "begginer" && (
+        <div className="scrollable-hidden-scrollbar">
           <div className="flex flex-wrap gap-3 w-full">
             {Array.isArray(begginerSongObjArray) &&
               begginerSongObjArray.map((song, index) => (
@@ -154,11 +154,11 @@ export default function MiddleContentSongLibrary() {
                 </div>
               ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
-      <div className="scrollable-hidden-scrollbar">
-        {songCategory === "searched" && (
+      {songCategory === "searched" && (
+        <div className="scrollable-hidden-scrollbar">
           <div className="flex flex-wrap gap-3 w-full">
             {Array.isArray(searchedSongObjArray) &&
               searchedSongObjArray?.map((song, index) => (
@@ -172,8 +172,8 @@ export default function MiddleContentSongLibrary() {
                 </div>
               ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
