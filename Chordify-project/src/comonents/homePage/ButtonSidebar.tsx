@@ -43,7 +43,7 @@ export default function ButtonSidebar({
         <button
           className={`${classStyle} hover:bg-background-black hover:rounded-full`}
           onClick={() => {
-            logout();
+            if (name === "Logout") logout();
           }}
         >
           {children}

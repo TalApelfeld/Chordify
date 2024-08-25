@@ -5,6 +5,6 @@ import { protect } from "../controllers/authController";
 const router = express.Router();
 
 // router.post("/", createChord);
-router.get("/", protect, getChords);
+router.get("/", getChords);
 
 export default router;

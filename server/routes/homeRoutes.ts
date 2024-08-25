@@ -4,6 +4,6 @@ import { protect } from "../controllers/authController";
 
 const router = express.Router();
 
-router.post("/learningplan", protect, testNode);
+router.post("/learningplan", testNode);
 
 export default router;
