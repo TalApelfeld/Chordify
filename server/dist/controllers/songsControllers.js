@@ -18,7 +18,9 @@ exports.getBegginerSongs = getBegginerSongs;
 const openai_1 = __importDefault(require("openai"));
 const songsModel_1 = __importDefault(require("../models/songsModel"));
 const userModel_1 = __importDefault(require("../models/userModel"));
-const openai = new openai_1.default({ apiKey: process.env.OPENAI_API_KEY });
+const openai = new openai_1.default({
+    apiKey: process.env.OPENAI_API_KEY,
+});
 //* function parsing the response from GPT
 function extractDataFromText(htmlText) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -52,6 +54,8 @@ function fetchSong(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;
         console.log("enterd songs route");
+        console.log(process.env);
+        console.log(process.env.OPENAI_API_KEY);
         try {
             //* Asking GPT and getting promt from chatgpt
             const completion = yield openai.chat.completions.create({

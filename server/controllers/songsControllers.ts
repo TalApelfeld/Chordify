@@ -3,7 +3,9 @@ import OpenAI from "openai";
 import Song from "../models/songsModel";
 import User from "../models/userModel";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 interface SongData {
   title: string | null;
@@ -60,6 +62,9 @@ export async function fetchSong(
   next: NextFunction
 ) {
   console.log("enterd songs route");
+  console.log(process.env);
+
+  console.log(process.env.OPENAI_API_KEY);
 
   try {
     //* Asking GPT and getting promt from chatgpt

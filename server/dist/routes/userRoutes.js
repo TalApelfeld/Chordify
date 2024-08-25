@@ -24,7 +24,7 @@ userRouter.patch("/resetpassword/:token", authController_1.resetPassword);
 userRouter.patch("/updatemypassword", authController_1.protect, authController_1.updatePassword);
 userRouter.patch("/updateme", authController_1.protect, userControllers_1.updateMe);
 userRouter.patch("/deleteme", authController_1.protect, userControllers_1.deleteMe);
-userRouter.delete("/logout", authController_1.protect, userControllers_1.logOut);
+userRouter.post("/logout", authController_1.protect, userControllers_1.logOut);
 // get one user back
 userRouter.get("/:id", userControllers_1.getOneUser);
 exports.default = userRouter;
