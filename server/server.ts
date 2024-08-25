@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import app from "./app";
 import mongoose from "mongoose";
 
-dotenv.config({ path: "../.env" });
+dotenv.config({ path: "../.env", override: true });
 
 const dataBaseString = process.env.DB_STRING as string;
 
