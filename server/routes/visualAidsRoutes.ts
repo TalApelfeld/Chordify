@@ -1,6 +1,5 @@
 import express from "express";
-import { createChord, getChords } from "../controllers/visualAidsControllers";
-import { protect } from "../controllers/authController";
+import { getChords } from "../controllers/visualAidsControllers";
 
 const router = express.Router();
 
