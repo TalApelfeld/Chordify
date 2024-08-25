@@ -12,6 +12,10 @@ const port = process.env.PORT;
 mongoose_1.default.connect(dataBaseString).then(() => {
     console.log("DB connected successfully");
     app_1.default.listen(port, () => {
-        console.log("Server running on port: " + port);
+        console.log(process.env);
+        if (process.env.NODE_ENV === "development")
+            console.log(`Server running in ${process.env.NODE_ENV} on port: ` + port);
+        if (process.env.NODE_ENV === "production")
+            console.log(`Server running in ${process.env.NODE_ENV} on port: ` + port);
     });
 });
