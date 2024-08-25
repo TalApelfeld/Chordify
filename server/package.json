@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/server.js",
   "scripts": {
-    "start": "$env:NODE_ENV='production' && tsc && nodemon server.ts",
+    "start": "tsc && NODE_ENV=production nodemon dist/server.js",
     "start:dev": "powershell -Command \"tsc; $env:NODE_ENV='development'; nodemon dist/server.js\"",
     "start:prod": "powershell -Command \"tsc; $env:NODE_ENV='production'; nodemon dist/server.js\""
   },
