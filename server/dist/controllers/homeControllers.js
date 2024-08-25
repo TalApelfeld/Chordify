@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = testNode;
 const openai_1 = __importDefault(require("openai"));
+const appError_1 = __importDefault(require("../utils/appError"));
 // declare global {
 //   namespace Express {
 //     interface Request {
@@ -22,9 +23,24 @@ const openai_1 = __importDefault(require("openai"));
 //   }
 // }
 const openai = new openai_1.default();
-function testNode(req, res) {
+function testNode(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
+        if (!req.body.answers || !Array.isArray(req.body.answers)) {
+            // Checking if 'answers' exists and is an array
+            return next(new appError_1.default("No answers provided or format is incorrect", "400"));
+        }
+        console.log(process.env);
+        console.log(process.env.OPENAI_API_KEY);
         const frontData = req.body.answers;
+        // const frontData = [
+        //   "Beginner",
+        //   "1-3 hours",
+        //   "Playing for fun",
+        //   "No",
+        //   "Rock",
+        //   "Video",
+        //   "Online community reviews",
+        // ]; // Example static data
         const options = {
             method: "POST",
             headers: {

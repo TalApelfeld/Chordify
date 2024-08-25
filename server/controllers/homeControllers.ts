@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import OpenAI from "openai";
+import AppError from "../utils/appError";
 
 // declare global {
 //   namespace Express {
@@ -11,8 +12,31 @@ import OpenAI from "openai";
 
 const openai = new OpenAI();
 
-export default async function testNode(req: Request, res: Response) {
+export default async function testNode(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  if (!req.body.answers || !Array.isArray(req.body.answers)) {
+    // Checking if 'answers' exists and is an array
+    return next(
+      new AppError("No answers provided or format is incorrect", "400")
+    );
+  }
+  console.log(process.env);
+  console.log(process.env.OPENAI_API_KEY);
+
   const frontData = req.body.answers;
+
+  // const frontData = [
+  //   "Beginner",
+  //   "1-3 hours",
+  //   "Playing for fun",
+  //   "No",
+  //   "Rock",
+  //   "Video",
+  //   "Online community reviews",
+  // ]; // Example static data
 
   const options = {
     method: "POST",
@@ -81,7 +105,9 @@ export default async function testNode(req: Request, res: Response) {
       "https://api.openai.com/v1/chat/completions",
       options
     );
+
     const data = await response.json();
+
     res.json({ message: `${data.choices[0].message.content}` });
 
     // res.send(data);
