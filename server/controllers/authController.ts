@@ -30,11 +30,11 @@ export async function signup(req: Request, res: Response, next: NextFunction) {
 
     const secret = process.env.JWT_SECRET as string;
 
+    const cookieExpires = Number(process.env.JWT_COOKIE_EXPIRES_IN);
+
     const token = jwt.sign({ id: newUser._id }, secret, {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
-
-    const cookieExpires = Number(process.env.JWT_COOKIE_EXPIRES_IN);
 
     //* for PRODUCTION
     res.cookie("jwt", token, {

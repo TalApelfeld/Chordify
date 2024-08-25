@@ -52,41 +52,6 @@ function fetchSong(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;
         console.log("enterd songs route");
-        // const options = {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //     Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-        //   },
-        //   body: JSON.stringify({
-        //     model: "gpt-4o-mini",
-        //     messages: [
-        //       {
-        //         role: "system",
-        //         content: `you are a guitar teacher`,
-        //       },
-        //       {
-        //         role: "user",
-        //         content: `give me the strumming pattern and the chords for the song '${req.body.value}'
-        //                in the order they need to be to played the song and make it in this format:
-        //                <h1>[here should be the song title]</h1>
-        //                <h2>[Chords Used:]</h2>
-        //                <ul>
-        //                <li>[here is the cord]</li>
-        //                <li>[another cord]</li>
-        //                </ul>
-        //                <h2>[Chord Progression:]</h2>
-        //                <ul>
-        //                <li></li>
-        //                <li></li>
-        //                </ul>
-        //                <h2>[Strumming Pattern:]</h2>
-        //                <P> example: D-DU-UDU (stand for down/up) </p>
-        //                of course fill up the template accordingly to the given  song`,
-        //       },
-        //     ],
-        //   }),
-        // };
         try {
             //* Asking GPT and getting promt from chatgpt
             const completion = yield openai.chat.completions.create({

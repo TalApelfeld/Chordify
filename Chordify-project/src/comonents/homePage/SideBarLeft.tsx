@@ -160,7 +160,7 @@ export default function SideBarLeft({ handleModalOpen }: SideBarLeftProps) {
             <ButtonSidebar
               name="Logout"
               classStyle="bottom-button-item-container mb-6"
-              path={"/"}
+              path={"/login"}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

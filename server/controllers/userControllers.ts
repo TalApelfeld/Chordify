@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import User from "../models/userModel";
 import { ISong } from "../models/songsModel";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 export async function getAllUsers(
   req: Request,
@@ -59,6 +60,36 @@ export async function updateMe(
   } catch (error) {
     return next(error);
   }
+}
+
+export async function logOut(req: Request, res: Response, next: NextFunction) {
+  try {
+    const cookieExpires = Number(process.env.JWT_COOKIE_EXPIRES_IN);
+
+    //* for PRODUCTION
+    res.cookie("jwt", "", {
+      expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
+      httpOnly: true, // Recommended to prevent client-side access
+      secure: true, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
+      sameSite: "none", //* Set to 'none' on prod !!!!!
+      path: "/", //* enable those on prod !!!!
+      domain: "chordify-api.onrender.com",
+    });
+
+    //* for DEV
+    // res.cookie("jwt", "", {
+    //   expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
+    //   httpOnly: true, // Recommended to prevent client-side access
+    //   secure: false, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
+    //   sameSite: "lax", //* Set to 'none' on prod !!!!!
+    // });
+
+    res.status(200).json({ message: " you been logged out!" });
+  } catch (error) {
+    res.status(404).json({ message: error });
+  }
+
+  res.status(204).json({ status: "success", message: "you been logged out !" });
 }
 
 export async function deleteMe(

@@ -13,6 +13,7 @@ import {
   deleteMe,
   getAllUsers,
   getOneUser,
+  logOut,
   updateMe,
 } from "../controllers/userControllers";
 
@@ -38,6 +39,7 @@ userRouter.patch("/resetpassword/:token", resetPassword);
 userRouter.patch("/updatemypassword", protect, updatePassword);
 userRouter.patch("/updateme", protect, updateMe);
 userRouter.patch("/deleteme", protect, deleteMe);
+userRouter.delete("/logout", protect, logOut);
 
 // get one user back
 userRouter.get("/:id", getOneUser);
