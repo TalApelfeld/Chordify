@@ -10,7 +10,6 @@ const songsRouter = express.Router();
 
 songsRouter.route("/searched").get(protect, getSearchedSongs);
 songsRouter.route("/begginer").get(protect, getBegginerSongs);
-//* add protect
 songsRouter.route("/").post(protect, fetchSong);
 
 export default songsRouter;

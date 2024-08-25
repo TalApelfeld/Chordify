@@ -1,6 +1,6 @@
 import styles from "./LoginPage.module.css";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // interface responseProps {
 //   status: string;
@@ -116,14 +116,13 @@ export default function Login() {
                 >
                   Submit
                 </button>
-                <div className="mt-3">
-                  <a href="signup" className="underline ">
-                    signup
-                  </a>
-                </div>
+                <Link className="underline " to={"/signup"}>
+                  <div className="mt-3">signup</div>
+                </Link>
               </>
             )}
 
+            {/* //* piano */}
             <div>
               <ul className={styles.set}>
                 <li

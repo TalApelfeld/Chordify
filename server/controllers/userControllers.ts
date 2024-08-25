@@ -84,12 +84,12 @@ export async function logOut(req: Request, res: Response, next: NextFunction) {
     //   sameSite: "lax", //* Set to 'none' on prod !!!!!
     // });
 
-    res.status(200).json({ message: " you been logged out!" });
+    res
+      .status(204)
+      .json({ status: "success", message: "you been logged out !" });
   } catch (error) {
     res.status(404).json({ message: error });
   }
-
-  res.status(204).json({ status: "success", message: "you been logged out !" });
 }
 
 export async function deleteMe(

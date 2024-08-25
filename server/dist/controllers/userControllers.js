@@ -18,7 +18,6 @@ exports.updateMe = updateMe;
 exports.logOut = logOut;
 exports.deleteMe = deleteMe;
 const userModel_1 = __importDefault(require("../models/userModel"));
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 function getAllUsers(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         const users = yield userModel_1.default.find();
@@ -66,13 +65,9 @@ function updateMe(req, res, next) {
 function logOut(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const secret = process.env.JWT_SECRET;
             const cookieExpires = Number(process.env.JWT_COOKIE_EXPIRES_IN);
-            const token = jsonwebtoken_1.default.sign({ id: "123" }, secret, {
-                expiresIn: process.env.JWT_EXPIRES_IN,
-            });
             //* for PRODUCTION
-            // res.cookie("jwt", token, {
+            // res.cookie("jwt", "", {
             //   expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
             //   httpOnly: true, // Recommended to prevent client-side access
             //   secure: true, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
@@ -81,14 +76,17 @@ function logOut(req, res, next) {
             //   domain: "chordify-api.onrender.com",
             // });
             //* for DEV
-            res.cookie("jwtEmpty", token, {
+            res.cookie("jwt", "", {
                 expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
                 httpOnly: true, // Recommended to prevent client-side access
                 secure: false, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
                 sameSite: "lax", //* Set to 'none' on prod !!!!!
             });
+            res.status(200).json({ message: " you been logged out!" });
         }
-        catch (error) { }
+        catch (error) {
+            res.status(404).json({ message: error });
+        }
         res.status(204).json({ status: "success", message: "you been logged out !" });
     });
 }

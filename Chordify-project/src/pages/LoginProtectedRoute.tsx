@@ -12,8 +12,8 @@ export default function LoginProtectedRoute({ children }: ProtectedRouteProps) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) navigate("/home");
-  }, [user, navigate]);
+    if (!isLoading && user) navigate("/home"); // Only navigate if loading is complete and user exists
+  }, [user, navigate, isLoading]);
 
   if (isLoading) return <div>Loading...</div>;
 

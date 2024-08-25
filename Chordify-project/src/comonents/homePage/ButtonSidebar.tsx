@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 interface ButtonSidebarProps {
@@ -15,13 +14,11 @@ export default function ButtonSidebar({
   classStyle,
   path,
 }: ButtonSidebarProps) {
-  const [flag, setFlag] = useState<boolean>(false);
-
   async function logout() {
     try {
       const response = await fetch(`${serverUrl}/users/logout`, {
         // Adjust the API endpoint as needed
-        method: "DELETE",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -33,16 +30,12 @@ export default function ButtonSidebar({
       }
 
       const data = await response.json();
-      setFlag(true);
+
       console.log(data.message);
     } catch (error) {
       console.error(error);
     }
   }
-
-  useEffect(() => {
-    console.log("page refreshed ! after logging out");
-  }, [flag]);
 
   return (
     <Link to={path}>
