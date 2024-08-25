@@ -67,22 +67,22 @@ export async function logOut(req: Request, res: Response, next: NextFunction) {
     const cookieExpires = Number(process.env.JWT_COOKIE_EXPIRES_IN);
 
     //* for PRODUCTION
-    // res.cookie("jwt", "", {
-    //   expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
-    //   httpOnly: true, // Recommended to prevent client-side access
-    //   secure: true, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
-    //   sameSite: "none", //* Set to 'none' on prod !!!!!
-    //   path: "/", //* enable those on prod !!!!
-    //   domain: "chordify-api.onrender.com",
-    // });
-
-    //* for DEV
     res.cookie("jwt", "", {
       expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
       httpOnly: true, // Recommended to prevent client-side access
-      secure: false, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
-      sameSite: "lax", //* Set to 'none' on prod !!!!!
+      secure: true, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
+      sameSite: "none", //* Set to 'none' on prod !!!!!
+      path: "/", //* enable those on prod !!!!
+      domain: "chordify-api.onrender.com",
     });
+
+    //* for DEV
+    // res.cookie("jwt", "", {
+    //   expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
+    //   httpOnly: true, // Recommended to prevent client-side access
+    //   secure: false, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
+    //   sameSite: "lax", //* Set to 'none' on prod !!!!!
+    // });
 
     res
       .status(204)
