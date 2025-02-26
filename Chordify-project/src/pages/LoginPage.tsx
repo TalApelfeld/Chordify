@@ -1,6 +1,6 @@
-import styles from "./LoginPage.module.css";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Piano from "./Piano";
 
 // interface responseProps {
 //   status: string;
@@ -50,44 +50,35 @@ export default function Login() {
 
   return (
     <>
-      <form className="login-page-container" onSubmit={handleLogin}>
-        <div className="login-form">
-          <h1 className="text-4xl pt-8">Discover your learning path</h1>
-
-          {/* //* inputs container */}
-          <div className="mt-9">
-            {/* top input */}
-            <div className="mb-6">
-              <label className="block  text-sm font-medium text-gray-900 dark:text-white">
-                Email address
-              </label>
+      <form onSubmit={handleLogin}>
+        <div className="login-page">
+          <div className="login-form">
+            <h1>
+              Discover your learning <br />
+              path
+            </h1>
+            <div className="inputs-container">
+              <label className="text-white">Email:</label>
               <input
                 type="email"
                 id="email"
-                className="input-top w-7/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="jhon.doe@company.com"
+                className=""
+                placeholder="example.test@company.com"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-            </div>
-
-            {/* bottom input */}
-            <div className="mb-6">
-              <label className="block  text-sm font-medium text-gray-900 dark:text-white">
-                Password
-              </label>
+              <label className="text-white">Password:</label>
               <input
                 type="password"
                 id="password"
-                className="input-bottom w-7/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className=""
                 placeholder="•••••••••"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-
             {loading ? (
               <div role="status">
                 <svg
@@ -109,114 +100,14 @@ export default function Login() {
                 <span className="sr-only">Loading...</span>
               </div>
             ) : (
-              <>
-                <button
-                  type="submit"
-                  className="input-bottom bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                >
-                  Submit
-                </button>
-                <Link className="underline " to={"/signup"}>
-                  <div className="mt-3">signup</div>
-                </Link>
-              </>
+              <button type="submit">Submit</button>
             )}
 
-            {/* //* piano */}
-            <div>
-              <ul className={styles.set}>
-                <li
-                  className={`${styles.white} ${styles.b} ${styles.li}`}
-                  onClick={() => {
-                    const audio = new Audio(`/assets/piano-mp3_A4.mp3`);
-                    audio.play();
-                  }}
-                >
-                  <p className={styles.label}>A4</p>
-                </li>
-
-                <li
-                  className={`${styles.black} ${styles.as} ${styles.li}`}
-                ></li>
-
-                <li
-                  className={`${styles.white} ${styles.a} ${styles.li}`}
-                  onClick={() => {
-                    const audio = new Audio(`/assets/piano-mp3_B4.mp3`);
-                    audio.play();
-                  }}
-                >
-                  <p className={styles.label}>B4</p>
-                </li>
-
-                <li
-                  className={`${styles.black} ${styles.gs} ${styles.li}`}
-                ></li>
-
-                <li
-                  className={`${styles.white} ${styles.g} ${styles.li}`}
-                  onClick={() => {
-                    const audio = new Audio(`/assets/piano-mp3_C4.mp3`);
-                    audio.play();
-                  }}
-                >
-                  <p className={styles.label}>C4</p>
-                </li>
-
-                <li
-                  className={`${styles.black} ${styles.fs} ${styles.li}`}
-                ></li>
-
-                <li
-                  className={`${styles.white} ${styles.f} ${styles.li}`}
-                  onClick={() => {
-                    const audio = new Audio(`/assets/piano-mp3_D4.mp3`);
-                    audio.play();
-                  }}
-                >
-                  <p className={styles.label}>D4</p>
-                </li>
-
-                <li
-                  className={`${styles.white} ${styles.e} ${styles.li}`}
-                  onClick={() => {
-                    const audio = new Audio(`/assets/piano-mp3_E4.mp3`);
-                    audio.play();
-                  }}
-                >
-                  <p className={styles.label}>E4</p>
-                </li>
-
-                <li
-                  className={`${styles.black} ${styles.ds} ${styles.li}`}
-                ></li>
-
-                <li
-                  className={`${styles.white} ${styles.d} ${styles.li}`}
-                  onClick={() => {
-                    const audio = new Audio(`/assets/piano-mp3_F4.mp3`);
-                    audio.play();
-                  }}
-                >
-                  <p className={styles.label}>F4</p>
-                </li>
-
-                <li
-                  className={`${styles.black} ${styles.cs} ${styles.li}`}
-                ></li>
-
-                <li
-                  className={`${styles.white} ${styles.c} ${styles.li}`}
-                  onClick={() => {
-                    const audio = new Audio(`/assets/piano-mp3_G4.mp3`);
-                    audio.play();
-                  }}
-                >
-                  <p className={styles.label}>G4</p>
-                </li>
-              </ul>
-            </div>
+            <Link to={"/signup"}>
+              <span>Signup</span>
+            </Link>
           </div>
+          <Piano page={"login"} />
         </div>
       </form>
     </>

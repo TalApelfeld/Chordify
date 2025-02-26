@@ -47,19 +47,21 @@ fontSize: {
 @layer base {
   * {
     font-family: "M PLUS Rounded 1c", sans-serif;
+    margin: 0;
+    padding: 0;
   }
 
-  html {
-    overflow: hidden; /* Prevent scrolling on the page */
-    height: 100vh; /* Full height */
+  html,
+  body {
+    /*Prevent scrolling on the page , but also not allowing to refresh the page by scrolling up*/
+    /* overflow: hidden; */
+    font-size: 10px;
+    min-height: 100vh;
   }
 
-  /* li :hover,
-  li :active {
-    background-color: #030508;
-    border-radius: 115px;
-    display: block;
-  } */
+  #root {
+    min-height: 100vh;
+  }
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
@@ -87,35 +89,169 @@ fontSize: {
   }
 
   /* //section: Login Page*/
-  .login-page-container {
+  .login-page {
     height: 100vh;
     background-image: linear-gradient(rgb(0, 0, 0, 0.7), rgb(0, 0, 0, 0.1)),
       url(/assets/caught-in-joy-ptVBlniJi50-unsplash.jpg);
     background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   .login-form {
+    height: 50%;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* gap: 1.2rem; */
+    /* transform: translateY(-30%); */
+    background-color: rgba(65, 62, 62, 0.46);
     margin: 0 auto;
-    width: 40%;
-    height: 70%;
-    background-color: theme(colors.background-black);
-    transform: translateY(25%);
-    border-radius: 20px;
-    opacity: 80%;
-    color: white;
+    border-radius: 13px;
+  }
+
+  .login-form h1 {
+    color: whitesmoke;
+    font-size: x-large;
     text-align: center;
   }
 
-  .input-top {
-    margin: 0 auto;
+  .login-form button {
+    padding: 1.2rem 2.4rem;
+    background-color: rgba(125, 120, 120, 0.279);
+    border-radius: 7px;
+    border: 1px solid whitesmoke;
+    color: whitesmoke;
+    margin-bottom: 1.2rem;
+    font-size: 1.2rem;
   }
-  .input-bottom {
+
+  .login-form span {
+    color: whitesmoke;
+    text-decoration: underline;
+    font-size: 1rem;
+  }
+
+  /* same class for login-page and signup-page */
+  .inputs-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
     margin: 0 auto;
+
+    height: 60%;
+    width: 85%;
+  }
+
+  /* same class for login-page and signup-page */
+  .inputs-container label {
+    font-size: 1.6rem;
+  }
+
+  .inputs-container input {
+    padding: 1.2rem 2.4rem;
+    border-radius: 7px;
+    width: 80%;
+  }
+
+  @media (min-width: 550px) {
+    .inputs-container input {
+      width: 80%;
+    }
+  }
+
+  @media (min-width: 551px) {
+    .inputs-container input {
+      width: 50%;
+    }
+  }
+
+  @media (min-width: 950px) {
+    .login-form {
+      width: 70%;
+    }
+    .inputs-container input {
+      width: 50%;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .login-form {
+      width: 60%;
+    }
   }
 
   /* //section: Signup Page*/
 
-  .signup-page-container {
+  .signup-page {
+    height: 100vh;
+    background-image: linear-gradient(rgb(0, 0, 0, 0.7), rgb(0, 0, 0, 0.1)),
+      url(https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .signup-form {
+    height: 65%;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* gap: 1.2rem; */
+    /* transform: translateY(-30%); */
+    background-color: rgba(65, 62, 62, 0.46);
+    margin: 0 auto;
+    border-radius: 13px;
+  }
+
+  .signup-form h1 {
+    color: whitesmoke;
+    font-size: x-large;
+    text-align: center;
+  }
+
+  .signup-form button {
+    padding: 1.2rem 2.4rem;
+    background-color: rgba(125, 120, 120, 0.279);
+    border-radius: 7px;
+    border: 1px solid whitesmoke;
+    color: whitesmoke;
+    margin-bottom: 1.2rem;
+    font-size: 1.2rem;
+  }
+
+  .signup-form span {
+    color: whitesmoke;
+    text-decoration: underline;
+    font-size: 1.2rem;
+  }
+
+  @media (min-width: 950px) {
+    .signup-form {
+      width: 70%;
+    }
+    .inputs-container input {
+      width: 50%;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .signup-form {
+      width: 60%;
+    }
+  }
+
+  /* .signup-page-container {
     height: 100vh;
     background-image: linear-gradient(rgb(0, 0, 0, 0.7), rgb(0, 0, 0, 0.1)),
       url(https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
@@ -132,7 +268,7 @@ fontSize: {
     opacity: 80%;
     color: white;
     text-align: center;
-  }
+  } */
 
   /* //section: Sidebar */
 
