@@ -42,7 +42,7 @@ export default function VisualAidsPage() {
     const data = await res.json();
 
     if (data.plan[0].learningPlan.length === 0) {
-      window.location.href = toURLPage;
+      window.location.href = "https://chordify.onrender.com/home";
     } else {
       setLearningPlan(data.plan[0].learningPlan);
     }

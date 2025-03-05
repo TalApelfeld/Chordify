@@ -53,7 +53,7 @@ export default function Login() {
 
       if (data.status === "success") {
         setLoading(false);
-        window.location.href = homeURLPage;
+        window.location.href = "https://chordify.onrender.com/home";
         // navigate("/home"); // Redirect to home page on success
       } else {
         throw new Error(data.status || "Failed to sign up");

@@ -59,7 +59,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   useEffect(() => {
     if (isValidToken === false) {
       // window.location.href = toURLpage;
-      window.location.href = toURLpage;
+      window.location.href = "https://chordify.onrender.com/login";
     }
   }, [isValidToken]);
 

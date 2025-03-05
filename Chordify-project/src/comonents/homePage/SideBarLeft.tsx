@@ -45,7 +45,7 @@ export default function SideBarLeft({
         throw new Error("Something went wrong with the logout");
       }
 
-      window.location.href = loginURLPage;
+      window.location.href = "https://chordify.onrender.com/login";
       // const data = await response.json();
 
       // console.log(data.message);
