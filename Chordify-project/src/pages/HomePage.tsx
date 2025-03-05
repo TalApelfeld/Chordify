@@ -1,26 +1,33 @@
-// import Grid from "@mui/material/Grid";
-// import Sidebar from "../components/home/Sidebar";
-// import HomeContent from "../components/home/HomeContent";
-// import TopSearches from "../components/home/TopSearches";
-import styles from "../comonents/homePage/gridContainer.module.css";
+import styles from "./Homepage.module.css";
 import MiddleContent from "../comonents/homePage/MiddleContent";
 import SideBarLeft from "../comonents/homePage/SideBarLeft";
-import RightContent from "../comonents/homePage/RightContent";
-import { useEffect, useReducer, useState } from "react";
-
+import { useEffect, useState } from "react";
 import PersonalTestModal from "../comonents/homePage/PersonalTestModal";
-import LearningPlanModal from "../comonents/homePage/LearningPlanModal";
 import WeeklyPlan from "../comonents/homePage/WeeklyPlan";
+import SideBarDesktop from "../comonents/homePage/SideBarDesktop";
+
+let serverURL: string = "";
+
+if (window.location.href === "http://localhost:5173/home") {
+  serverURL = "http://localhost:3000";
+}
+if (window.location.href === "http://10.0.0.16:5173/home") {
+  serverURL = "http://10.0.0.16:3000";
+}
+if (window.location.href === "https://chordify.onrender.com") {
+  serverURL = "https://chordify-api.onrender.com";
+}
+console.log(serverURL);
 
 const questions = [
   {
-    number: 1,
-    name: "What is your current skill level with the guitar?",
+    number: 0,
+    title: "What is your current skill level with the guitar?",
     options: ["Absolute Beginner", "Beginner", "Intermediate", "Advanced"],
   },
   {
-    number: 2,
-    name: "How much time can you dedicate to practicing each week?",
+    number: 1,
+    title: "How much time can you dedicate to practicing each week?",
     options: [
       "Less than 1 hour",
       " 1-3 hours",
@@ -29,8 +36,8 @@ const questions = [
     ],
   },
   {
-    number: 3,
-    name: "What are your main goals for learning guitar?",
+    number: 2,
+    title: "What are your main goals for learning guitar?",
     options: [
       " Playing for fun",
       "Joining a band",
@@ -39,23 +46,24 @@ const questions = [
     ],
   },
   {
-    number: 4,
-    name: "Do you have any musical background or play other instruments?",
+    number: 3,
+    title: "Do you have any musical background or play other instruments?",
     options: ["Yes", "No"],
   },
   {
-    number: 5,
-    name: "What genres of music are you most interested in playing?",
+    number: 4,
+    title: "What genres of music are you most interested in playing?",
     options: [" Rock", " Blues", "Jazz", "Classical", "Pop", "Folk", "Other"],
   },
   {
-    number: 6,
-    name: "Do you prefer learning through video tutorials, written materials, or both?",
+    number: 5,
+    title:
+      "Do you prefer learning through video tutorials, written materials, or both?",
     options: ["Video", "Written", "Both"],
   },
   {
-    number: 7,
-    name: "How do you prefer to receive feedback on your progress?",
+    number: 6,
+    title: "How do you prefer to receive feedback on your progress?",
     options: [
       " Self-assessment",
       "Online community reviews",
@@ -64,79 +72,58 @@ const questions = [
   },
 ];
 
-interface Question {
+export interface IQuestion {
   number: number;
-  name: string;
+  title: string;
   options: string[];
 }
 
-interface Action {
-  type: string;
-  payload?: any; // You can specify further typing for payload if needed
-}
-
-interface State {
-  questions: Question[];
-  isLoading: boolean;
-  curQuestion: number;
-  curAnswer: string;
-  answers: string[];
-}
-
-interface PlanHomeProps {
-  h1: string;
-  h2: string[];
-  li: string[];
-}
-
-const initialState = {
-  questions,
-  isLoading: false,
-  curQuestion: 0,
-  curAnswer: "",
-  answers: [],
-};
-
-function reducer(state: State, action: Action) {
-  switch (action.type) {
-    case "setCurAnswer":
-      return { ...state, curAnswer: action.payload };
-
-    case "nextQuestion":
-      return { ...state, curQuestion: state.curQuestion + 1 };
-
-    case "setAnswers":
-      return { ...state, answers: [...state.answers, state.curAnswer] };
-
-    default:
-      throw new Error(`Unhandled action type: ${action.type}`);
-  }
+export interface ILearningPlan {
+  title: string;
+  goals: string[];
 }
 
 export default function Home() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [{ questions, curQuestion, answers }, dispatch] = useReducer(
-    reducer,
-    initialState
-  );
-
-  const [modal, setModal] = useState(false);
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [menuButtonClicked, setMenuButtonClicked] = useState(false);
   const [timeGreeting, setTimeGreeting] = useState("");
+  const [showPreferenceWindow, setShowPreferenceWindow] = useState(false);
+  const [currentPersonalWindow, setCurrentPersonalWindow] = useState(0);
+  const [answersArray, setAnswersArray] = useState<string[]>([
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+  ]);
+  const [showWeeklyPlan, setShowWeeklyPlan] = useState(false);
+  const [learningPlan, setLearningPlan] = useState<ILearningPlan[] | null>(
+    null
+  );
+  const [checkedCount, setCheckedCount] = useState(0);
+  const totalCheckboxes = learningPlan
+    ? learningPlan.reduce((acc, week) => acc + week.goals.length, 0)
+    : 0;
 
-  // h1:week , h2 :day , li:assigment
-  const [learningPlanHome, setLearningPlanHome] = useState(() => {
-    const learningPlanObject = localStorage.getItem("plan");
-    if (!learningPlanObject) setModal(true);
+  async function getPlanFromDB() {
+    const res = await fetch(`${serverURL}/home/learningplan`, {
+      method: "GET",
+      credentials: "include",
+    });
 
-    if (!learningPlanObject) return { h1: "", h2: [""], li: [""] };
+    const data = await res.json();
 
-    const parsedLearningPlanObject = JSON.parse(learningPlanObject);
+    if (data.plan[0].learningPlan.length === 0) {
+      setShowPreferenceWindow(true);
+    } else {
+      setLearningPlan(data.plan[0].learningPlan);
+    }
+    console.log(data);
+  }
 
-    return parsedLearningPlanObject;
-  });
-
-  // set the welcome text based on the time
   useEffect(() => {
     const getTime = async function () {
       const now: Date = new Date();
@@ -150,146 +137,93 @@ export default function Home() {
         setTimeGreeting("Good evening");
       }
     };
+
+    getPlanFromDB();
+
     getTime();
   }, []);
 
-  // close the modal
-  function handleModalClose() {
-    // in oreder to make the "curQuestion === 7" be false
-    dispatch({ type: "nextQuestion" });
-    setModal(false);
-  }
+  console.log(answersArray);
 
-  // open the modal
-  function handleModalOpen() {
-    setModal(true);
-  }
-
-  // put the current answer in a state
-  function handleCurAnswer(answer: string) {
-    dispatch({ type: "setCurAnswer", payload: answer });
-  }
-
-  // go to next question
-  function handleNextQuestion() {
-    dispatch({ type: "setAnswers" });
-    dispatch({ type: "nextQuestion" });
-  }
-
-  function handleSetPlanHome(plan: PlanHomeProps) {
-    setLearningPlanHome(plan);
-  }
-
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  const chunkArray = (arr: string[], chunkSize: number) => {
-    const result = [];
-    for (let i = 0; i < arr.length; i += chunkSize) {
-      result.push(arr.slice(i, i + chunkSize));
-    }
-    return result;
-  };
-
-  const assignmentsPerDay = chunkArray(learningPlanHome.li, 5);
-
-  const [checkedState, setCheckedState] = useState(
-    assignmentsPerDay.map((dayAssignments) => dayAssignments.map(() => false))
-  );
-
-  const handleCheckboxChange = (dayIndex: number, taskIndex: number) => {
-    const updatedCheckedState = [...checkedState];
-    updatedCheckedState[dayIndex][taskIndex] =
-      !updatedCheckedState[dayIndex][taskIndex];
-    setCheckedState(updatedCheckedState);
-  };
-
-  const calculateCheckedCount = () => {
-    let checkedCheckboxes = 0;
-
-    checkedState.forEach((day) => {
-      day.forEach((isChecked) => {
-        if (isChecked) {
-          checkedCheckboxes += 1;
-        }
+  async function getLearningPlan() {
+    setIsLoading(true);
+    try {
+      const res = await fetch(`${serverURL}/home/learningplan`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: answersArray }),
+        credentials: "include",
       });
-    });
 
-    return checkedCheckboxes;
-  };
+      if (!res.ok) {
+        throw new Error("there been an error in fetching the plan");
+      }
 
-  const checkedCount = calculateCheckedCount();
-  const totalCheckboxes = learningPlanHome.li.length;
+      const data = await res.json();
+      setLearningPlan(data.data.learning_plan);
+      setIsLoading(false);
+      setShowPreferenceWindow(false);
+      setShowWeeklyPlan(true);
+      console.log(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  if (learningPlan) {
+    console.log("hello from ", learningPlan);
+  }
 
   return (
-    <div className={styles.grid}>
-      <SideBarLeft handleModalOpen={handleModalOpen} />
+    <div className={`${styles.homepageContainer} homepage-container `}>
+      <SideBarLeft
+        menuButtonClicked={menuButtonClicked}
+        setMenuButtonClicked={setMenuButtonClicked}
+        setShowWeeklyPlan={setShowWeeklyPlan}
+      />
+
+      <SideBarDesktop
+        menuButtonClicked={menuButtonClicked}
+        setMenuButtonClicked={setMenuButtonClicked}
+        setShowWeeklyPlan={setShowWeeklyPlan}
+      />
 
       <MiddleContent
         timeGreeting={timeGreeting}
         checkedCount={checkedCount}
         totalCheckboxes={totalCheckboxes}
+        menuButtonClicked={menuButtonClicked}
+        setMenuButtonClicked={setMenuButtonClicked}
       />
-      <RightContent />
-      {/* {learningPlanHome.h1 ? (
-        modal ? (
-          <WeeklyPlan
-            handleModalClose={handleModalClose}
-            learningPlanHome={learningPlanHome}
-          />
-        ) : null
-      ) : (
-        questions.map((question: Question, index: number) =>
-          index === curQuestion ? (
+
+      {showPreferenceWindow &&
+        questions.map((questionObj: IQuestion, index: number) =>
+          index === currentPersonalWindow ? (
             <PersonalTestModal
-              key={question.number}
-              question={question}
-              handleModalClose={handleModalClose}
-              handleNextQuestion={handleNextQuestion}
-              onSetCurAnswer={handleCurAnswer}
+              key={questionObj.number}
+              setShowPreferenceWindow={setShowPreferenceWindow}
+              questionObj={questionObj}
+              currentPersonalWindow={currentPersonalWindow}
+              setCurrentPersonalWindow={setCurrentPersonalWindow}
+              answersArray={answersArray}
+              setAnswersArray={setAnswersArray}
+              getLearningPlan={getLearningPlan}
+              isLoading={isLoading}
             />
-          ) : null
-        )
-      )} */}
-
-      {!learningPlanHome.h1 && modal
-        ? questions.map((question: Question, index: number) =>
-            index === curQuestion ? (
-              <PersonalTestModal
-                key={question.number}
-                question={question}
-                handleModalClose={handleModalClose}
-                handleNextQuestion={handleNextQuestion}
-                onSetCurAnswer={handleCurAnswer}
-              />
-            ) : null
+          ) : (
+            ""
           )
-        : null}
+        )}
 
-      {learningPlanHome.h1 && modal ? (
+      {showWeeklyPlan && (
         <WeeklyPlan
-          handleModalClose={handleModalClose}
-          learningPlanHome={learningPlanHome}
-          handleCheckboxChange={handleCheckboxChange}
-          assignmentsPerDay={assignmentsPerDay}
-          checkedState={checkedState}
+          learningPlan={learningPlan}
+          setShowWeeklyPlan={setShowWeeklyPlan}
+          setCheckedCount={setCheckedCount}
         />
-      ) : null}
-
-      {curQuestion === 7 && modal ? (
-        <LearningPlanModal
-          handleModalClose={handleModalClose}
-          answers={answers}
-          handleSetPlanHome={handleSetPlanHome}
-        />
-      ) : null}
+      )}
     </div>
   );
 }

@@ -1,6 +1,8 @@
 import express from "express";
 import {
   checkAuth,
+  checkCookie,
+  checkCookieLogin,
   forgotPassword,
   login,
   protect,
@@ -20,6 +22,8 @@ import {
 const userRouter = express.Router();
 
 // for the frontend to send back a user based on if there is a cookie
+userRouter.get("/checkcookielogin", checkCookieLogin);
+userRouter.get("/checkcookie", checkCookie);
 userRouter.get("/checkauth", protect, checkAuth);
 
 // signup/login functionality

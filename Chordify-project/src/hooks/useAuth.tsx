@@ -1,46 +1,44 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
-interface UserProps {
-  name?: string;
-  email?: string;
-  role?: string;
-  _id?: string;
-  _v?: number;
-}
+// let serverURL: string = "";
 
-const serverUrl = import.meta.env.VITE_SERVER_URL;
+// if (window.location.href === "http://localhost:5173/login") {
+//   serverURL = "http://localhost:3000";
+// }
+// if (window.location.href === "http://10.0.0.16:5173/login") {
+//   serverURL = "http://10.0.0.16:3000";
+// }
+// console.log(serverURL);
 
-export default function useAuth() {
-  const [user, setUser] = useState<UserProps | null>(null);
-  const [isLoading, setIsLoading] = useState(true); // Start with loading state
+// export default function useAuth() {
+//   const [isValidToken, setIsValidToken] = useState(false);
+//   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    async function checkAuth() {
-      try {
-        const res = await fetch(`${serverUrl}/users/checkauth`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
+//   useEffect(() => {
+//     async function checkAuth() {
+//       try {
+//         const res = await fetch(`${serverURL}/users/checkcookielogin`, {
+//           method: "GET",
+//           credentials: "include",
+//         });
 
-        if (!res.ok)
-          throw new Error(
-            "Authentication failed there is no user (no cookie) you need to login!"
-          );
+//         console.log("req been sent");
+//         console.log(res);
 
-        const data = await res.json();
+//         const data = await res.json();
+//         console.log(data);
 
-        setUser(data.data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false); // Set loading to false after the check
-      }
-    }
-    checkAuth();
-  }, []);
+//         if (data.message === "test") {
+//           setIsValidToken(true);
+//         }
+//       } catch (error) {
+//         console.error(error);
+//       } finally {
+//         setIsLoading(false);
+//       }
+//     }
+//     checkAuth();
+//   }, []);
 
-  return { user, isLoading }; // Return both user and isLoading state
-}
+//   return { isValidToken, isLoading };
+// }

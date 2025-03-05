@@ -1,16 +1,20 @@
 import { Request, Response, NextFunction } from "express";
-import { promisify } from "util";
 import User from "../models/userModel";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import crypto from "crypto";
 import { IUser } from "../models/userModel";
 import AppError from "../utils/appError";
+import exp from "constants";
 
 // Extend the Request interface to include user
-declare module "express-serve-static-core" {
-  interface Request {
-    user?: IUser; // Assume IUser is your user interface
-  }
+// declare module "express-serve-static-core" {
+//   interface Request {
+//     userId?: string;
+//   }
+
+export interface IRequestObjwithUserId extends Request {
+  userId: string;
+  data?: any;
 }
 
 export async function signup(req: Request, res: Response, next: NextFunction) {
@@ -126,32 +130,79 @@ export async function login(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export async function protect(req: Request, res: Response, next: NextFunction) {
-  try {
-    if (!req.cookies["jwt"])
-      return next(
-        new AppError("You need to create account first ya maniak", "404")
-      );
+export async function checkCookieLogin(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  if (!req.cookies.jwt) {
+    console.log("no token");
+    return res.status(200).json({ status: "success", message: "test" });
+  }
 
+  try {
+    const token = req.cookies["jwt"];
+
+    const secret = process.env.JWT_SECRET as string;
+
+    const test = jwt.verify(token, secret);
+
+    res.status(200).json({ status: "success", message: "valid cookie" });
+  } catch (error) {
+    console.log(error);
+    return res.status(404).json({
+      status: "failed",
+      message: "there is a token but it is NOT a valid one",
+    });
+  }
+}
+
+export async function checkCookie(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  if (!req.cookies.jwt) {
+    console.log("no token");
+    return res
+      .status(404)
+      .json({ status: "failed", message: "no value of token in header" });
+  }
+
+  const token = req.cookies.jwt;
+
+  // 2) Verification of  the token
+  const secret = process.env.JWT_SECRET as string;
+
+  const test = jwt.verify(token, secret) as JwtPayload;
+
+  const newReqObj = req as IRequestObjwithUserId;
+  newReqObj.userId = test.id;
+
+  next();
+
+  // res.status(200).json({
+  //   status: "success",
+  //   data: test.id,
+  // });
+}
+
+export async function protect(req: Request, res: Response, next: NextFunction) {
+  if (!req.cookies["jwt"]) {
+    console.log("no token");
+    return next(
+      new AppError("You are not logged in, log in or create an account", "404")
+    );
+  }
+
+  try {
     // 1) Check if we get the token
     const token = req.cookies["jwt"];
-    console.log(token);
-    // if (
-    //   req.headers.authorization &&
-    //   req.headers.authorization.startsWith("Bearer")
-    // ) {
-    //   token = req.headers.authorization.split(" ")[1];
-    // }
-
-    if (!token)
-      return next(
-        "you are not logged in (provide token in header or cookie ya maniak)"
-      );
 
     // 2) Verification of  the token
     const secret = process.env.JWT_SECRET as string;
     const decoded = (await jwt.verify(token, secret)) as JwtPayload;
-    // console.log(decoded);
+    console.log(decoded);
 
     // 3) Check if user still exists
     console.log(decoded.id);

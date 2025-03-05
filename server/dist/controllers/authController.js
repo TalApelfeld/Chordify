@@ -14,6 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.signup = signup;
 exports.login = login;
+exports.checkCookieLogin = checkCookieLogin;
+exports.checkCookie = checkCookie;
 exports.protect = protect;
 exports.checkAuth = checkAuth;
 exports.restrict = restrict;
@@ -123,26 +125,61 @@ function login(req, res, next) {
         }
     });
 }
+function checkCookieLogin(req, res, next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!req.cookies.jwt) {
+            console.log("no token");
+            return res.status(200).json({ status: "success", message: "test" });
+        }
+        try {
+            const token = req.cookies["jwt"];
+            const secret = process.env.JWT_SECRET;
+            const test = jsonwebtoken_1.default.verify(token, secret);
+            res.status(200).json({ status: "success", message: "valid cookie" });
+        }
+        catch (error) {
+            console.log(error);
+            return res.status(404).json({
+                status: "failed",
+                message: "there is a token but it is NOT a valid one",
+            });
+        }
+    });
+}
+function checkCookie(req, res, next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!req.cookies.jwt) {
+            console.log("no token");
+            return res
+                .status(404)
+                .json({ status: "failed", message: "no value of token in header" });
+        }
+        const token = req.cookies.jwt;
+        // 2) Verification of  the token
+        const secret = process.env.JWT_SECRET;
+        const test = jsonwebtoken_1.default.verify(token, secret);
+        const newReqObj = req;
+        newReqObj.userId = test.id;
+        next();
+        // res.status(200).json({
+        //   status: "success",
+        //   data: test.id,
+        // });
+    });
+}
 function protect(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
+        if (!req.cookies["jwt"]) {
+            console.log("no token");
+            return next(new appError_1.default("You are not logged in, log in or create an account", "404"));
+        }
         try {
-            if (!req.cookies["jwt"])
-                return next(new appError_1.default("You need to create account first ya maniak", "404"));
             // 1) Check if we get the token
             const token = req.cookies["jwt"];
-            console.log(token);
-            // if (
-            //   req.headers.authorization &&
-            //   req.headers.authorization.startsWith("Bearer")
-            // ) {
-            //   token = req.headers.authorization.split(" ")[1];
-            // }
-            if (!token)
-                return next("you are not logged in (provide token in header or cookie ya maniak)");
             // 2) Verification of  the token
             const secret = process.env.JWT_SECRET;
             const decoded = (yield jsonwebtoken_1.default.verify(token, secret));
-            // console.log(decoded);
+            console.log(decoded);
             // 3) Check if user still exists
             console.log(decoded.id);
             const freshUser = yield userModel_1.default.findById(decoded.id);

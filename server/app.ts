@@ -15,14 +15,16 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["https://chordify.onrender.com", "http://localhost:5173"], // Adjust this to match your frontend's URL
+    origin: [
+      "http://10.0.0.16:5173",
+      "http://localhost:5173",
+      "https://chordify.onrender.com",
+    ],
     credentials: true,
   })
 );
 app.use(cookieParser());
 app.use(express.json());
-
-app.use("/kittens", testRoutes);
 app.use("/songs", songsRouter);
 app.use("/users", userRoutes);
 app.use("/home", homeRoutes);

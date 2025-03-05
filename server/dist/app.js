@@ -12,16 +12,18 @@ const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 const homeRoutes_1 = __importDefault(require("./routes/homeRoutes"));
 const visualAidsRoutes_1 = __importDefault(require("./routes/visualAidsRoutes"));
 const searchRoutes_1 = __importDefault(require("./routes/searchRoutes"));
-const testRoutes_1 = __importDefault(require("./routes/testRoutes"));
 const songsRoutes_1 = __importDefault(require("./routes/songsRoutes"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
-    origin: ["https://chordify.onrender.com", "http://localhost:5173"], // Adjust this to match your frontend's URL
+    origin: [
+        "http://10.0.0.16:5173",
+        "http://localhost:5173",
+        "https://chordify.onrender.com",
+    ],
     credentials: true,
 }));
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
-app.use("/kittens", testRoutes_1.default);
 app.use("/songs", songsRoutes_1.default);
 app.use("/users", userRoutes_1.default);
 app.use("/home", homeRoutes_1.default);

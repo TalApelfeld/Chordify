@@ -12,146 +12,101 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = testNode;
+exports.getLearningPlanFromGPT = getLearningPlanFromGPT;
+exports.getPlanFromDB = getPlanFromDB;
 const openai_1 = __importDefault(require("openai"));
-const appError_1 = __importDefault(require("../utils/appError"));
-// declare global {
-//   namespace Express {
-//     interface Request {
-//       answers: string[]; // Adjust the type as needed
-//     }
-//   }
-// }
-const openai = new openai_1.default();
-function testNode(req, res, next) {
+const userModel_1 = __importDefault(require("../models/userModel"));
+const openai = new openai_1.default({ apiKey: process.env.OPENAI_API_KEY });
+function getLearningPlanFromGPT(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!req.body.answers || !Array.isArray(req.body.answers)) {
-            // Checking if 'answers' exists and is an array
-            return next(new appError_1.default("No answers provided or format is incorrect", "400"));
+        const newReqObj = req;
+        if (!req.body) {
+            console.log("no body");
+            res.status(404).json({ status: "failed req, no body in req" });
         }
-        console.log(process.env);
-        console.log(process.env.OPENAI_API_KEY);
-        const frontData = req.body.answers;
-        // const frontData = [
-        //   "Beginner",
-        //   "1-3 hours",
-        //   "Playing for fun",
-        //   "No",
-        //   "Rock",
-        //   "Video",
-        //   "Online community reviews",
-        // ]; // Example static data
-        const options = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-            },
-            body: JSON.stringify({
-                model: "gpt-3.5-turbo",
+        try {
+            const completion = yield openai.chat.completions.create({
+                model: "gpt-4o-mini",
                 messages: [
                     {
+                        role: "system",
+                        content: "You are the most professional guitar teacher in the world who is able to teach people to play guitar via the internet",
+                    },
+                    {
                         role: "user",
-                        content: `im building an web app that generates a leraning plan based on few questions and it will be specific for guitar:
-                    1) What is your current skill level with the guitar?
-                    Options: Absolute Beginner, Beginner, Intermediate, Advanced
-
-                     2) How much time can you dedicate to practicing each week?
-                     Options: Less than 1 hour, 1-3 hours, 3-5 hours, More than 5 hours
-
-                    3) What are your main goals for learning guitar?
-                    Options: Playing for fun, Joining a band, Professional development, Songwriting
-
-                    4) Do you have any musical background or play other instruments?
-                    Yes/No follow-up: If yes, which instruments and for how long?
-
-                    5) What genres of music are you most interested in playing?
-                    Options: Rock, Blues, Jazz, Classical, Pop, Folk, Other
-
-                    6) Do you prefer learning through video tutorials, written materials, or both?
-                    Options: Video, Written, Both
-
-                    7) How do you prefer to receive feedback on your progress?
-                    Options: Self-assessment, Online community reviews, Regular check-ins with a mentor
-
-                    
-
-                    i want to make a learning plan as detailed as possibale , divided into weeks , and for each week, a list of things need to be learned in each day, make me a learning plan as apecific as you can for the first week that will include practical things in the next format:
-                    <h1>week : # 1 </h1>
-                    <h2>day : #</h2>
-                    <ul>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                     </ul> 
-
-                     based on those answers:
-                     ${frontData[0]},
-                     ${frontData[1]},
-                     ${frontData[2]},
-                     ${frontData[3]},
-                     ${frontData[4]},
-                     ${frontData[5]},
-                     ${frontData[6]},
-                     `,
+                        content: `I am looking for a learning program for playing the guitar that relies on the following questions and answers:
+          1) What is your current skill level with the guitar?
+          A:${req.body.data[0]}
+  
+          2) How much time can you dedicate to practicing each week?
+          A:${req.body.data[1]}
+  
+          3) What are your main goals for learning guitar?
+          A:${req.body.data[2]}
+  
+          4) Do you have any musical background or play other instruments?
+          A:${req.body.data[3]}
+  
+          5) "What genres of music are you most interested in playing?",
+          A:${req.body.data[4]}
+  
+          6) "Do you prefer learning through video tutorials, written materials, or both?",
+          A:${req.body.data[5]}
+  
+          7) "How do you prefer to receive feedback on your progress?",
+          A: ${req.body.data[6]}
+  
+          I want you to create a learning plan as detailed as possible that is divided into weeks, where each week has a list of goals that need to be studied according to the questions and answers above in the json format:
+  
+          for example: [
+      {
+        title: "week: 1",
+        goals: [
+          "Learn G chord",
+          "Make practice with friend",
+          "Learn C chord",
+          "Learn strumming patterns",
+          "Buy guitar",
+        ],
+      },
+      {
+        title: "week: 2",
+        goals: [
+          "Learn G chord",
+          "Make practice with friend",
+          "Learn C chord",
+          "Learn strumming patterns",
+          "Buy guitar",
+        ],
+        }]
+        `,
                     },
                 ],
-            }),
-        };
-        try {
-            const response = yield fetch("https://api.openai.com/v1/chat/completions", options);
-            const data = yield response.json();
-            res.json({ message: `${data.choices[0].message.content}` });
-            // res.send(data);
+                response_format: { type: "json_object" },
+                store: true,
+            });
+            if (!completion.choices[0].message.content)
+                return;
+            const resFromGpt = JSON.parse(completion.choices[0].message.content);
+            const user = yield userModel_1.default.updateOne({ _id: newReqObj.userId }, { learningPlan: resFromGpt.learning_plan });
+            console.log(resFromGpt.learning_plan);
+            res.status(200).json({ status: "success", data: resFromGpt });
         }
-        catch (error) {
-            console.error(error);
+        catch (err) {
+            console.log(err);
+            res.status(404).json({ status: "failed", message: "req failed" });
         }
+        // if (!req.userId) {
+        //   return res
+        //     .status(404)
+        //     .json({ status: "fail", message: "req header forwarding didnt work" });
+        // }
     });
 }
-// interface ValidatorErrorProperties {
-//   message: string;
-//   type: string;
-//   path: string;
-// }
-// interface ValidatorError {
-//   name: string;
-//   message: string;
-//   properties: ValidatorErrorProperties;
-//   kind: string;
-//   path: string;
-// }
-// interface ErrorDetails {
-//   password: ValidatorError;
-//   // Add more fields here if there are other fields with errors similar to password
-// }
-// interface ValidationError {
-//   errors: ErrorDetails;
-//   _message: string;
-//   name: string;
-//   message: string;
-// }
-// export default async function testNode(
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) {
-//   try {
-//     const user = await User.create({ name: req.body.name });
-//     console.log(user);
-//     res.json(user);
-//   } catch (error: unknown) {
-//     if (typeof error === "object" && error !== null && "errors" in error) {
-//       const validationError = error as ValidationError; // Now it's safe to cast
-//       if (validationError.errors && validationError.errors.password) {
-//         console.log(validationError.errors.password.message);
-//         res.json({ message: validationError.errors.password.message }); // "Password need to be provided !"
-//       }
-//     } else {
-//       // General error handling or log the error
-//       console.error("An unexpected error occurred", error);
-//     }
-//   }
-// }
+function getPlanFromDB(req, res, next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const newReq = req;
+        const plan = yield userModel_1.default.find({ _id: newReq.userId }).select("learningPlan");
+        res.status(200).json({ status: "success", plan });
+    });
+}

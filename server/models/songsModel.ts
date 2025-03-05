@@ -1,28 +1,47 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document, Model } from "mongoose";
 
-export interface ISong extends Document {
-  title: string;
-  chordsUsed: string[]; // An array of strings
-  chordProgression: string[][]; // An array of arrays of strings;
-  strummingPattern: string[];
-  difficulty?: String;
+interface IChord {
+  [key: string]: string;
 }
 
-const songSchema = new mongoose.Schema<ISong>({
-  title: {
-    type: String,
-  },
+interface ILyricLine {
+  chords: string[];
+  text: string;
+}
 
-  chordsUsed: {
-    type: [String],
-  },
+interface ISection {
+  type: string;
+  chords?: string[];
+  lyrics?: ILyricLine[];
+}
 
-  chordProgression: { type: [[String]] },
+interface ISong extends Document {
+  title: string;
+  artist: string;
+  chords: IChord;
+  strumming_pattern: string[];
+  sections: ISection[];
+}
 
-  strummingPattern: { type: [String] },
-
-  difficulty: { type: String },
+const LyricLineSchema = new Schema<ILyricLine>({
+  chords: { type: [String], required: true },
+  text: { type: String, required: true },
 });
 
-const Song = mongoose.model<ISong>("song", songSchema);
+const SectionSchema = new Schema<ISection>({
+  type: { type: String, required: true },
+  chords: { type: [String] },
+  lyrics: { type: [LyricLineSchema] },
+});
+
+const SongSchema = new Schema<ISong>({
+  title: { type: String, required: true },
+  artist: { type: String, required: true },
+  chords: { type: Map, of: String, required: true },
+  strumming_pattern: { type: [String], required: true },
+  sections: { type: [SectionSchema], required: true },
+});
+
+const Song: Model<ISong> = mongoose.model<ISong>("Song", SongSchema);
+
 export default Song;

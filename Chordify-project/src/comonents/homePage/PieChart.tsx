@@ -1,9 +1,7 @@
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import ChartDataLabels from "chartjs-plugin-datalabels";
-
 import { Pie } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
-ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 interface PieChartProps {
   checkedCount: number;
@@ -15,7 +13,7 @@ export default function PieChart({
   totalCheckboxes,
 }: PieChartProps) {
   const data = {
-    labels: ["Checked", "Unchecked"],
+    labels: ["Completed", "Remaining"],
     datasets: [
       {
         data: [checkedCount, totalCheckboxes - checkedCount],
@@ -25,28 +23,9 @@ export default function PieChart({
     ],
   };
 
-  const options = {
-    plugins: {
-      datalabels: {
-        formatter: (context: { dataIndex: number }) => {
-          if (context.dataIndex === 0) {
-            // Show the count of checked checkboxes
-            return `${checkedCount} / ${totalCheckboxes}`;
-          } else {
-            return null; // No label for the unchecked slice
-          }
-        },
-        color: "#fff",
-        font: {
-          weight: 700,
-          size: 16,
-        },
-      },
-    },
-  };
   return (
-    <div className="w-36 ml-11">
-      <Pie data={data} options={options} />
+    <div className="chart-container">
+      <Pie data={data} />
     </div>
   );
 }

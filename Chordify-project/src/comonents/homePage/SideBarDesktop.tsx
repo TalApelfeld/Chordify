@@ -4,6 +4,7 @@ interface SideBarLeftProps {
   menuButtonClicked: boolean;
   setMenuButtonClicked: Dispatch<SetStateAction<boolean>>;
   setShowWeeklyPlan: Dispatch<SetStateAction<boolean>>;
+  mobileUI?: boolean;
 }
 
 let serverURL: string = "";
@@ -18,13 +19,9 @@ if (window.location.host === "10.0.0.16:5173") {
   serverURL = "http://10.0.0.16:3000";
   loginURLPage = "http://10.0.0.16:5173/login";
 }
-if (window.location.href === "https://chordify.onrender.com") {
-  serverURL = "https://chordify-api.onrender.com";
-  loginURLPage = "https://chordify.onrender.com/login";
-}
 console.log(serverURL);
 
-export default function SideBarLeft({
+export default function SideBarDesktop({
   menuButtonClicked,
   setMenuButtonClicked,
   setShowWeeklyPlan,
@@ -53,11 +50,7 @@ export default function SideBarLeft({
   }
 
   return (
-    <div
-      className={`sidebar-container-mobile  ${
-        menuButtonClicked ? "sidebar-slide-in" : ""
-      }`}
-    >
+    <div className={`sidebar-container-desktop`}>
       {/* //* logo container */}
       <div className="top-container">
         <div className="logo-container">

@@ -1,0 +1,44 @@
+.homepageContainer {
+  min-height: 100vh;
+}
+
+@media (min-width: 900px) {
+  .homepageContainer {
+    display: grid;
+    grid-template-columns: 0.7fr 2fr;
+  }
+}
+
+@media (min-width: 1000px) {
+  .homepageContainer {
+    grid-template-columns: 0.6fr 2fr;
+  }
+}
+
+@media (min-width: 1100px) {
+  .homepageContainer {
+    grid-template-columns: 0.5fr 2fr;
+  }
+}
+
+@media (min-width: 1300px) {
+  .homepageContainer {
+    grid-template-columns: 0.4fr 2fr;
+  }
+}
+@media (min-width: 1600px) {
+  .homepageContainer {
+    grid-template-columns: 0.35fr 2fr;
+  }
+}
+
+.chord {
+  color: blue; /* Set the color of the chords */
+  font-size: larger; /* Make the font size larger */
+}
+
+.lyrics-container {
+  font-family: "Courier New", Courier, monospace;
+  white-space: pre;
+  font-size: 16px;
+}

@@ -92,7 +92,31 @@ const userSchema = new mongoose_1.Schema({
         default: true,
         select: false,
     },
-    songs: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "song" }],
+    songs: {
+        type: [
+            {
+                title: { type: String },
+                artist: { type: String },
+                chords: { type: Map, of: String },
+                strumming_pattern: [{ type: String }],
+                sections: [
+                    {
+                        type: { type: String },
+                        chords: [{ type: String }],
+                        lyrics: [
+                            {
+                                chords: [{ type: String }],
+                                text: { type: String },
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
+    },
+    learningPlan: {
+        type: [{ title: String, goals: [String] }],
+    },
 });
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

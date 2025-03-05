@@ -1,18 +1,30 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Piano from "./Piano";
 
-// interface responseProps {
-//   status: string;
-//   token: string;
-// }
-const serverUrl = import.meta.env.VITE_SERVER_URL;
+let serverURL: string = "";
+let homeURLPage = "";
+
+if (window.location.href === "http://localhost:5173/login") {
+  // Localhost
+  serverURL = "http://localhost:3000";
+  homeURLPage = "http://localhost:5173/home";
+}
+if (window.location.href === "http://10.0.0.16:5173/login") {
+  // Mobile
+  serverURL = "http://10.0.0.16:3000";
+  homeURLPage = "http://10.0.0.16:5173/home";
+}
+if (window.location.href === "https://chordify.onrender.com") {
+  serverURL = "https://chordify-api.onrender.com";
+  homeURLPage = "https://chordify.onrender.com/home";
+}
+console.log(serverURL);
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // useNavigate for redirection
 
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault(); // Prevent default form submission
@@ -20,7 +32,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${serverUrl}/users/login`, {
+      const response = await fetch(`${serverURL}/users/login`, {
         // Adjust the API endpoint as needed
         method: "POST",
         headers: {
@@ -29,6 +41,7 @@ export default function Login() {
         credentials: "include", // Include cookies with the request
         body: JSON.stringify({ email, password }),
       });
+
       if (!response.ok) {
         throw new Error("Network response was not OK");
       }
@@ -38,7 +51,8 @@ export default function Login() {
 
       if (data.status === "success") {
         setLoading(false);
-        navigate("/home"); // Redirect to home page on success
+        window.location.href = homeURLPage;
+        // navigate("/home"); // Redirect to home page on success
       } else {
         throw new Error(data.status || "Failed to sign up");
       }

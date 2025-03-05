@@ -1,238 +1,234 @@
-import styles from "../comonents/homePage/gridContainer.module.css";
-
+import styles from "./Homepage.module.css";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import NewCardSong from "../comonents/songLibrary/NewCardSong";
 import SideBarLeft from "../comonents/homePage/SideBarLeft";
-import RightContent from "../comonents/homePage/RightContent";
-import { useReducer, useState } from "react";
-
-import PersonalTestModal from "../comonents/homePage/PersonalTestModal";
-import LearningPlanModal from "../comonents/homePage/LearningPlanModal";
+import { ILearningPlan } from "./HomePage";
 import WeeklyPlan from "../comonents/homePage/WeeklyPlan";
+import SideBarDesktop from "../comonents/homePage/SideBarDesktop";
 
-import MiddleContentSongLibrary from "../comonents/songLibrary/MiddleContentSongLibrary";
+let serverURL: string = "";
+let toURLPage = "";
 
-const questions = [
-  {
-    number: 1,
-    name: "What is your current skill level with the guitar?",
-    options: ["Absolute Beginner", "Beginner", "Intermediate", "Advanced"],
-  },
-  {
-    number: 2,
-    name: "How much time can you dedicate to practicing each week?",
-    options: [
-      "Less than 1 hour",
-      " 1-3 hours",
-      " 3-5 hours",
-      " More than 5 hours",
-    ],
-  },
-  {
-    number: 3,
-    name: "What are your main goals for learning guitar?",
-    options: [
-      " Playing for fun",
-      "Joining a band",
-      "Professional development",
-      " Songwriting",
-    ],
-  },
-  {
-    number: 4,
-    name: "Do you have any musical background or play other instruments?",
-    options: ["Yes", "No"],
-  },
-  {
-    number: 5,
-    name: "What genres of music are you most interested in playing?",
-    options: [" Rock", " Blues", "Jazz", "Classical", "Pop", "Folk", "Other"],
-  },
-  {
-    number: 6,
-    name: "Do you prefer learning through video tutorials, written materials, or both?",
-    options: ["Video", "Written", "Both"],
-  },
-  {
-    number: 7,
-    name: "How do you prefer to receive feedback on your progress?",
-    options: [
-      " Self-assessment",
-      "Online community reviews",
-      "Regular check-ins with a mentor",
-    ],
-  },
-];
+if (window.location.href === "http://localhost:5173/songlibrary") {
+  serverURL = "http://localhost:3000";
+  toURLPage = "http://localhost:5173/home";
+}
+if (window.location.href === "http://10.0.0.16:5173/songlibrary") {
+  serverURL = "http://10.0.0.16:3000";
+  toURLPage = "http://10.0.0.16:5173/home";
+}
+if (window.location.href === "https://chordify.onrender.com") {
+  serverURL = "https://chordify-api.onrender.com";
+  toURLPage = "https://chordify.onrender.com/home";
+}
+console.log(serverURL);
 
-interface Question {
-  number: number;
-  name: string;
-  options: string[];
+export interface IChord {
+  [key: string]: string;
 }
 
-interface Action {
+export interface ILyricLine {
+  chords: string[];
+  text: string;
+}
+
+export interface ISection {
   type: string;
-  payload?: any; // You can specify further typing for payload if needed
+  chords?: string[];
+  lyrics?: ILyricLine[];
 }
 
-interface State {
-  questions: Question[];
-  isLoading: boolean;
-  curQuestion: number;
-  curAnswer: string;
-  answers: string[];
-}
-
-interface PlanHomeProps {
-  h1: string;
-  h2: string[];
-  li: string[];
-}
-
-const initialState = {
-  questions,
-  isLoading: false,
-  curQuestion: 0,
-  curAnswer: "",
-  answers: [],
-};
-
-function reducer(state: State, action: Action) {
-  switch (action.type) {
-    case "setCurAnswer":
-      return { ...state, curAnswer: action.payload };
-
-    case "nextQuestion":
-      return { ...state, curQuestion: state.curQuestion + 1 };
-
-    case "setAnswers":
-      return { ...state, answers: [...state.answers, state.curAnswer] };
-
-    default:
-      throw new Error(`Unhandled action type: ${action.type}`);
-  }
+export interface ISong {
+  title: string;
+  artist: string;
+  chords: IChord;
+  strumming_pattern: string[];
+  sections: ISection[];
 }
 
 export default function SongLibraryPage() {
-  const [{ questions, curQuestion, answers }, dispatch] = useReducer(
-    reducer,
-    initialState
+  const [inputValue, setInputValue] = useState<string>("");
+  const [menuButtonClicked, setMenuButtonClicked] = useState(false);
+  const [searchedBtnClicked, setSearchedBtnClicked] = useState(false);
+  const [begginerBtnClicked, setBegginerBtnClicked] = useState(true);
+  const [begginerSongsList, setBegginerSongsList] = useState<ISong[] | null>(
+    null
   );
+  const [userSearchedSongList, setUserSearchedSongList] = useState<
+    ISong[] | null
+  >(null);
+  const [learningPlan, setLearningPlan] = useState<ILearningPlan[] | null>(
+    null
+  );
+  const [showWeeklyPlan, setShowWeeklyPlan] = useState(false);
+  const [checkedCount, setCheckedCount] = useState(0);
+  console.log("checked:", checkedCount);
 
-  const [modal, setModal] = useState(false);
+  async function getPlanFromDB() {
+    const res = await fetch(`${serverURL}/home/learningplan`, {
+      method: "GET",
+      credentials: "include",
+    });
 
-  // const [lastChatAnswer, setLastChatAnswer] = useState({
-  //   role: "assistant",
-  //   content:
-  //     "Sure, I can help with that. Could you please provide your location?",
-  // });
+    const data = await res.json();
 
-  // h1:week , h2 :day , li:assigment
-  const [learningPlanHome, setLearningPlanHome] = useState(() => {
-    const learningPlanObject = localStorage.getItem("plan");
-    if (!learningPlanObject) setModal(true);
-
-    if (!learningPlanObject) return { h1: "", h2: [""], li: [""] };
-
-    const parsedLearningPlanObject = JSON.parse(learningPlanObject);
-
-    return parsedLearningPlanObject;
-  });
-
-  // close the modal
-  function handleModalClose() {
-    // in oreder to make the "curQuestion === 7" be false
-    dispatch({ type: "nextQuestion" });
-    setModal(false);
-  }
-
-  // open the modal
-  function handleModalOpen() {
-    setModal(true);
-  }
-
-  // put the current answer in a state
-  function handleCurAnswer(answer: string) {
-    dispatch({ type: "setCurAnswer", payload: answer });
-  }
-
-  // go to next question
-  function handleNextQuestion() {
-    dispatch({ type: "setAnswers" });
-    dispatch({ type: "nextQuestion" });
-  }
-
-  function handleSetPlanHome(plan: PlanHomeProps) {
-    setLearningPlanHome(plan);
-  }
-
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  const chunkArray = (arr: string[], chunkSize: number) => {
-    const result = [];
-    for (let i = 0; i < arr.length; i += chunkSize) {
-      result.push(arr.slice(i, i + chunkSize));
+    if (data.plan[0].learningPlan.length === 0) {
+      window.location.href = toURLPage;
+    } else {
+      setLearningPlan(data.plan[0].learningPlan);
     }
-    return result;
-  };
+    console.log(data);
+  }
 
-  const assignmentsPerDay = chunkArray(learningPlanHome.li, 5);
+  async function getBegginerSongsFromDB() {
+    const res = await fetch(`${serverURL}/songs/begginer`, {
+      method: "GET",
+      credentials: "include",
+    });
 
-  const [checkedState, setCheckedState] = useState(
-    assignmentsPerDay.map((dayAssignments) => dayAssignments.map(() => false))
-  );
+    const data = await res.json();
+    setBegginerSongsList(data);
+    console.log(data);
+  }
 
-  const handleCheckboxChange = (dayIndex: number, taskIndex: number) => {
-    const updatedCheckedState = [...checkedState];
-    updatedCheckedState[dayIndex][taskIndex] =
-      !updatedCheckedState[dayIndex][taskIndex];
-    setCheckedState(updatedCheckedState);
-  };
+  async function handleFormSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    try {
+      const res = await fetch(`${serverURL}/songs/newSearch`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: inputValue }),
+        credentials: "include",
+      });
+
+      const data = await res.json();
+      setUserSearchedSongList(data.data);
+      setBegginerBtnClicked(false);
+      setSearchedBtnClicked(true);
+
+      if (data.data) {
+        console.log(data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getSearchedSongsFromDB() {
+    const res = await fetch(`${serverURL}/songs/searched`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    const data = await res.json();
+    setUserSearchedSongList(data.data);
+    if (data) {
+      console.log(data);
+    }
+  }
+
+  useEffect(() => {
+    getPlanFromDB();
+    getBegginerSongsFromDB();
+  }, []);
 
   return (
-    <div className={styles.grid}>
-      <SideBarLeft handleModalOpen={handleModalOpen} />
+    <div className={`${styles.homepageContainer} `}>
+      <SideBarDesktop
+        menuButtonClicked={menuButtonClicked}
+        setMenuButtonClicked={setMenuButtonClicked}
+        setShowWeeklyPlan={setShowWeeklyPlan}
+      />
+      <SideBarLeft
+        menuButtonClicked={menuButtonClicked}
+        setMenuButtonClicked={setMenuButtonClicked}
+        setShowWeeklyPlan={setShowWeeklyPlan}
+      />
+      <div className="songLibrary-container">
+        <button
+          className={`menu-button-songlibrary ${
+            menuButtonClicked ? "menu-button-clicked" : ""
+          }`}
+          onClick={() => {
+            setMenuButtonClicked(!menuButtonClicked);
+          }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            height="48px"
+            width="48px"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+            />
+          </svg>
+        </button>
+        <form onSubmit={handleFormSubmit}>
+          <div className="input-container">
+            <input
+              type="search"
+              placeholder="Serach for chords..."
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                setInputValue(e.target.value);
+              }}
+            />
+          </div>
+        </form>
 
-      <MiddleContentSongLibrary />
-      <RightContent />
+        <div className="category-container">
+          <button
+            className={`searched-btn`}
+            onClick={() => {
+              getSearchedSongsFromDB();
+              setBegginerBtnClicked(false);
+              setSearchedBtnClicked(true);
+            }}
+          >
+            Searched songs
+          </button>
+          <button
+            className={`beginner-btn`}
+            onClick={() => {
+              setSearchedBtnClicked(false);
+              setBegginerBtnClicked(true);
+            }}
+          >
+            Begginer songs
+          </button>
+        </div>
+        {searchedBtnClicked && (
+          <div className="beginnerSongs-container">
+            {userSearchedSongList?.map((songObj: ISong, index: number) => (
+              <NewCardSong key={index} songData={songObj} />
+            ))}
+          </div>
+        )}
 
-      {!learningPlanHome.h1 && modal
-        ? questions.map((question: Question, index: number) =>
-            index === curQuestion ? (
-              <PersonalTestModal
-                key={question.number}
-                question={question}
-                handleModalClose={handleModalClose}
-                handleNextQuestion={handleNextQuestion}
-                onSetCurAnswer={handleCurAnswer}
-              />
-            ) : null
-          )
-        : null}
+        {begginerBtnClicked && (
+          <div className="beginnerSongs-container">
+            {begginerSongsList?.map((songObj: ISong, index: number) => (
+              <NewCardSong key={index} songData={songObj} />
+            ))}
+          </div>
+        )}
 
-      {learningPlanHome.h1 && modal ? (
-        <WeeklyPlan
-          handleModalClose={handleModalClose}
-          learningPlanHome={learningPlanHome}
-          handleCheckboxChange={handleCheckboxChange}
-          assignmentsPerDay={assignmentsPerDay}
-          checkedState={checkedState}
-        />
-      ) : null}
-
-      {curQuestion === 7 && modal ? (
-        <LearningPlanModal
-          handleModalClose={handleModalClose}
-          answers={answers}
-          handleSetPlanHome={handleSetPlanHome}
-        />
-      ) : null}
+        {showWeeklyPlan && (
+          <WeeklyPlan
+            learningPlan={learningPlan}
+            setShowWeeklyPlan={setShowWeeklyPlan}
+            setCheckedCount={setCheckedCount}
+          />
+        )}
+      </div>
     </div>
   );
 }

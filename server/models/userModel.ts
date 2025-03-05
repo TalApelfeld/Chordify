@@ -10,19 +10,44 @@ import validator from "validator";
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
+import { title } from "process";
+
+interface IChord {
+  [key: string]: string;
+}
+
+interface ILyricLine {
+  chords: string[];
+  text: string;
+}
+
+interface ISection {
+  type: string;
+  chords?: string[];
+  lyrics?: ILyricLine[];
+}
+
+interface ISong extends Document {
+  title: string;
+  artist: string;
+  chords: IChord;
+  strumming_pattern: string[];
+  sections: ISection[];
+}
 
 export interface IUser extends Document {
-  name: string;
+  name?: string;
   email: string;
   photo?: string;
-  role: string;
+  role?: string;
   password: string;
-  passwordConfirm?: string;
-  passwordChangedAt: number;
+  passwordConfirm: string;
+  passwordChangedAt?: number;
   passwordResetToken?: String;
   passwordResetExpires?: Date;
-  active: boolean;
-  songs: Types.ObjectId;
+  active?: boolean;
+  songs?: ISong[];
+  learningPlan: { title: string; goals: string[] }[];
   correctPassword(
     candidatePassword: string,
     userPassword: string
@@ -94,7 +119,32 @@ const userSchema = new Schema<IUser>({
     select: false,
   },
 
-  songs: [{ type: Schema.Types.ObjectId, ref: "song" }],
+  songs: {
+    type: [
+      {
+        title: { type: String },
+        artist: { type: String },
+        chords: { type: Map, of: String },
+        strumming_pattern: [{ type: String }],
+        sections: [
+          {
+            type: { type: String },
+            chords: [{ type: String }],
+            lyrics: [
+              {
+                chords: [{ type: String }],
+                text: { type: String },
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+
+  learningPlan: {
+    type: [{ title: String, goals: [String] }],
+  },
 });
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
