@@ -113,7 +113,7 @@ export default function Home() {
   async function getPlanFromDB() {
     const res = await fetch(`${serverURL}/home/learningplan`, {
       method: "GET",
-      credentials: "include",
+      credentials: "same-origin",
     });
 
     const data = await res.json();
@@ -156,7 +156,7 @@ export default function Home() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ data: answersArray }),
-        credentials: "include",
+        credentials: "same-origin",
       });
 
       if (!res.ok) {
