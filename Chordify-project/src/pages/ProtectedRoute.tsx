@@ -31,7 +31,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     try {
       const res = await fetch(`${serverURL}/users/checkcookielogin`, {
         method: "GET",
-        credentials: "include",
+        credentials: "same-origin",
       });
 
       console.log(res.headers.get("content-type"));
