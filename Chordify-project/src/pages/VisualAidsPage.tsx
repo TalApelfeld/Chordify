@@ -6,21 +6,23 @@ import SideBarLeft from "../comonents/homePage/SideBarLeft";
 import SideBarDesktop from "../comonents/homePage/SideBarDesktop";
 import WeeklyPlan from "../comonents/homePage/WeeklyPlan";
 
-let serverURL = "";
-let toURLPage = "";
+const serverURL = import.meta.env.VITE_SERVER_URL;
 
-if (window.location.href === "http://localhost:5173/visualaids") {
-  serverURL = "http://localhost:3000";
-  toURLPage = "http://localhost:5173/home";
-}
-if (window.location.href === "http://10.0.0.16:5173/visualaids") {
-  serverURL = "http://10.0.0.16:3000";
-  toURLPage = "http://10.0.0.16:5173/home";
-}
-if (window.location.href === "https://chordify.onrender.com/visualaids") {
-  serverURL = "https://chordify-api.onrender.com";
-  toURLPage = "https://chordify.onrender.com/home";
-}
+// let serverURL = "";
+// let toURLPage = "";
+
+// if (window.location.href === "http://localhost:5173/visualaids") {
+//   serverURL = "http://localhost:3000";
+//   toURLPage = "http://localhost:5173/home";
+// }
+// if (window.location.href === "http://10.0.0.16:5173/visualaids") {
+//   serverURL = "http://10.0.0.16:3000";
+//   toURLPage = "http://10.0.0.16:5173/home";
+// }
+// if (window.location.href === "https://chordify.onrender.com/visualaids") {
+//   serverURL = "https://chordify-api.onrender.com";
+//   toURLPage = "https://chordify.onrender.com/home";
+// }
 
 export default function VisualAidsPage() {
   const [menuButtonClicked, setMenuButtonClicked] = useState(false);

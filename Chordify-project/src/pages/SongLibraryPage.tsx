@@ -6,22 +6,24 @@ import { ILearningPlan } from "./HomePage";
 import WeeklyPlan from "../comonents/homePage/WeeklyPlan";
 import SideBarDesktop from "../comonents/homePage/SideBarDesktop";
 
-let serverURL: string = "";
-let toURLPage = "";
+const serverURL = import.meta.env.VITE_SERVER_URL;
 
-if (window.location.href === "http://localhost:5173/songlibrary") {
-  serverURL = "http://localhost:3000";
-  toURLPage = "http://localhost:5173/home";
-}
-if (window.location.href === "http://10.0.0.16:5173/songlibrary") {
-  serverURL = "http://10.0.0.16:3000";
-  toURLPage = "http://10.0.0.16:5173/home";
-}
-if (window.location.href === "https://chordify.onrender.com/songlibrary") {
-  serverURL = "https://chordify-api.onrender.com";
-  toURLPage = "https://chordify.onrender.com/home";
-}
-console.log(serverURL);
+// let serverURL: string = "";
+// let toURLPage = "";
+
+// if (window.location.href === "http://localhost:5173/songlibrary") {
+//   serverURL = "http://localhost:3000";
+//   toURLPage = "http://localhost:5173/home";
+// }
+// if (window.location.href === "http://10.0.0.16:5173/songlibrary") {
+//   serverURL = "http://10.0.0.16:3000";
+//   toURLPage = "http://10.0.0.16:5173/home";
+// }
+// if (window.location.href === "https://chordify.onrender.com/songlibrary") {
+//   serverURL = "https://chordify-api.onrender.com";
+//   toURLPage = "https://chordify.onrender.com/home";
+// }
+// console.log(serverURL);
 
 export interface IChord {
   [key: string]: string;

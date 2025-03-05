@@ -7,23 +7,25 @@ interface SideBarLeftProps {
   mobileUI?: boolean;
 }
 
-let serverURL: string = "";
-let loginURLPage = "";
+const serverURL = import.meta.env.VITE_SERVER_URL;
 
-if (window.location.host === "localhost:5173") {
-  serverURL = "http://localhost:3000";
-  loginURLPage = "http://localhost:5173/login";
-}
+// let serverURL: string = "";
+// let loginURLPage = "";
 
-if (window.location.host === "10.0.0.16:5173") {
-  serverURL = "http://10.0.0.16:3000";
-  loginURLPage = "http://10.0.0.16:5173/login";
-}
-if (window.location.host === "chordify.onrender.com") {
-  serverURL = "https://chordify-api.onrender.com";
-  loginURLPage = "https://chordify.onrender.com/login";
-}
-console.log(serverURL);
+// if (window.location.host === "localhost:5173") {
+//   serverURL = "http://localhost:3000";
+//   loginURLPage = "http://localhost:5173/login";
+// }
+
+// if (window.location.host === "10.0.0.16:5173") {
+//   serverURL = "http://10.0.0.16:3000";
+//   loginURLPage = "http://10.0.0.16:5173/login";
+// }
+// if (window.location.host === "chordify.onrender.com") {
+//   serverURL = "https://chordify-api.onrender.com";
+//   loginURLPage = "https://chordify.onrender.com/login";
+// }
+// console.log(serverURL);
 
 export default function SideBarDesktop({
   menuButtonClicked,

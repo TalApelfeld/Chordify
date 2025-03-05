@@ -2,24 +2,26 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Piano from "./Piano";
 
-let serverURL: string = "";
-let homeURLPage = "";
+const serverURL = import.meta.env.VITE_SERVER_URL;
 
-if (window.location.href === "http://localhost:5173/login") {
-  // Localhost
-  serverURL = "http://localhost:3000";
-  homeURLPage = "http://localhost:5173/home";
-}
-if (window.location.href === "http://10.0.0.16:5173/login") {
-  // Mobile
-  serverURL = "http://10.0.0.16:3000";
-  homeURLPage = "http://10.0.0.16:5173/home";
-}
-if (window.location.href === "https://chordify.onrender.com/login") {
-  serverURL = "https://chordify-api.onrender.com";
-  homeURLPage = "https://chordify.onrender.com/home";
-}
-console.log(serverURL);
+// let serverURL: string = "";
+// let homeURLPage = "";
+
+// if (window.location.href === "http://localhost:5173/login") {
+//   // Localhost
+//   serverURL = "http://localhost:3000";
+//   homeURLPage = "http://localhost:5173/home";
+// }
+// if (window.location.href === "http://10.0.0.16:5173/login") {
+//   // Mobile
+//   serverURL = "http://10.0.0.16:3000";
+//   homeURLPage = "http://10.0.0.16:5173/home";
+// }
+// if (window.location.href === "https://chordify.onrender.com/login") {
+//   serverURL = "https://chordify-api.onrender.com";
+//   homeURLPage = "https://chordify.onrender.com/home";
+// }
+// console.log(serverURL);
 
 export default function Login() {
   const [email, setEmail] = useState("");

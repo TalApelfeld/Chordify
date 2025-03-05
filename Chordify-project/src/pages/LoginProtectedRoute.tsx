@@ -1,32 +1,34 @@
 import { ReactNode, useEffect, useState } from "react";
 
-let serverURL: string = "";
-let toURLPage = "";
+const serverURL = import.meta.env.VITE_SERVER_URL;
 
-if (window.location.href === "http://localhost:5173/signup") {
-  serverURL = "http://localhost:3000";
-  toURLPage = "http://localhost:5173/home";
-}
-if (window.location.href === "http://localhost:5173/login") {
-  serverURL = "http://localhost:3000";
-  toURLPage = "http://localhost:5173/home";
-}
-if (window.location.href === "http://10.0.0.16:5173/login") {
-  serverURL = "http://10.0.0.16:3000";
-  toURLPage = "http://10.0.0.16:5173/home";
-}
-if (window.location.href === "http://10.0.0.16:5173/signup") {
-  serverURL = "http://10.0.0.16:3000";
-  toURLPage = "http://10.0.0.16:5173/home";
-}
-if (
-  window.location.href === "https://chordify.onrender.com/signup" ||
-  window.location.href === "https://chordify.onrender.com/login"
-) {
-  serverURL = "https://chordify-api.onrender.com";
-  toURLPage = "https://chordify.onrender.com/home";
-}
-console.log(serverURL);
+// let serverURL: string = "";
+// let toURLPage = "";
+
+// if (window.location.href === "http://localhost:5173/signup") {
+//   serverURL = "http://localhost:3000";
+//   toURLPage = "http://localhost:5173/home";
+// }
+// if (window.location.href === "http://localhost:5173/login") {
+//   serverURL = "http://localhost:3000";
+//   toURLPage = "http://localhost:5173/home";
+// }
+// if (window.location.href === "http://10.0.0.16:5173/login") {
+//   serverURL = "http://10.0.0.16:3000";
+//   toURLPage = "http://10.0.0.16:5173/home";
+// }
+// if (window.location.href === "http://10.0.0.16:5173/signup") {
+//   serverURL = "http://10.0.0.16:3000";
+//   toURLPage = "http://10.0.0.16:5173/home";
+// }
+// if (
+//   window.location.href === "https://chordify.onrender.com/signup" ||
+//   window.location.href === "https://chordify.onrender.com/login"
+// ) {
+//   serverURL = "https://chordify-api.onrender.com";
+//   toURLPage = "https://chordify.onrender.com/home";
+// }
+// console.log(serverURL);
 
 interface ProtectedRouteProps {
   children: ReactNode;
