@@ -39,7 +39,7 @@ export default function SideBarDesktop({
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "same-origin",
+        credentials: "include",
       });
 
       if (!response.ok) {

@@ -36,7 +36,7 @@ export default function VisualAidsPage() {
   async function getPlanFromDB() {
     const res = await fetch(`${serverURL}/home/learningplan`, {
       method: "GET",
-      credentials: "same-origin",
+      credentials: "include",
     });
 
     const data = await res.json();

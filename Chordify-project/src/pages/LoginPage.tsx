@@ -40,7 +40,7 @@ export default function Login() {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "same-origin", // Include cookies with the request
+        credentials: "include", // Include cookies with the request
         body: JSON.stringify({ email, password }),
       });
 

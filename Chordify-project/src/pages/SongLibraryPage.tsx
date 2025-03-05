@@ -69,7 +69,7 @@ export default function SongLibraryPage() {
   async function getPlanFromDB() {
     const res = await fetch(`${serverURL}/home/learningplan`, {
       method: "GET",
-      credentials: "same-origin",
+      credentials: "include",
     });
 
     const data = await res.json();
@@ -85,7 +85,7 @@ export default function SongLibraryPage() {
   async function getBegginerSongsFromDB() {
     const res = await fetch(`${serverURL}/songs/begginer`, {
       method: "GET",
-      credentials: "same-origin",
+      credentials: "include",
     });
 
     const data = await res.json();
@@ -103,7 +103,7 @@ export default function SongLibraryPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ data: inputValue }),
-        credentials: "same-origin",
+        credentials: "include",
       });
 
       const data = await res.json();
@@ -122,7 +122,7 @@ export default function SongLibraryPage() {
   async function getSearchedSongsFromDB() {
     const res = await fetch(`${serverURL}/songs/searched`, {
       method: "GET",
-      credentials: "same-origin",
+      credentials: "include",
     });
 
     const data = await res.json();

@@ -2,15 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import User from "../models/userModel";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import crypto from "crypto";
-import { IUser } from "../models/userModel";
 import AppError from "../utils/appError";
-import exp from "constants";
-
-// Extend the Request interface to include user
-// declare module "express-serve-static-core" {
-//   interface Request {
-//     userId?: string;
-//   }
 
 export interface IRequestObjwithUserId extends Request {
   userId: string;
@@ -119,8 +111,6 @@ export async function login(req: Request, res: Response, next: NextFunction) {
         httpOnly: true, // Recommended to prevent client-side access
         secure: true, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
         sameSite: "none", //* Set to 'none' on prod !!!!!
-        path: "/", //* enable those on prod !!!!
-        domain: "chordify-api.onrender.com",
       });
     }
 
