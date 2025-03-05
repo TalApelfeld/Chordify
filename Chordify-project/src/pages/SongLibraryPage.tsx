@@ -17,7 +17,7 @@ if (window.location.href === "http://10.0.0.16:5173/songlibrary") {
   serverURL = "http://10.0.0.16:3000";
   toURLPage = "http://10.0.0.16:5173/home";
 }
-if (window.location.href === "https://chordify.onrender.com") {
+if (window.location.href === "https://chordify.onrender.com/songlibrary") {
   serverURL = "https://chordify-api.onrender.com";
   toURLPage = "https://chordify.onrender.com/home";
 }
