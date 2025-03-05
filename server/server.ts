@@ -9,7 +9,7 @@ const port = Number(process.env.PORT);
 mongoose.connect(dataBaseString).then(() => {
   console.log("DB connected successfully");
 
-  app.listen(port, () => {
+  app.listen(port, "0.0.0.0", () => {
     if (process.env.NODE_ENV === "development")
       console.log(`Server running in ${process.env.NODE_ENV} on port: ` + port);
     if (process.env.NODE_ENV === "production")
