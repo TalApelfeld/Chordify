@@ -86,6 +86,8 @@ export interface ILearningPlan {
 }
 
 export default function Home() {
+  console.log(window.location.origin);
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [menuButtonClicked, setMenuButtonClicked] = useState(false);

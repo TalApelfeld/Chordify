@@ -30,10 +30,6 @@ function getAllUsers(req, res, next) {
 function getOneUser(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            // const user = await User.findOne({ _id: req.params.id }).populate<{
-            //   songs: ISong;
-            // }>("songs");
-            // res.status(200).json({ message: "success", data: { user } });
             const user = yield userModel_1.default.findOne({ _id: req.params.id }).populate("songs");
             res.status(200).json({ message: "success", data: { user } });
         }

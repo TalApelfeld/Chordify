@@ -48,7 +48,7 @@ function signup(req, res, next) {
             //* for DEV
             if (process.env.NODE_ENV === "development") {
                 res.cookie("jwt", token, {
-                    expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
+                    maxAge: 7 * 24 * 60 * 60 * 1000,
                     httpOnly: true, // Recommended to prevent client-side access
                     secure: false, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
                     sameSite: "lax", //* Set to 'none' on prod !!!!!
@@ -57,12 +57,12 @@ function signup(req, res, next) {
             //* for PRODUCTION
             if (process.env.NODE_ENV === "production") {
                 res.cookie("jwt", token, {
-                    expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
+                    maxAge: 7 * 24 * 60 * 60 * 1000,
                     httpOnly: true, // Recommended to prevent client-side access
                     secure: true, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
                     sameSite: "none", //* Set to 'none' on prod !!!!!
                     path: "/", //* enable those on prod !!!!
-                    domain: "chordify-api.onrender.com",
+                    domain: "chordify.onrender.com",
                 });
             }
             res.status(201).json({ status: "success", token, data: { user: newUser } });
