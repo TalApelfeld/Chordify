@@ -33,9 +33,7 @@ userRouter.post("/login", login);
 // root path
 userRouter
   .route("/")
-  .get(protect, restrict(["admin", "lead-guide", "user"]), getAllUsers)
-  .post()
-  .delete();
+  .get(protect, restrict(["admin", "lead-guide", "user"]), getAllUsers);
 
 // handle users themselfs
 userRouter.post("/forgotpassword", forgotPassword);

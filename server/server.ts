@@ -3,8 +3,10 @@ dotenv.config({ path: "../.env" });
 import app from "./app";
 import mongoose from "mongoose";
 
+console.log(process.env);
+
 const dataBaseString = process.env.DB_STRING as string;
-const port = Number(process.env.PORT);
+const port = Number(process.env.PORT) || 3000;
 
 mongoose.connect(dataBaseString).then(() => {
   console.log("DB connected successfully");

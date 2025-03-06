@@ -164,8 +164,9 @@ export default function Home() {
       }
 
       const data = await res.json();
-      setLearningPlan(data.data.learning_plan);
       setIsLoading(false);
+      setLearningPlan(data.data.learning_plan);
+      window.location.reload();
       setShowPreferenceWindow(false);
       setShowWeeklyPlan(true);
       console.log(data.data);

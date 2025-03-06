@@ -17,9 +17,7 @@ userRouter.post("/login", authController_1.login);
 // root path
 userRouter
     .route("/")
-    .get(authController_1.protect, (0, authController_1.restrict)(["admin", "lead-guide", "user"]), userControllers_1.getAllUsers)
-    .post()
-    .delete();
+    .get(authController_1.protect, (0, authController_1.restrict)(["admin", "lead-guide", "user"]), userControllers_1.getAllUsers);
 // handle users themselfs
 userRouter.post("/forgotpassword", authController_1.forgotPassword);
 userRouter.patch("/resetpassword/:token", authController_1.resetPassword);

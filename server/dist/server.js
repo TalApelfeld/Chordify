@@ -7,8 +7,9 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config({ path: "../.env" });
 const app_1 = __importDefault(require("./app"));
 const mongoose_1 = __importDefault(require("mongoose"));
+console.log(process.env);
 const dataBaseString = process.env.DB_STRING;
-const port = Number(process.env.PORT);
+const port = Number(process.env.PORT) || 3000;
 mongoose_1.default.connect(dataBaseString).then(() => {
     console.log("DB connected successfully");
     app_1.default.listen(port, "0.0.0.0", () => {
