@@ -1,7 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import User from "../models/userModel";
-import { ISong } from "../models/songsModel";
-import jwt, { JwtPayload } from "jsonwebtoken";
 
 export async function getAllUsers(
   req: Request,
@@ -22,12 +20,6 @@ export async function getOneUser(
   next: NextFunction
 ) {
   try {
-    // const user = await User.findOne({ _id: req.params.id }).populate<{
-    //   songs: ISong;
-    // }>("songs");
-
-    // res.status(200).json({ message: "success", data: { user } });
-
     const user = await User.findOne({ _id: req.params.id }).populate("songs");
     res.status(200).json({ message: "success", data: { user } });
   } catch (error) {

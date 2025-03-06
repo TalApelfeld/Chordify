@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 
-const serverURL = import.meta.env.VITE_SERVER_URL;
+// const serverURL = import.meta.env.VITE_SERVER_URL;
+const serverURL = "http://chordify-api:3000";
 
 // let serverURL: string = "";
 // let toURLpage = "";
