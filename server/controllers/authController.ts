@@ -109,7 +109,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
         httpOnly: true, // Recommended to prevent client-side access
         secure: true, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
         sameSite: "none", //* Set to 'none' on prod !!!!!
-        domain: "chordify.onrender.com",
+        domain: "chordify-api.onrender.com",
         path: "/",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
