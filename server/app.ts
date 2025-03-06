@@ -8,7 +8,6 @@ import userRoutes from "./routes/userRoutes";
 import homeRoutes from "./routes/homeRoutes";
 import visualAidsRoutes from "./routes/visualAidsRoutes";
 import searchRoutes from "./routes/searchRoutes";
-import testRoutes from "./routes/testRoutes";
 import songsRouter from "./routes/songsRoutes";
 
 const app = express();

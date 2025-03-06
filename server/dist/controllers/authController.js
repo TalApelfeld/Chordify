@@ -113,6 +113,7 @@ function login(req, res, next) {
                     httpOnly: true, // Recommended to prevent client-side access
                     secure: true, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
                     sameSite: "none", //* Set to 'none' on prod !!!!!
+                    path: "/",
                     domain: "chordify.onrender.com",
                 });
             }
