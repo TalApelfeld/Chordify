@@ -13,9 +13,10 @@ const homeRoutes_1 = __importDefault(require("./routes/homeRoutes"));
 const visualAidsRoutes_1 = __importDefault(require("./routes/visualAidsRoutes"));
 const searchRoutes_1 = __importDefault(require("./routes/searchRoutes"));
 const songsRoutes_1 = __importDefault(require("./routes/songsRoutes"));
+const weatherAppCitiesRoutes_1 = __importDefault(require("./routes/weatherAppCitiesRoutes"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
-    origin: "https://chordify.onrender.com",
+    origin: ["https://chordify.onrender.com", "http://localhost:3000"],
     credentials: true,
 }));
 app.use((0, cookie_parser_1.default)());
@@ -25,6 +26,7 @@ app.use("/users", userRoutes_1.default);
 app.use("/home", homeRoutes_1.default);
 app.use("/visualaids", visualAidsRoutes_1.default);
 app.use("/search", searchRoutes_1.default);
+app.use("/cities", weatherAppCitiesRoutes_1.default);
 //* handle all UNhandeld routes
 // need to be last because as we know the middleware goes line by line so the first route that matches the url entered and if it was first
 // then all the routes would led to this error

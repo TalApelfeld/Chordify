@@ -9,12 +9,13 @@ import homeRoutes from "./routes/homeRoutes";
 import visualAidsRoutes from "./routes/visualAidsRoutes";
 import searchRoutes from "./routes/searchRoutes";
 import songsRouter from "./routes/songsRoutes";
+import cityRouter from "./routes/weatherAppCitiesRoutes";
 
 const app = express();
 
 app.use(
   cors({
-    origin: "https://chordify.onrender.com",
+    origin: ["https://chordify.onrender.com", "http://localhost:3000"],
     credentials: true,
   })
 );
@@ -25,6 +26,7 @@ app.use("/users", userRoutes);
 app.use("/home", homeRoutes);
 app.use("/visualaids", visualAidsRoutes);
 app.use("/search", searchRoutes);
+app.use("/cities", cityRouter);
 
 //* handle all UNhandeld routes
 // need to be last because as we know the middleware goes line by line so the first route that matches the url entered and if it was first
