@@ -71,10 +71,11 @@ export async function logOut(req: Request, res: Response, next: NextFunction) {
     //* for PRODUCTION
     if (process.env.NODE_ENV === "production") {
       res.cookie("jwt", "", {
-        expires: new Date(Date.now() + cookieExpires * 24 * 60 * 60 * 1000),
+        maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true, // Recommended to prevent client-side access
         secure: true, // Set to true in production when using HTTPS //* Set to true on PROD !!!!!
         sameSite: "none", //* Set to 'none' on prod !!!!!
+        domain: "chordify.onrender.com",
       });
     }
 
