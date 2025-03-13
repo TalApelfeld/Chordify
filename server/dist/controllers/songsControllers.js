@@ -12,7 +12,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetchSong = fetchSong;
 exports.getSearchedSongs = getSearchedSongs;
 exports.getNewSong = getNewSong;
 exports.getBegginerSongs = getBegginerSongs;
@@ -20,66 +19,6 @@ const openai_1 = __importDefault(require("openai"));
 const songsModel_1 = __importDefault(require("../models/songsModel"));
 const userModel_1 = __importDefault(require("../models/userModel"));
 const openai = new openai_1.default({ apiKey: process.env.OPENAI_API_KEY });
-function fetchSong(req, res, next) {
-    return __awaiter(this, void 0, void 0, function* () {
-        var _a;
-        console.log("enterd songs route");
-        console.log(process.env);
-        console.log(process.env.OPENAI_API_KEY);
-        try {
-            //* Asking GPT and getting promt from chatgpt
-            const completion = yield openai.chat.completions.create({
-                model: "gpt-4o-mini",
-                messages: [
-                    {
-                        role: "system",
-                        content: `you are a guitar teacher, `,
-                    },
-                    {
-                        role: "user",
-                        content: `give me the strumming pattern and the chords for the song '${req.body.value}'
-           in the order they need to be to played the song and make it in this format:
-           <h1>[here should be the song title]</h1>
-
-           <h2>[Chords Used:]</h2>
-           <ul>
-           <li>[here is the cord]</li>
-           <li>[another cord]</li>
-           </ul>
-
-           <h2>[Chord Progression:]</h2>
-           <ul>
-           <li></li>
-           <li></li>
-           </ul>
-
-           <h2>[Strumming Pattern:]</h2>
-           <P> example: D-DU-UDU (stand for down/up) </p>
-
-           of course fill up the template accordingly to the given  song`,
-                    },
-                ],
-            });
-            console.log(completion);
-            //* using the parsing function
-            const songString = completion.choices[0].message.content;
-            const songObj = yield extractDataFromText(songString ? songString : "");
-            //* Saving song object to DB
-            const song = new songsModel_1.default(songObj);
-            const newSong = yield song.save();
-            //* Saving id of the song Doc to User Doc in the array of id's
-            const savedSongIdUser = yield userModel_1.default.findByIdAndUpdate((_a = req.user) === null || _a === void 0 ? void 0 : _a.id, {
-                $push: { songs: newSong._id },
-            }, { new: true });
-            console.log(newSong);
-            console.log(savedSongIdUser);
-            res.status(200).json({ songObj });
-        }
-        catch (error) {
-            res.json({ error });
-        }
-    });
-}
 function getSearchedSongs(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         const newReqObj = req;

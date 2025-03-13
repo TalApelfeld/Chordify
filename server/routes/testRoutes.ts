@@ -8,7 +8,6 @@ import {
   getKitten,
   createKitten,
 } from "../controllers/testControllers";
-import { protect } from "../controllers/authController";
 
 const router = express.Router();
 

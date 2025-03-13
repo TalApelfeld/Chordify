@@ -5,12 +5,10 @@ import mongoose, {
   Query,
   Types,
 } from "mongoose";
-import Song from "./songsModel";
 import validator from "validator";
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
-import { title } from "process";
 
 interface IChord {
   [key: string]: string;
@@ -41,7 +39,7 @@ export interface IUser extends Document {
   photo?: string;
   role?: string;
   password: string;
-  passwordConfirm: string;
+  passwordConfirm: string | undefined;
   passwordChangedAt?: number;
   passwordResetToken?: String;
   passwordResetExpires?: Date;

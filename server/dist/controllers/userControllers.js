@@ -14,9 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllUsers = getAllUsers;
 exports.getOneUser = getOneUser;
-exports.updateMe = updateMe;
 exports.logOut = logOut;
-exports.deleteMe = deleteMe;
 const userModel_1 = __importDefault(require("../models/userModel"));
 function getAllUsers(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -38,26 +36,30 @@ function getOneUser(req, res, next) {
         }
     });
 }
-function updateMe(req, res, next) {
-    return __awaiter(this, void 0, void 0, function* () {
-        var _a;
-        try {
-            // 1) Create error if user posts password data
-            if (req.body.password || req.body.passwordConfirm)
-                return next("its not the route for changing password !");
-            // 2) Update user document
-            const updatedUser = yield userModel_1.default.findByIdAndUpdate((_a = req.user) === null || _a === void 0 ? void 0 : _a.id, {
-                // need to be careful and watch that only the fields that we want are inputed because someone can input the 'role'
-                name: req.body.name,
-                email: req.body.email,
-            }, { new: true, runValidators: true });
-            res.status(200).json({ status: "success", data: { user: updatedUser } });
-        }
-        catch (error) {
-            return next(error);
-        }
-    });
-}
+// export async function updateMe(
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) {
+//   try {
+//     // 1) Create error if user posts password data
+//     if (req.body.password || req.body.passwordConfirm)
+//       return next("its not the route for changing password !");
+//     // 2) Update user document
+//     const updatedUser = await User.findByIdAndUpdate(
+//       req.user?.id,
+//       {
+//         // need to be careful and watch that only the fields that we want are inputed because someone can input the 'role'
+//         name: req.body.name,
+//         email: req.body.email,
+//       },
+//       { new: true, runValidators: true }
+//     );
+//     res.status(200).json({ status: "success", data: { user: updatedUser } });
+//   } catch (error) {
+//     return next(error);
+//   }
+// }
 function logOut(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -91,10 +93,11 @@ function logOut(req, res, next) {
         }
     });
 }
-function deleteMe(req, res, next) {
-    return __awaiter(this, void 0, void 0, function* () {
-        var _a;
-        yield userModel_1.default.findByIdAndUpdate((_a = req.user) === null || _a === void 0 ? void 0 : _a.id, { active: false });
-        res.status(204).json({ status: "success", data: null });
-    });
-}
+// export async function deleteMe(
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) {
+//   await User.findByIdAndUpdate(req.user?.id, { active: false });
+//   res.status(204).json({ status: "success", data: null });
+// }

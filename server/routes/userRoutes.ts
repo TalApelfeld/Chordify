@@ -1,22 +1,14 @@
 import express from "express";
 import {
-  checkAuth,
   checkCookie,
   checkCookieLogin,
-  forgotPassword,
   login,
-  protect,
-  resetPassword,
-  restrict,
   signup,
-  updatePassword,
 } from "../controllers/authController";
 import {
-  deleteMe,
   getAllUsers,
   getOneUser,
   logOut,
-  updateMe,
 } from "../controllers/userControllers";
 
 const userRouter = express.Router();
@@ -24,24 +16,24 @@ const userRouter = express.Router();
 // for the frontend to send back a user based on if there is a cookie
 userRouter.get("/checkcookielogin", checkCookieLogin);
 userRouter.get("/checkcookie", checkCookie);
-userRouter.get("/checkauth", protect, checkAuth);
+// userRouter.get("/checkauth", protect, checkAuth);
 
 // signup/login functionality
 userRouter.post("/signup", signup);
 userRouter.post("/login", login);
 
 // root path
-userRouter
-  .route("/")
-  .get(protect, restrict(["admin", "lead-guide", "user"]), getAllUsers);
+// userRouter
+//   .route("/")
+//   .get(restrict(["admin", "lead-guide", "user"]), getAllUsers);
 
-// handle users themselfs
-userRouter.post("/forgotpassword", forgotPassword);
-userRouter.patch("/resetpassword/:token", resetPassword);
-userRouter.patch("/updatemypassword", protect, updatePassword);
-userRouter.patch("/updateme", protect, updateMe);
-userRouter.patch("/deleteme", protect, deleteMe);
-userRouter.post("/logout", protect, logOut);
+//// handle users themselfs
+// userRouter.post("/forgotpassword", forgotPassword);
+// userRouter.patch("/resetpassword/:token", resetPassword);
+// userRouter.patch("/updatemypassword", updatePassword);
+// userRouter.patch("/updateme", updateMe);
+// userRouter.patch("/deleteme", deleteMe);
+userRouter.post("/logout", logOut);
 
 // get one user back
 userRouter.get("/:id", getOneUser);

@@ -27,32 +27,32 @@ export async function getOneUser(
   }
 }
 
-export async function updateMe(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  try {
-    // 1) Create error if user posts password data
-    if (req.body.password || req.body.passwordConfirm)
-      return next("its not the route for changing password !");
+// export async function updateMe(
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) {
+//   try {
+//     // 1) Create error if user posts password data
+//     if (req.body.password || req.body.passwordConfirm)
+//       return next("its not the route for changing password !");
 
-    // 2) Update user document
-    const updatedUser = await User.findByIdAndUpdate(
-      req.user?.id,
-      {
-        // need to be careful and watch that only the fields that we want are inputed because someone can input the 'role'
-        name: req.body.name,
-        email: req.body.email,
-      },
-      { new: true, runValidators: true }
-    );
+//     // 2) Update user document
+//     const updatedUser = await User.findByIdAndUpdate(
+//       req.user?.id,
+//       {
+//         // need to be careful and watch that only the fields that we want are inputed because someone can input the 'role'
+//         name: req.body.name,
+//         email: req.body.email,
+//       },
+//       { new: true, runValidators: true }
+//     );
 
-    res.status(200).json({ status: "success", data: { user: updatedUser } });
-  } catch (error) {
-    return next(error);
-  }
-}
+//     res.status(200).json({ status: "success", data: { user: updatedUser } });
+//   } catch (error) {
+//     return next(error);
+//   }
+// }
 
 export async function logOut(req: Request, res: Response, next: NextFunction) {
   try {
@@ -88,12 +88,12 @@ export async function logOut(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export async function deleteMe(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  await User.findByIdAndUpdate(req.user?.id, { active: false });
+// export async function deleteMe(
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) {
+//   await User.findByIdAndUpdate(req.user?.id, { active: false });
 
-  res.status(204).json({ status: "success", data: null });
-}
+//   res.status(204).json({ status: "success", data: null });
+// }

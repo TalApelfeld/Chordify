@@ -4,9 +4,9 @@
   "description": "",
   "main": "dist/server.js",
   "scripts": {
-    "start": "NODE_ENV=production node dist/server.js",
-    "start:dev": "powershell -Command \"tsc; $env:NODE_ENV='development'; nodemon dist/server.js\"",
-    "start:prod": "powershell -Command \"tsc; $env:NODE_ENV='production'; nodemon dist/server.js\""
+    "build": "tsc",
+    "start:dev": "set NODE_ENV=development&& tsc && nodemon ./dist/server.js",
+    "start:prod": "NODE_ENV=production && node dist/server.js"
   },
   "author": "",
   "license": "ISC",

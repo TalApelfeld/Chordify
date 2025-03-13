@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import User from "../models/userModel";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import crypto from "crypto";
-import AppError from "../utils/appError";
 
 export interface IRequestObjwithUserId extends Request {
   userId: string;
@@ -179,156 +177,156 @@ export async function checkCookie(
   // });
 }
 
-export async function protect(req: Request, res: Response, next: NextFunction) {
-  if (!req.cookies["jwt"]) {
-    console.log("no token");
-    return next(
-      new AppError("You are not logged in, log in or create an account", "404")
-    );
-  }
+// export async function protect(req: Request, res: Response, next: NextFunction) {
+//   if (!req.cookies["jwt"]) {
+//     console.log("no token");
+//     return next(
+//       new AppError("You are not logged in, log in or create an account", "404")
+//     );
+//   }
 
-  try {
-    // 1) Check if we get the token
-    const token = req.cookies["jwt"];
+//   try {
+//     //// 1) Check if we get the token
+//     const token = req.cookies["jwt"];
 
-    // 2) Verification of  the token
-    const secret = process.env.JWT_SECRET as string;
-    const decoded = (await jwt.verify(token, secret)) as JwtPayload;
-    console.log(decoded);
+//     //// 2) Verification of  the token
+//     const secret = process.env.JWT_SECRET as string;
+//     const decoded = (await jwt.verify(token, secret)) as JwtPayload;
+//     console.log(decoded);
 
-    // 3) Check if user still exists
-    console.log(decoded.id);
-    const freshUser = await User.findById(decoded.id);
+//     //// 3) Check if user still exists
+//     console.log(decoded.id);
+//     const freshUser = await User.findById(decoded.id);
 
-    if (!freshUser)
-      return next("the user belongigng to the token is no longer exists");
+//     if (!freshUser)
+//       return next("the user belongigng to the token is no longer exists");
 
-    // 4) Check if user changed password after the token was issued
-    if (freshUser.changedPasswordAfter(decoded.iat!))
-      return next("User recently changed password, pls log in again");
+//     //// 4) Check if user changed password after the token was issued
+//     if (freshUser.changedPasswordAfter(decoded.iat!))
+//       return next("User recently changed password, pls log in again");
 
-    // GRANT ACCESS TO PROTECTED ROUTE
-    req.user = freshUser;
-    console.log(req.user);
-    next();
-  } catch (error) {
-    next(error);
-  }
-}
+//     //// GRANT ACCESS TO PROTECTED ROUTE
+//     req.user = freshUser;
+//     console.log(req.user);
+//     next();
+//   } catch (error) {
+//     next(error);
+//   }
+// }
 
-export async function checkAuth(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  try {
-    const user = await User.findById(req.user?._id);
-    res.status(200).json({ data: user });
-  } catch (error) {
-    next(new AppError("you are not authenticated", "404"));
-  }
-}
+// export async function checkAuth(
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) {
+//   try {
+//     const user = await User.findById(req.user?._id);
+//     res.status(200).json({ data: user });
+//   } catch (error) {
+//     next(new AppError("you are not authenticated", "404"));
+//   }
+// }
 
-export function restrict(roles: string[]) {
-  return (req: Request, res: Response, next: NextFunction) => {
-    if (req.user) {
-      if (!roles.includes(req.user.role))
-        return next("you do not have premissoin to preform this action ");
-    }
-    next();
-  };
-}
+// export function restrict(roles: string[]) {
+//   return (req: Request, res: Response, next: NextFunction) => {
+//     if (req.user) {
+//       if (!roles.includes(req.user.role))
+//         return next("you do not have premissoin to preform this action ");
+//     }
+//     next();
+//   };
+// }
 
-export async function forgotPassword(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  // 1) Get user based on posted email
-  const user = await User.findOne({ email: req.body.email });
-  if (!user) return next("Tere is no user with this email address ");
+// export async function forgotPassword(
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) {
+//   // 1) Get user based on posted email
+//   const user = await User.findOne({ email: req.body.email });
+//   if (!user) return next("Tere is no user with this email address ");
 
-  // 2) Generate the random reset token
-  const resetToken = user.createPasswordResetToken();
+//   // 2) Generate the random reset token
+//   const resetToken = user.createPasswordResetToken();
 
-  const updatedUser = await user.save({ validateBeforeSave: false });
-  res.json({ updatedUser });
+//   const updatedUser = await user.save({ validateBeforeSave: false });
+//   res.json({ updatedUser });
 
-  // 3) Sent it to user's email
-  //* need to send email
-}
+//   // 3) Sent it to user's email
+//   //* need to send email
+// }
 
-export async function resetPassword(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  try {
-    // 1) Get user based on the token
-    const hasedToken = crypto
-      .createHash("sha256")
-      .update(req.params.token)
-      .digest("hex");
+// export async function resetPassword(
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) {
+//   try {
+//     // 1) Get user based on the token
+//     const hasedToken = crypto
+//       .createHash("sha256")
+//       .update(req.params.token)
+//       .digest("hex");
 
-    const user = await User.findOne({
-      passwordResetToken: hasedToken,
-      passwordResetExpires: { $gt: Date.now() },
-    });
+//     const user = await User.findOne({
+//       passwordResetToken: hasedToken,
+//       passwordResetExpires: { $gt: Date.now() },
+//     });
 
-    // 2) If token has not expired and there is user, set the new password
-    if (!user) return next("token is invalid or has expired");
-    user.password = req.body.password;
-    user.passwordConfirm = req.body.passwordConfirm;
-    user.passwordResetToken = undefined;
-    user.passwordResetExpires = undefined;
-    await user.save();
+//     // 2) If token has not expired and there is user, set the new password
+//     if (!user) return next("token is invalid or has expired");
+//     user.password = req.body.password;
+//     user.passwordConfirm = req.body.passwordConfirm;
+//     user.passwordResetToken = undefined;
+//     user.passwordResetExpires = undefined;
+//     await user.save();
 
-    // 3) Updated 'changedPasswordAt'  property for the user
-    //* updated in the model usin pre middleware
+//     // 3) Updated 'changedPasswordAt'  property for the user
+//     //* updated in the model usin pre middleware
 
-    // 4) log the user in, send JWT
-    const secret = process.env.JWT_SECRET as string;
+//     // 4) log the user in, send JWT
+//     const secret = process.env.JWT_SECRET as string;
 
-    const token = jwt.sign({ id: user._id }, secret, {
-      expiresIn: process.env.JWT_EXPIRES_IN,
-    });
+//     const token = jwt.sign({ id: user._id }, secret, {
+//       expiresIn: process.env.JWT_EXPIRES_IN,
+//     });
 
-    res.status(200).json({ status: "success", token });
-  } catch (error) {
-    return next(error);
-  }
-}
+//     res.status(200).json({ status: "success", token });
+//   } catch (error) {
+//     return next(error);
+//   }
+// }
 
-export async function updatePassword(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  try {
-    // 1) Get user from collection
-    if (!req.user) return next("no user");
+// export async function updatePassword(
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) {
+//   try {
+//     ////1) Get user from collection
+//     if (!req.user) return next("no user");
 
-    const user = await User.findById(req.user.id).select("+password");
-    if (!user) return next("you are not sigend in");
+//     const user = await User.findById(req.user.id).select("+password");
+//     if (!user) return next("you are not sigend in");
 
-    // 2) Check if posted current password is correct
-    if (!(await user.correctPassword(req.body.passwordCurrent, user.password)))
-      return next("your current password is wrong");
+//     //// 2) Check if posted current password is correct
+//     if (!(await user.correctPassword(req.body.passwordCurrent, user.password)))
+//       return next("your current password is wrong");
 
-    // 3) if so, update the password
-    user.password = req.body.password;
-    user.passwordConfirm = req.body.passwordConfirm;
-    await user.save();
+//     //// 3) if so, update the password
+//     user.password = req.body.password;
+//     user.passwordConfirm = req.body.passwordConfirm;
+//     await user.save();
 
-    // 4) Log user in, send JWT
-    const secret = process.env.JWT_SECRET as string;
+//     //// 4) Log user in, send JWT
+//     const secret = process.env.JWT_SECRET as string;
 
-    const token = jwt.sign({ id: user._id }, secret, {
-      expiresIn: process.env.JWT_EXPIRES_IN,
-    });
+//     const token = jwt.sign({ id: user._id }, secret, {
+//       expiresIn: process.env.JWT_EXPIRES_IN,
+//     });
 
-    res.status(200).json({ status: "success", token });
-  } catch (error) {
-    return next(error);
-  }
-}
+//     res.status(200).json({ status: "success", token });
+//   } catch (error) {
+//     return next(error);
+//   }
+// }

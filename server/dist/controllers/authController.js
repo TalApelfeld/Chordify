@@ -16,16 +16,8 @@ exports.signup = signup;
 exports.login = login;
 exports.checkCookieLogin = checkCookieLogin;
 exports.checkCookie = checkCookie;
-exports.protect = protect;
-exports.checkAuth = checkAuth;
-exports.restrict = restrict;
-exports.forgotPassword = forgotPassword;
-exports.resetPassword = resetPassword;
-exports.updatePassword = updatePassword;
 const userModel_1 = __importDefault(require("../models/userModel"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const crypto_1 = __importDefault(require("crypto"));
-const appError_1 = __importDefault(require("../utils/appError"));
 function signup(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -167,131 +159,130 @@ function checkCookie(req, res, next) {
         // });
     });
 }
-function protect(req, res, next) {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (!req.cookies["jwt"]) {
-            console.log("no token");
-            return next(new appError_1.default("You are not logged in, log in or create an account", "404"));
-        }
-        try {
-            // 1) Check if we get the token
-            const token = req.cookies["jwt"];
-            // 2) Verification of  the token
-            const secret = process.env.JWT_SECRET;
-            const decoded = (yield jsonwebtoken_1.default.verify(token, secret));
-            console.log(decoded);
-            // 3) Check if user still exists
-            console.log(decoded.id);
-            const freshUser = yield userModel_1.default.findById(decoded.id);
-            if (!freshUser)
-                return next("the user belongigng to the token is no longer exists");
-            // 4) Check if user changed password after the token was issued
-            if (freshUser.changedPasswordAfter(decoded.iat))
-                return next("User recently changed password, pls log in again");
-            // GRANT ACCESS TO PROTECTED ROUTE
-            req.user = freshUser;
-            console.log(req.user);
-            next();
-        }
-        catch (error) {
-            next(error);
-        }
-    });
-}
-function checkAuth(req, res, next) {
-    return __awaiter(this, void 0, void 0, function* () {
-        var _a;
-        try {
-            const user = yield userModel_1.default.findById((_a = req.user) === null || _a === void 0 ? void 0 : _a._id);
-            res.status(200).json({ data: user });
-        }
-        catch (error) {
-            next(new appError_1.default("you are not authenticated", "404"));
-        }
-    });
-}
-function restrict(roles) {
-    return (req, res, next) => {
-        if (req.user) {
-            if (!roles.includes(req.user.role))
-                return next("you do not have premissoin to preform this action ");
-        }
-        next();
-    };
-}
-function forgotPassword(req, res, next) {
-    return __awaiter(this, void 0, void 0, function* () {
-        // 1) Get user based on posted email
-        const user = yield userModel_1.default.findOne({ email: req.body.email });
-        if (!user)
-            return next("Tere is no user with this email address ");
-        // 2) Generate the random reset token
-        const resetToken = user.createPasswordResetToken();
-        const updatedUser = yield user.save({ validateBeforeSave: false });
-        res.json({ updatedUser });
-        // 3) Sent it to user's email
-        //* need to send email
-    });
-}
-function resetPassword(req, res, next) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            // 1) Get user based on the token
-            const hasedToken = crypto_1.default
-                .createHash("sha256")
-                .update(req.params.token)
-                .digest("hex");
-            const user = yield userModel_1.default.findOne({
-                passwordResetToken: hasedToken,
-                passwordResetExpires: { $gt: Date.now() },
-            });
-            // 2) If token has not expired and there is user, set the new password
-            if (!user)
-                return next("token is invalid or has expired");
-            user.password = req.body.password;
-            user.passwordConfirm = req.body.passwordConfirm;
-            user.passwordResetToken = undefined;
-            user.passwordResetExpires = undefined;
-            yield user.save();
-            // 3) Updated 'changedPasswordAt'  property for the user
-            //* updated in the model usin pre middleware
-            // 4) log the user in, send JWT
-            const secret = process.env.JWT_SECRET;
-            const token = jsonwebtoken_1.default.sign({ id: user._id }, secret, {
-                expiresIn: process.env.JWT_EXPIRES_IN,
-            });
-            res.status(200).json({ status: "success", token });
-        }
-        catch (error) {
-            return next(error);
-        }
-    });
-}
-function updatePassword(req, res, next) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            // 1) Get user from collection
-            if (!req.user)
-                return next("no user");
-            const user = yield userModel_1.default.findById(req.user.id).select("+password");
-            if (!user)
-                return next("you are not sigend in");
-            // 2) Check if posted current password is correct
-            if (!(yield user.correctPassword(req.body.passwordCurrent, user.password)))
-                return next("your current password is wrong");
-            // 3) if so, update the password
-            user.password = req.body.password;
-            user.passwordConfirm = req.body.passwordConfirm;
-            yield user.save();
-            // 4) Log user in, send JWT
-            const secret = process.env.JWT_SECRET;
-            const token = jsonwebtoken_1.default.sign({ id: user._id }, secret, {
-                expiresIn: process.env.JWT_EXPIRES_IN,
-            });
-            res.status(200).json({ status: "success", token });
-        }
-        catch (error) {
-            return next(error);
-        }
-    });
-}
+// export async function protect(req: Request, res: Response, next: NextFunction) {
+//   if (!req.cookies["jwt"]) {
+//     console.log("no token");
+//     return next(
+//       new AppError("You are not logged in, log in or create an account", "404")
+//     );
+//   }
+//   try {
+//     //// 1) Check if we get the token
+//     const token = req.cookies["jwt"];
+//     //// 2) Verification of  the token
+//     const secret = process.env.JWT_SECRET as string;
+//     const decoded = (await jwt.verify(token, secret)) as JwtPayload;
+//     console.log(decoded);
+//     //// 3) Check if user still exists
+//     console.log(decoded.id);
+//     const freshUser = await User.findById(decoded.id);
+//     if (!freshUser)
+//       return next("the user belongigng to the token is no longer exists");
+//     //// 4) Check if user changed password after the token was issued
+//     if (freshUser.changedPasswordAfter(decoded.iat!))
+//       return next("User recently changed password, pls log in again");
+//     //// GRANT ACCESS TO PROTECTED ROUTE
+//     req.user = freshUser;
+//     console.log(req.user);
+//     next();
+//   } catch (error) {
+//     next(error);
+//   }
+// }
+// export async function checkAuth(
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) {
+//   try {
+//     const user = await User.findById(req.user?._id);
+//     res.status(200).json({ data: user });
+//   } catch (error) {
+//     next(new AppError("you are not authenticated", "404"));
+//   }
+// }
+// export function restrict(roles: string[]) {
+//   return (req: Request, res: Response, next: NextFunction) => {
+//     if (req.user) {
+//       if (!roles.includes(req.user.role))
+//         return next("you do not have premissoin to preform this action ");
+//     }
+//     next();
+//   };
+// }
+// export async function forgotPassword(
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) {
+//   // 1) Get user based on posted email
+//   const user = await User.findOne({ email: req.body.email });
+//   if (!user) return next("Tere is no user with this email address ");
+//   // 2) Generate the random reset token
+//   const resetToken = user.createPasswordResetToken();
+//   const updatedUser = await user.save({ validateBeforeSave: false });
+//   res.json({ updatedUser });
+//   // 3) Sent it to user's email
+//   //* need to send email
+// }
+// export async function resetPassword(
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) {
+//   try {
+//     // 1) Get user based on the token
+//     const hasedToken = crypto
+//       .createHash("sha256")
+//       .update(req.params.token)
+//       .digest("hex");
+//     const user = await User.findOne({
+//       passwordResetToken: hasedToken,
+//       passwordResetExpires: { $gt: Date.now() },
+//     });
+//     // 2) If token has not expired and there is user, set the new password
+//     if (!user) return next("token is invalid or has expired");
+//     user.password = req.body.password;
+//     user.passwordConfirm = req.body.passwordConfirm;
+//     user.passwordResetToken = undefined;
+//     user.passwordResetExpires = undefined;
+//     await user.save();
+//     // 3) Updated 'changedPasswordAt'  property for the user
+//     //* updated in the model usin pre middleware
+//     // 4) log the user in, send JWT
+//     const secret = process.env.JWT_SECRET as string;
+//     const token = jwt.sign({ id: user._id }, secret, {
+//       expiresIn: process.env.JWT_EXPIRES_IN,
+//     });
+//     res.status(200).json({ status: "success", token });
+//   } catch (error) {
+//     return next(error);
+//   }
+// }
+// export async function updatePassword(
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) {
+//   try {
+//     ////1) Get user from collection
+//     if (!req.user) return next("no user");
+//     const user = await User.findById(req.user.id).select("+password");
+//     if (!user) return next("you are not sigend in");
+//     //// 2) Check if posted current password is correct
+//     if (!(await user.correctPassword(req.body.passwordCurrent, user.password)))
+//       return next("your current password is wrong");
+//     //// 3) if so, update the password
+//     user.password = req.body.password;
+//     user.passwordConfirm = req.body.passwordConfirm;
+//     await user.save();
+//     //// 4) Log user in, send JWT
+//     const secret = process.env.JWT_SECRET as string;
+//     const token = jwt.sign({ id: user._id }, secret, {
+//       expiresIn: process.env.JWT_EXPIRES_IN,
+//     });
+//     res.status(200).json({ status: "success", token });
+//   } catch (error) {
+//     return next(error);
+//   }
+// }
