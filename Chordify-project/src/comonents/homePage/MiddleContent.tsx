@@ -1,7 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import PieChart from "./PieChart";
 import { motion } from "motion/react";
-import { delay, stagger } from "motion";
 
 interface middleContentProps {
   timeGreeting: string;
