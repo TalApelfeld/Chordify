@@ -1,5 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import PieChart from "./PieChart";
+import { motion } from "motion/react";
+import { delay, stagger } from "motion";
 
 interface middleContentProps {
   timeGreeting: string;
@@ -16,6 +18,15 @@ export default function MiddleContent({
   menuButtonClicked,
   setMenuButtonClicked,
 }: middleContentProps) {
+  const titleSpan = {
+    visible: {
+      opacity: [0, 1],
+      translateY: ["20px", 0],
+      transition: {
+        duration: 2.5,
+      },
+    },
+  };
   return (
     <div className="middle-homepage-content-mobile">
       {/* //* Upper Section */}
@@ -45,8 +56,25 @@ export default function MiddleContent({
           </svg>
         </button>
 
-        <h1>{timeGreeting}</h1>
-        <p>Personolized plan</p>
+        <motion.h1>
+          {timeGreeting.split("").map((char, index: number) => (
+            <motion.span
+              variants={titleSpan}
+              animate="visible"
+              className="letter"
+              key={index}
+            >
+              {char}
+            </motion.span>
+          ))}
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 2 }}
+        >
+          Personolized plan
+        </motion.p>
 
         {/* //* Your progress */}
         <div className="progress-container">
@@ -59,7 +87,15 @@ export default function MiddleContent({
       </div>
       <div className="bottom-section">
         {/* //* Skill-Assesment */}
-        <div className="skill-assesment-container">
+        <motion.div
+          className="skill-assesment-container"
+          initial={{ opacity: 0, translateY: "-20px" }}
+          // animate={{ opacity: [0, 1], translateY: ["20px", 0] }}
+          animate={{ opacity: 1, translateY: 0, transition: { duration: 2 } }}
+          // transition={}
+
+          whileTap={{ scale: 0.9 }}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -81,9 +117,17 @@ export default function MiddleContent({
           <button className="test-button bg-background-grey rounded-2xl py-3 px-6 self-end font-semibold">
             Begin quiz
           </button>
-        </div>
+        </motion.div>
         {/* //* Guitar-Basics-quiz */}
-        <div className="Guitar-Basics-quiz skill-assesment-container">
+        <motion.div
+          className="Guitar-Basics-quiz skill-assesment-container"
+          initial={{ opacity: 0, translateY: "-20px" }}
+          // animate={{ opacity: [0, 1], translateY: ["20px", 0] }}
+          animate={{ opacity: 1, translateY: 0, transition: { duration: 2 } }}
+          // transition={}
+
+          whileTap={{ scale: 0.9 }}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -106,7 +150,7 @@ export default function MiddleContent({
           <button className="start-learning-button bg-background-grey rounded-2xl py-3 px-5 self-end font-semibold">
             Start learning
           </button>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

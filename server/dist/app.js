@@ -16,7 +16,11 @@ const songsRoutes_1 = __importDefault(require("./routes/songsRoutes"));
 const weatherAppCitiesRoutes_1 = __importDefault(require("./routes/weatherAppCitiesRoutes"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
-    origin: ["https://chordify.onrender.com", "http://localhost:5173"],
+    origin: [
+        "https://chordify.onrender.com",
+        "http://localhost:5173",
+        "https://whether-app-fxu2.onrender.com",
+    ],
     credentials: true,
 }));
 app.use((0, cookie_parser_1.default)());

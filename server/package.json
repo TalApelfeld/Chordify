@@ -5,6 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "build": "tsc",
+    "start": "set NODE_ENV=production&& tsc && nodemon ./dist/server.js",
     "start:dev": "set NODE_ENV=development&& tsc && nodemon ./dist/server.js",
     "start:prod": "NODE_ENV=production && node dist/server.js"
   },
