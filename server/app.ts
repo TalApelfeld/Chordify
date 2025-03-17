@@ -18,6 +18,7 @@ app.use(
     origin: [
       "https://chordify.onrender.com",
       "http://localhost:5173",
+      "http://10.0.0.2:5173",
       "https://whether-app-fxu2.onrender.com",
     ],
     credentials: true,

@@ -1,35 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 
 const serverURL = import.meta.env.VITE_SERVER_URL;
-// const serverURL = "chordify-api:3000";
-
-// let serverURL: string = "";
-// let toURLPage = "";
-
-// if (window.location.href === "http://localhost:5173/signup") {
-//   serverURL = "http://localhost:3000";
-//   toURLPage = "http://localhost:5173/home";
-// }
-// if (window.location.href === "http://localhost:5173/login") {
-//   serverURL = "http://localhost:3000";
-//   toURLPage = "http://localhost:5173/home";
-// }
-// if (window.location.href === "http://10.0.0.16:5173/login") {
-//   serverURL = "http://10.0.0.16:3000";
-//   toURLPage = "http://10.0.0.16:5173/home";
-// }
-// if (window.location.href === "http://10.0.0.16:5173/signup") {
-//   serverURL = "http://10.0.0.16:3000";
-//   toURLPage = "http://10.0.0.16:5173/home";
-// }
-// if (
-//   window.location.href === "https://chordify.onrender.com/signup" ||
-//   window.location.href === "https://chordify.onrender.com/login"
-// ) {
-//   serverURL = "https://chordify-api.onrender.com";
-//   toURLPage = "https://chordify.onrender.com/home";
-// }
-// console.log(serverURL);
+const goToURL = import.meta.env.VITE_GO_TO;
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -70,7 +42,9 @@ export default function LoginProtectedRoute({ children }: ProtectedRouteProps) {
 
   useEffect(() => {
     if (isValidToken) {
-      window.location.href = "https://chordify.onrender.com/home";
+      // window.location.href = "http://localhost:5173/home";
+      // window.location.href = "https://chordify.onrender.com/home";
+      window.location.href = `${goToURL}/home`;
     }
   }, [isValidToken]);
 

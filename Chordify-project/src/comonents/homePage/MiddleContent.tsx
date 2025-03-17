@@ -1,6 +1,7 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import PieChart from "./PieChart";
 import { motion } from "motion/react";
+import SkillPlan from "./SkillPlan";
 
 interface middleContentProps {
   timeGreeting: string;
@@ -17,6 +18,7 @@ export default function MiddleContent({
   menuButtonClicked,
   setMenuButtonClicked,
 }: middleContentProps) {
+  const [beginQuiz, setBeginQuiz] = useState(false);
   const titleSpan = {
     visible: {
       opacity: [0, 1],
@@ -93,7 +95,7 @@ export default function MiddleContent({
           animate={{ opacity: 1, translateY: 0, transition: { duration: 2 } }}
           // transition={}
 
-          whileTap={{ scale: 0.9 }}
+          // whileTap={{ scale: 0.9 }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +115,13 @@ export default function MiddleContent({
           </svg>
           <p className="skill-p">Skill Assesment</p>
           <p className="testKnoledge-p">Test your knoledge now!</p>
-          <button className="test-button bg-background-grey rounded-2xl py-3 px-6 self-end font-semibold">
+          <button
+            onClick={() => {
+              console.log("test");
+              setBeginQuiz(true);
+            }}
+            className="test-button bg-background-grey rounded-2xl py-3 px-6 self-end font-semibold"
+          >
             Begin quiz
           </button>
         </motion.div>
@@ -151,6 +159,7 @@ export default function MiddleContent({
           </button>
         </motion.div>
       </div>
+      {beginQuiz && <SkillPlan />}
     </div>
   );
 }

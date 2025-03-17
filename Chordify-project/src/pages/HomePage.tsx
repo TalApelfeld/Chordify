@@ -8,19 +8,6 @@ import SideBarDesktop from "../comonents/homePage/SideBarDesktop";
 
 const serverURL = import.meta.env.VITE_SERVER_URL;
 
-// let serverURL: string = "";
-
-// if (window.location.href === "http://localhost:5173/home") {
-//   serverURL = "http://localhost:3000";
-// }
-// if (window.location.href === "http://10.0.0.16:5173/home") {
-//   serverURL = "http://10.0.0.16:3000";
-// }
-// if (window.location.href === "https://chordify.onrender.com/home") {
-//   serverURL = "https://chordify-api.onrender.com";
-// }
-// console.log(serverURL);
-
 const questions = [
   {
     number: 0,

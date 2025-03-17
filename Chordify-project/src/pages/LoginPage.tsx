@@ -3,25 +3,7 @@ import { Link } from "react-router-dom";
 import Piano from "./Piano";
 
 const serverURL = import.meta.env.VITE_SERVER_URL;
-
-// let serverURL: string = "";
-// let homeURLPage = "";
-
-// if (window.location.href === "http://localhost:5173/login") {
-//   // Localhost
-//   serverURL = "http://localhost:3000";
-//   homeURLPage = "http://localhost:5173/home";
-// }
-// if (window.location.href === "http://10.0.0.16:5173/login") {
-//   // Mobile
-//   serverURL = "http://10.0.0.16:3000";
-//   homeURLPage = "http://10.0.0.16:5173/home";
-// }
-// if (window.location.href === "https://chordify.onrender.com/login") {
-//   serverURL = "https://chordify-api.onrender.com";
-//   homeURLPage = "https://chordify.onrender.com/home";
-// }
-// console.log(serverURL);
+const goToURL = import.meta.env.VITE_GO_TO;
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -53,8 +35,8 @@ export default function Login() {
 
       if (data.status === "success") {
         setLoading(false);
-        window.location.href = "https://chordify.onrender.com/home";
-        // navigate("/home"); // Redirect to home page on success
+
+        window.location.href = `${goToURL}/home`;
       } else {
         throw new Error(data.status || "Failed to sign up");
       }

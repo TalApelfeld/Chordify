@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Piano from "./Piano";
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
+const goToURL = import.meta.env.VITE_GO_TO;
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // useNavigate for redirection
 
   async function handleSignup(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault(); // Prevent default form submission
@@ -36,7 +36,7 @@ export default function SignUpPage() {
       }
 
       setLoading(false);
-      navigate("/home"); // Redirect to home page on success
+      window.location.href = `${goToURL}/home`;
     } catch (error) {
       alert(error);
       setLoading(false);

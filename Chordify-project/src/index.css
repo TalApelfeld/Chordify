@@ -88,7 +88,7 @@ fontSize: {
     transform: translateX(-50%);
   }
 
-  /* //section: Login Page*/
+  /*//#                                                         //section: Login Page                                                 */
   .login-page {
     height: 100vh;
     background-image: linear-gradient(rgb(0, 0, 0, 0.7), rgb(0, 0, 0, 0.1)),
@@ -188,7 +188,7 @@ fontSize: {
     }
   }
 
-  /* //section: Signup Page*/
+  /*//#                                                    //section: Signup Page                                                     */
 
   .signup-page {
     height: 100vh;
@@ -252,7 +252,7 @@ fontSize: {
     }
   }
 
-  /* //section: HOME PAGE*/
+  /*//#                                                          //section: HOME PAGE                                                  */
 
   .homepage-container {
     position: relative;
@@ -535,7 +535,17 @@ fontSize: {
     }
   }
 
-  /* //section: Sidbar */
+  /*//#                                                             //section: Skill Modal                                                   */
+
+  .skill-modal-container {
+    position: fixed;
+    min-height: 100vh;
+    background-color: #66666684;
+    width: 100%;
+    z-index: 1000;
+  }
+
+  /*//#                                                             //section: Sidbar                                                   */
   .sidebar-container-mobile {
     position: fixed;
     min-height: 100vh;
@@ -683,7 +693,7 @@ fontSize: {
   }
 }
 
-/* //section: Personal Preference Window */
+/*//#                                                 //section: Personal Preference Window                                            */
 .personal-preference-window {
   position: absolute;
   display: flex;
@@ -814,7 +824,7 @@ fontSize: {
   margin-right: 1.2rem;
 } */
 
-/* //section: Weekly Plan Modal */
+/*//#                                                       //section: Weekly Plan Modal                                               */
 
 .modal-weekly-plan {
   position: fixed;
@@ -914,7 +924,7 @@ fontSize: {
   }
 }
 
-/* //section: Song Library Page*/
+/*                                                       //#section: Song Library Page                                                 */
 
 .songLibrary-container {
   position: relative;
@@ -1096,7 +1106,7 @@ h4 {
   }
 }
 
-/* //section: Visual Aids Page*/
+/*//#                                                    //section: Visual Aids Page                                                  */
 .visualaids-container {
   min-height: 100vh;
   display: flex;

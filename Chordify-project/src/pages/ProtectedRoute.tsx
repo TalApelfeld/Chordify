@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 
 const serverURL = import.meta.env.VITE_SERVER_URL;
+const goToURL = import.meta.env.VITE_GO_TO;
 // const serverURL = "http://chordify-api:3000";
 
 // let serverURL: string = "";
@@ -59,8 +60,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   useEffect(() => {
     if (isValidToken === false) {
-      // window.location.href = toURLpage;
-      window.location.href = "https://chordify.onrender.com/login";
+      window.location.href = `${goToURL}/login`;
     }
   }, [isValidToken]);
 

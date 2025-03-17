@@ -7,24 +7,7 @@ interface SideBarLeftProps {
 }
 
 const serverURL = import.meta.env.VITE_SERVER_URL;
-
-// let serverURL: string = "";
-// let loginURLPage = "";
-
-// if (window.location.host === "localhost:5173") {
-//   serverURL = "http://localhost:3000";
-//   loginURLPage = "http://localhost:5173/login";
-// }
-
-// if (window.location.host === "10.0.0.16:5173") {
-//   serverURL = "http://10.0.0.16:3000";
-//   loginURLPage = "http://10.0.0.16:5173/login";
-// }
-// if (window.location.host === "chordify.onrender.com") {
-//   serverURL = "https://chordify-api.onrender.com";
-//   loginURLPage = "https://chordify.onrender.com/login";
-// }
-// console.log(serverURL);
+const goToURL = import.meta.env.VITE_GO_TO;
 
 export default function SideBarLeft({
   menuButtonClicked,
@@ -45,10 +28,7 @@ export default function SideBarLeft({
         throw new Error("Something went wrong with the logout");
       }
 
-      window.location.href = "https://chordify.onrender.com/login";
-      // const data = await response.json();
-
-      // console.log(data.message);
+      window.location.href = `${goToURL}/login`;
     } catch (error) {
       console.error(error);
     }
