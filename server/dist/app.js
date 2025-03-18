@@ -14,6 +14,7 @@ const visualAidsRoutes_1 = __importDefault(require("./routes/visualAidsRoutes"))
 const searchRoutes_1 = __importDefault(require("./routes/searchRoutes"));
 const songsRoutes_1 = __importDefault(require("./routes/songsRoutes"));
 const weatherAppCitiesRoutes_1 = __importDefault(require("./routes/weatherAppCitiesRoutes"));
+const quizRoutes_1 = require("./routes/quizRoutes");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
     origin: [
@@ -27,6 +28,7 @@ app.use((0, cors_1.default)({
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
 app.use("/songs", songsRoutes_1.default);
+app.use("/quiz", quizRoutes_1.quizRouter);
 app.use("/users", userRoutes_1.default);
 app.use("/home", homeRoutes_1.default);
 app.use("/visualaids", visualAidsRoutes_1.default);

@@ -95,7 +95,7 @@ export default function MiddleContent({
           animate={{ opacity: 1, translateY: 0, transition: { duration: 2 } }}
           // transition={}
 
-          // whileTap={{ scale: 0.9 }}
+          whileTap={{ scale: 0.9 }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -159,7 +159,8 @@ export default function MiddleContent({
           </button>
         </motion.div>
       </div>
-      {beginQuiz && <SkillPlan />}
+
+      {beginQuiz && <SkillPlan setBeginQuiz={setBeginQuiz} />}
     </div>
   );
 }

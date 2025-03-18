@@ -10,6 +10,7 @@ import visualAidsRoutes from "./routes/visualAidsRoutes";
 import searchRoutes from "./routes/searchRoutes";
 import songsRouter from "./routes/songsRoutes";
 import cityRouter from "./routes/weatherAppCitiesRoutes";
+import { quizRouter } from "./routes/quizRoutes";
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use("/songs", songsRouter);
+app.use("/quiz", quizRouter);
 app.use("/users", userRoutes);
 app.use("/home", homeRoutes);
 app.use("/visualaids", visualAidsRoutes);

@@ -65,7 +65,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   }, [isValidToken]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="page-loader"></div>;
   }
 
   if (isValidToken === false) return null;

@@ -1,3 +1,4 @@
+import { motion } from "motion/react";
 import { Dispatch, SetStateAction, useState } from "react";
 import { IQuestion } from "../../pages/HomePage";
 
@@ -33,7 +34,15 @@ export default function PersonalTestModal({
   }
 
   return (
-    <div className="personal-preference-window">
+    <motion.div
+      className="personal-preference-window"
+      animate={{
+        opacity: [0, 1],
+        translateY: ["20px", "-50%"],
+        translateX: ["-50%", "-50%"],
+        transition: { duration: 1 },
+      }}
+    >
       <h1>{questionObj.title}</h1>
 
       <div className="personal-preference-options">
@@ -151,6 +160,6 @@ export default function PersonalTestModal({
             </button>
           ))}
       </div>
-    </div>
+    </motion.div>
   );
 }
