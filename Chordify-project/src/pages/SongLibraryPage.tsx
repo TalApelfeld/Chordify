@@ -34,6 +34,7 @@ export interface ISong {
 
 export default function SongLibraryPage() {
   const [inputValue, setInputValue] = useState<string>("");
+  const [loading, setLoading] = useState(false);
   const [menuButtonClicked, setMenuButtonClicked] = useState(false);
   const [searchedBtnClicked, setSearchedBtnClicked] = useState(false);
   const [begginerBtnClicked, setBegginerBtnClicked] = useState(true);
@@ -79,6 +80,9 @@ export default function SongLibraryPage() {
 
   async function handleFormSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setLoading(true);
+    setBegginerBtnClicked(false);
+    setSearchedBtnClicked(true);
 
     try {
       const res = await fetch(`${serverURL}/songs/newSearch`, {
@@ -100,19 +104,30 @@ export default function SongLibraryPage() {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setInputValue("");
+      setLoading(false);
     }
   }
 
   async function getSearchedSongsFromDB() {
-    const res = await fetch(`${serverURL}/songs/searched`, {
-      method: "GET",
-      credentials: "include",
-    });
+    setLoading(true);
+    try {
+      const res = await fetch(`${serverURL}/songs/searched`, {
+        method: "GET",
+        credentials: "include",
+      });
 
-    const data = await res.json();
-    setUserSearchedSongList(data.data);
-    if (data) {
-      console.log(data);
+      const data = await res.json();
+      setUserSearchedSongList(data.data);
+
+      // if (data) {
+      //   console.log(data);
+      // }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -162,6 +177,7 @@ export default function SongLibraryPage() {
           <div className="input-container">
             <input
               type="search"
+              value={inputValue}
               placeholder="Serach for chords..."
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 setInputValue(e.target.value);
@@ -174,9 +190,9 @@ export default function SongLibraryPage() {
           <button
             className={`searched-btn`}
             onClick={() => {
-              getSearchedSongsFromDB();
               setBegginerBtnClicked(false);
               setSearchedBtnClicked(true);
+              getSearchedSongsFromDB();
             }}
           >
             Searched songs
@@ -191,12 +207,19 @@ export default function SongLibraryPage() {
             Begginer songs
           </button>
         </div>
-        {searchedBtnClicked && (
+
+        {searchedBtnClicked && !loading ? (
           <div className="beginnerSongs-container">
             {userSearchedSongList?.map((songObj: ISong, index: number) => (
               <NewCardSong key={index} songData={songObj} />
             ))}
           </div>
+        ) : searchedBtnClicked && loading ? (
+          <div className="spinner-skill-container">
+            <span className="loader-skill"></span>
+          </div>
+        ) : (
+          ""
         )}
 
         {begginerBtnClicked && (
