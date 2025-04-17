@@ -1,5 +1,5 @@
 # Chordify
-"Chordify" is a web app designed to help you learn guitar basics efficiently in 30 days. The app teaches you notes, offers interactive quizzes, and creates personalized learning plans. Additionally, it features a robust search function to explore and learn various guitar songs, making your learning experience comprehensive and tailored to your needs.
+"Chordify" is a web app designed to help you learn guitar basics efficiently in 30 days. The app teaches you the basic chords of a guitar, offers interactive quizzes, and creates personalized learning plans. Additionally, it features a robust search function to explore and learn various guitar songs by lyrics and chords, making your learning experience comprehensive and tailored to your needs.
 
 ## Table of Contents
 - [Usage](#usage)
