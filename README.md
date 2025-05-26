@@ -8,7 +8,7 @@
 ## Usage
  Clone the repo:
    ```bash
-   git clone https://github.com/TalApelfeld/repo.git
+   git clone https://github.com/TalApelfeld/Chordify.git
    ```
   ## For Frontend:
 1. change directory:
