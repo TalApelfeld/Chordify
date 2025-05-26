@@ -51,4 +51,4 @@
 
 
 ## Contact
-Your Name - Tal Apelfeld - Talapelfeld@gmail.com
+Tal Apelfeld - Talapelfeld@gmail.com
